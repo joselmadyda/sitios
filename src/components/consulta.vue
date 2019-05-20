@@ -7,7 +7,7 @@
             type="button"
             @click="markersInicialesCat1"
             class="btn btn-block btn-outline-primary waves-effect"
-          >G O L F</button>
+          >R E S T A U R A N T E S</button>
         </div>
 
         <div class="col">
@@ -15,7 +15,7 @@
             type="button"
             @click="markersInicialesCat2"
             class="btn btn-block btn-outline-primary waves-effect"
-          >R E S T A U R A N T E S</button>
+          >G O L F</button>
         </div>
 
         <div class="col">
@@ -30,7 +30,7 @@
 
     <div>
       <br>
-      <label>
+      <!-- <label >
         <gmap-autocomplete class="input" @place_changed="setPlace"></gmap-autocomplete>
         <br>
         <button
@@ -38,7 +38,7 @@
           class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
         >Buscar</button>
       </label>
-
+      -->
       <br>
     </div>
 
@@ -54,19 +54,22 @@
       ></gmap-marker>
     </gmap-map>
 
+
+
     <ul>
-      `
+      
       <li v-for="(m, index) in markers" v-bind:key="index">
-        {{m.position}}{{m.title}}
+        {{m.position.nombre}}
+        
         DISTANCIA: {{getKilometros(center.lat,center.lng,m.position.lat,m.position.lng)}}
-        <a
-          @click="eliminarUbicacion(index)"
-        >ELIMINAR</a>
       </li>`
     </ul>
-    <ul>
+    <!--    <ul>
       <li v-for="(place, index) in places" v-bind:key="index">{{place.icon}}</li>
     </ul>
+    -->
+
+<b-table hover :items="markers"></b-table>
   </div>
 </template>
 
@@ -94,8 +97,8 @@ export default {
   },
   //Una vez cargado el DOM se ejecuta lo que contiene mounted
   mounted() {
-    this.markersIniciales();
-    this.geolocate();
+    //this.markersIniciales();
+    //this.geolocate();
   },
 
   methods: {
@@ -143,22 +146,25 @@ export default {
       const COTO = {
         lat: -34.6085476,
         lng: -58.4311811,
-        icon: img_resto
+        icon: img_resto,
+        nombre: "RESTO LA CANDELA"
       };
       this.markers.push({ position: COTO });
       const FABRICA = {
         lat: -34.6112837,
         lng: -58.4264576,
-        icon: img_resto
+        icon: img_resto,
+        nombre: "GRAN HOMER"
       };
       this.markers.push({ position: FABRICA });
+      console.log(this.markers)
     },
     markersInicialesCat2() {
       this.markers = [];
       const ORT = {
-        lat: -34.609953,
-        lng: -58.4292301,
-        icon: img_teatro
+        lat: -34.6100199,
+        lng: -58.4322013,
+        icon: img_golf
       };
       this.markers.push({ position: ORT });
       const DIA = {
@@ -170,6 +176,24 @@ export default {
     },
     markersInicialesCat3() {
       this.markers = [];
+      const TEATRO1 = {
+        lat: -34.6093855,
+        lng: -58.4343329,
+        icon: img_teatro
+      };
+      this.markers.push({ position: TEATRO1 });
+      const TEATRO2 = {
+        lat: -34.608776,
+        lng: -58.425912,
+        icon: img_teatro
+      };
+      this.markers.push({ position: TEATRO2 });
+      const TEATRO3 = {
+        lat: -34.6088385,
+        lng: -58.4286357,
+        icon: img_teatro
+      };
+      this.markers.push({ position: TEATRO3 });
     },
     markersIniciales() {
       this.markers = [];
@@ -186,7 +210,7 @@ export default {
       };
       this.markers.push({ position: FABRICA });
 
-           const ORT = {
+      const ORT = {
         lat: -34.609953,
         lng: -58.4292301,
         icon: img_teatro
