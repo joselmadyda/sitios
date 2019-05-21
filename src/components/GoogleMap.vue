@@ -95,7 +95,7 @@ export default {
   //Una vez cargado el DOM se ejecuta lo que contiene mounted
   mounted() {
     this.markersIniciales();
-    this.geolocate();
+   // this.geolocate();
   },
 
   methods: {

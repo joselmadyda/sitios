@@ -6,9 +6,11 @@ import vueRouter from 'vue-router'
 import Routes from './routes'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+//import VueFunnelGraph from 'vue-funnel-graph-js';
+
 
 Vue.use(vueRouter);
-
+//Vue.use(VueFunnelGraph);
 Vue.use(BootstrapVue);
 
 const rutas = new vueRouter({
