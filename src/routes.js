@@ -4,7 +4,7 @@ import consulta from './components/consulta.vue'
 import graficos from './components/graficos.vue'
 
 const routes = [
-  { path: '/', component: home },
+  { path: '/', component: consulta },
   { path: '/GoogleMap', component: googleMap },
   { path: '/consulta', component: consulta },
   { path: '/graficos', component: graficos }

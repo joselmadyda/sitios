@@ -7,7 +7,7 @@
             type="button"
             @click="markersInicialesCat1"
             class="btn btn-block btn-outline-primary waves-effect"
-          >G O L F</button>
+          >R E S T A U R A N T E S</button>
         </div>
 
         <div class="col">
@@ -15,7 +15,7 @@
             type="button"
             @click="markersInicialesCat2"
             class="btn btn-block btn-outline-primary waves-effect"
-          >R E S T A U R A N T E S</button>
+          >G O L F</button>
         </div>
 
         <div class="col">
@@ -95,7 +95,7 @@ export default {
   //Una vez cargado el DOM se ejecuta lo que contiene mounted
   mounted() {
     this.markersIniciales();
-   // this.geolocate();
+    // this.geolocate();
   },
 
   methods: {
@@ -113,6 +113,7 @@ export default {
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
         this.center = marker;
+        console.log(JSON.stringify(this.places));
       }
     },
     addMarker() {
@@ -127,7 +128,7 @@ export default {
         this.center = marker;
 
         this.currentPlace = null;
-        //console.log(JSON.stringify(this.places));
+        console.log(JSON.stringify(this.places));
       }
     },
     geolocate: function() {
@@ -158,7 +159,7 @@ export default {
       const ORT = {
         lat: -34.609953,
         lng: -58.4292301,
-        icon: img_teatro
+        icon: img_golf
       };
       this.markers.push({ position: ORT });
       const DIA = {
@@ -186,7 +187,7 @@ export default {
       };
       this.markers.push({ position: FABRICA });
 
-           const ORT = {
+      const ORT = {
         lat: -34.609953,
         lng: -58.4292301,
         icon: img_teatro

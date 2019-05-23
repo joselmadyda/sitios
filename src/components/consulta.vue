@@ -54,13 +54,9 @@
       ></gmap-marker>
     </gmap-map>
 
-
-
     <ul>
-      
       <li v-for="(m, index) in markers" v-bind:key="index">
         {{m.position.nombre}}
-        
         DISTANCIA: {{getKilometros(center.lat,center.lng,m.position.lat,m.position.lng)}}
       </li>`
     </ul>
@@ -69,7 +65,7 @@
     </ul>
     -->
 
-<b-table hover :items="markers"></b-table>
+    <b-table hover :items="markers"></b-table>
   </div>
 </template>
 
@@ -92,19 +88,46 @@ export default {
       markers: [],
       places: [],
       //currentCoordinates: {lat: "", lng: ""},
-      currentPlace: null
+      currentPlace: null,
+      url: "http://localhost:8090/api/sitios",
+      info: ""
     };
   },
+
   //Una vez cargado el DOM se ejecuta lo que contiene mounted
   mounted() {
     //this.markersIniciales();
     //this.geolocate();
+    this.cargarsitiosBD();
   },
 
   methods: {
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;
+    },
+    cargarsitiosBD() {
+      axios
+        .get(this.url)
+        .then(response => {
+          // Obtenemos los datos
+
+          let sitios = response.data;
+          
+          for (var i = 0; i < sitios.length; i++) {
+            const marker = {
+              lat: sitios[i].latitud,
+              lng: sitios[i].longitud,
+              icon: "",
+              nombre: sitios[i].nombre_sitio
+            };
+            this.markers.push({ position: marker });
+          }
+        })
+        .catch(e => {
+          // Capturamos los errores
+          console.log(2);
+        });
     },
     buscarSitio() {
       if (this.currentPlace) {
@@ -157,7 +180,7 @@ export default {
         nombre: "GRAN HOMER"
       };
       this.markers.push({ position: FABRICA });
-      console.log(this.markers)
+      console.log(this.markers);
     },
     markersInicialesCat2() {
       this.markers = [];
