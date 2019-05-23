@@ -1,11 +1,21 @@
 const knex = require('../db/knex')
 
-async function getAll() {
+function getAll() {
     try {
-        const selectAllQuery = `SELECT * FROM Sitios;`
-        const result = await knex.raw(selectAllQuery)
-        return result
+        const selectAll = `SELECT * FROM Sitios`
+        const result = knex.raw(selectAll)
+        return result 
+
     } catch (err) {
         throw { status: 500, descripcion: err.message }
     }
+}
+
+const res = getAll();
+
+
+console.log("test")
+
+module.exports = {
+    getAll
 }

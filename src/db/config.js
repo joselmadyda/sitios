@@ -6,7 +6,7 @@ const dbConfigs = {
     home: {
         client: 'mssql',
         connection: {
-            server: 'localhost\\SQLEXPRESS',
+            server: 'localhost',
             user: 'web',
             password: '1234',
             database: 'Sitios'
@@ -23,4 +23,3 @@ module.exports = {
     dbConfig: dbConfigs['home'],
     port: srvConfigs.port
 }
-
