@@ -59,23 +59,24 @@ router.get('/:dni', async (req, res) => {
         res.status(err.status).json(err)
     }
 })
-
+*/
 router.post('/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
     try {
         const nuevo = req.body
 
-        if (esEstudianteInvalido(nuevo))
-            throw { status: 400, descripcion: 'el estudiante posee un formato json invalido o faltan datos' }
+        //if (esEstudianteInvalido(nuevo))
+        //    throw { status: 400, descripcion: 'el estudiante posee un formato json invalido o faltan datos' }
 
-        const estuCreado = await sitiosDAO.add(nuevo)
+        const sitioCreado = await sitiosDAO.add(nuevo)
         res.status(201).json(estuCreado)
     } catch (err) {
         res.status(err.status).json(err)
     }
 })
 
+/*
 router.delete('/:dni', async (req, res) => {
     console.log(`DELETING: ${baseURI}${req.url}`)
 

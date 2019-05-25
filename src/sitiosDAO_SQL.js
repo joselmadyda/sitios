@@ -20,19 +20,19 @@ async function getByDni(dni) {
     const result = await knex.raw(selectByDni)
     return result[0]
 }
-
+*/
 async function add(nuevo) {
     try {
-        let insertionQuery = 'INSERT INTO estudiantes '
-        insertionQuery += '(nombre, apellido, edad, dni) '
-        insertionQuery += `VALUES ('${nuevo.nombre}', '${nuevo.apellido}', ${nuevo.edad}, '${nuevo.dni}')`
+        let insertionQuery = 'INSERT INTO sitios '
+        insertionQuery += '(id_sitio, nombre_sitio, latitud, longitud, barrio) '
+        insertionQuery += `VALUES ('${nuevo.id_sitio}', '${nuevo.nombre_sitio}', ${nuevo.latitud}, ${nuevo.longitud}, '${nuevo.barrio}')`
         await knex.raw(insertionQuery)
         return nuevo
     } catch (err) {
         throw { status: 500, descripcion: err.message }
     }
 }
-
+/*
 async function deleteByDni(dni) {
     const deleteByDniQuery = `DELETE FROM estudiantes WHERE dni=${dni}`
     await knex.raw(deleteByDniQuery)

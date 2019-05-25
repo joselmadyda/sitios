@@ -1,36 +1,9 @@
 <template>
   <div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <button
-            type="button"
-            @click="markersInicialesCat1"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >R E S T A U R A N T E S</button>
-        </div>
-
-        <div class="col">
-          <button
-            type="button"
-            @click="markersInicialesCat2"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >G O L F</button>
-        </div>
-
-        <div class="col">
-          <button
-            type="button"
-            @click="markersInicialesCat3"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >T E A T R O S</button>
-        </div>
-      </div>
-    </div>
 
     <div>
       <br>
-      <label>
+      <!-- <label >
         <gmap-autocomplete class="input" @place_changed="setPlace"></gmap-autocomplete>
         <br>
         <button
@@ -38,7 +11,7 @@
           class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
         >Buscar</button>
       </label>
-
+      -->
       <br>
     </div>
 
@@ -55,18 +28,17 @@
     </gmap-map>
 
     <ul>
-      `
       <li v-for="(m, index) in markers" v-bind:key="index">
-        {{m.position}}{{m.title}}
+        {{m.position.nombre}}
         DISTANCIA: {{getKilometros(center.lat,center.lng,m.position.lat,m.position.lng)}}
-        <a
-          @click="eliminarUbicacion(index)"
-        >ELIMINAR</a>
       </li>`
     </ul>
-    <ul>
+    <!--    <ul>
       <li v-for="(place, index) in places" v-bind:key="index">{{place.icon}}</li>
     </ul>
+    -->
+
+    <b-table hover :items="markers"></b-table>
   </div>
 </template>
 
@@ -75,10 +47,10 @@
 
 
 <script>
-import img_teatro from "../assets/teatro.png";
-import img_resto from "../assets/resto.png";
-import img_golf from "../assets/golf.png";
-import img_posicion from "../assets/mapa.png";
+import img_teatro from "../../assets/teatro.png";
+import img_resto from "../../assets/resto.png";
+import img_golf from "../../assets/golf.png";
+import img_posicion from "../../assets/mapa.png";
 
 export default {
   name: "GoogleMap",
@@ -89,19 +61,46 @@ export default {
       markers: [],
       places: [],
       //currentCoordinates: {lat: "", lng: ""},
-      currentPlace: null
+      currentPlace: null,
+      url: "http://localhost:8090/api/sitios",
+      info: ""
     };
   },
+
   //Una vez cargado el DOM se ejecuta lo que contiene mounted
   mounted() {
-    this.markersIniciales();
-    // this.geolocate();
+    //this.markersIniciales();
+    //this.geolocate();
+    this.cargarsitiosBD();
   },
 
   methods: {
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;
+    },
+    cargarsitiosBD() {
+      axios
+        .get(this.url)
+        .then(response => {
+          // Obtenemos los datos
+
+          let sitios = response.data;
+          
+          for (var i = 0; i < sitios.length; i++) {
+            const marker = {
+              lat: sitios[i].latitud,
+              lng: sitios[i].longitud,
+              icon: "",
+              nombre: sitios[i].nombre_sitio
+            };
+            this.markers.push({ position: marker });
+          }
+        })
+        .catch(e => {
+          // Capturamos los errores
+          console.log(2);
+        });
     },
     buscarSitio() {
       if (this.currentPlace) {
@@ -113,7 +112,6 @@ export default {
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
         this.center = marker;
-        console.log(JSON.stringify(this.places));
       }
     },
     addMarker() {
@@ -128,7 +126,7 @@ export default {
         this.center = marker;
 
         this.currentPlace = null;
-        console.log(JSON.stringify(this.places));
+        //console.log(JSON.stringify(this.places));
       }
     },
     geolocate: function() {
@@ -144,21 +142,24 @@ export default {
       const COTO = {
         lat: -34.6085476,
         lng: -58.4311811,
-        icon: img_resto
+        icon: img_resto,
+        nombre: "RESTO LA CANDELA"
       };
       this.markers.push({ position: COTO });
       const FABRICA = {
         lat: -34.6112837,
         lng: -58.4264576,
-        icon: img_resto
+        icon: img_resto,
+        nombre: "GRAN HOMER"
       };
       this.markers.push({ position: FABRICA });
+      console.log(this.markers);
     },
     markersInicialesCat2() {
       this.markers = [];
       const ORT = {
-        lat: -34.609953,
-        lng: -58.4292301,
+        lat: -34.6100199,
+        lng: -58.4322013,
         icon: img_golf
       };
       this.markers.push({ position: ORT });
@@ -171,6 +172,24 @@ export default {
     },
     markersInicialesCat3() {
       this.markers = [];
+      const TEATRO1 = {
+        lat: -34.6093855,
+        lng: -58.4343329,
+        icon: img_teatro
+      };
+      this.markers.push({ position: TEATRO1 });
+      const TEATRO2 = {
+        lat: -34.608776,
+        lng: -58.425912,
+        icon: img_teatro
+      };
+      this.markers.push({ position: TEATRO2 });
+      const TEATRO3 = {
+        lat: -34.6088385,
+        lng: -58.4286357,
+        icon: img_teatro
+      };
+      this.markers.push({ position: TEATRO3 });
     },
     markersIniciales() {
       this.markers = [];

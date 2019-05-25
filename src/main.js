@@ -4,21 +4,20 @@ import BootstrapVue from 'bootstrap-vue'
 import * as VueGoogleMaps from "vue2-google-maps";
 import vueRouter from 'vue-router'
 import vueResource from 'vue-resource'
-
 //Permite realizar las llamadas por request $HTTP
 window.axios = require('axios');
-
 import routes from './routes'
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import Link from 'bootstrap-vue/es/components/link'
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import bootstrap4 from 'vue-bootstrap4-table'
 
 
+Vue.use(Link)
 Vue.use(vueRouter);
 Vue.use(vueResource);
-
-
 Vue.use(BootstrapVue);
+Vue.use(bootstrap4)
 
 const router = new vueRouter({
   routes
@@ -28,12 +27,13 @@ Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyASq8YmttACgZGX3HVwu-8eB37gtmhYqmY",
     libraries: "places,drawing"
-  }}
-  );
+  }
+}
+);
 
 new Vue({
-  el: '#app',  
+  el: '#app',
   router,
   render: h => h(App)
-  
+
 })

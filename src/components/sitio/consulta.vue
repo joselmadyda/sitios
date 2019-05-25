@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div class="container-fluid">
       <div class="row">
         <div class="col">
@@ -74,10 +75,10 @@
 
 
 <script>
-import img_teatro from "../assets/teatro.png";
-import img_resto from "../assets/resto.png";
-import img_golf from "../assets/golf.png";
-import img_posicion from "../assets/mapa.png";
+import img_teatro from "../../assets/teatro.png";
+import img_resto from "../../assets/resto.png";
+import img_golf from "../../assets/golf.png";
+import img_posicion from "../../assets/mapa.png";
 
 export default {
   name: "GoogleMap",

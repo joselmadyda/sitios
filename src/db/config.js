@@ -6,7 +6,7 @@ const dbConfigs = {
     home: {
         client: 'mssql',
         connection: {
-            server: 'localhost',
+            server: 'localhost\\SQLEXPRESS',
             user: 'web',
             password: '1234',
             database: 'Sitios'
