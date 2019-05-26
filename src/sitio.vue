@@ -17,6 +17,7 @@
             <b-nav-item href="/components/sitio/abm#/sitio/principal">Categorías</b-nav-item>
             <b-nav-item href="/components/sitio/abm#/sitio/consulta">Consulta</b-nav-item>
             <b-nav-item href="/components/sitio/abm#/sitio/graficos">Graficos</b-nav-item>
+            <b-nav-item href="/components/sitio/abm#/sitio/abmvoucher">ABM Vouchers</b-nav-item>
 
           </b-navbar-nav>
 
