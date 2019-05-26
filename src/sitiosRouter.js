@@ -26,6 +26,9 @@ async function _handleGetAll(req, res) {
         res.status(err.status).json(err)
     }
 }
+
+
+
 /*
 async function _handleGetWithQS(req, res) {
     try {
@@ -53,6 +56,24 @@ router.get('/:cat', async (req, res) => {
 
         if (!resultado)
             throw { status: 404, descripcion: 'estudiante no encontrado' }
+
+        res.status(200).json(resultado)
+    } catch (err) {
+        res.status(err.status).json(err)
+    }
+})
+
+
+router.get('/:sitiosbarrio', async (req, res) => {
+    console.log(`GETTING: ${baseURI}${req.url}`)
+
+    try {
+
+        //ALGUNA VALIDACION ??
+        const resultado = await sitiosDAO.getByBarrio(req.params.barrio)
+
+        if (!resultado)
+            throw { status: 404, descripcion: 'Lo sentimos, no hay resultados en su barrio' }
 
         res.status(200).json(resultado)
     } catch (err) {

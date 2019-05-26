@@ -13,6 +13,12 @@ async function getByCategoria(cat) {
     return result
 }
 
+
+async function getByBarrio(barrio) {
+    const selectByBarrio = `SELECT * FROM sitios WHERE barrio='${barrio}';`
+    const result = await knex.raw(selectByBarrio)
+    return result
+}
 /*
 async function getByAge(edadMin, edadMax) {
     const selectByEdadQuery = `SELECT * FROM estudiantes WHERE edad >= ${edadMin} AND edad <= ${edadMax};`
