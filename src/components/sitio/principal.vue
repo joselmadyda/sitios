@@ -13,7 +13,7 @@
           <span v-else>
             <button
               type="button"
-              @click="cargarsitiosBD()"
+              @click="cargarsitiosBD(1)"
               class="btn btn-block btn-outline-primary waves-effect"
             >M A P S</button>
           </span>
@@ -30,7 +30,7 @@
           <span v-else>
             <button
               type="button"
-              @click="cargarsitiosBD()"
+              @click="cargarsitiosBD(2)"
               class="btn btn-block btn-outline-primary waves-effect"
             >M A P S</button>
           </span>
@@ -47,7 +47,7 @@
           <span v-else>
             <button
             type="button"
-            @click="cargarsitiosBD()"
+            @click="cargarsitiosBD(3)"
             class="btn btn-block btn-outline-primary waves-effect"
           >M A P S</button>
             </span>
@@ -212,14 +212,18 @@ export default {
     eliminar(payload) {
       console.log(payload);
     },
-    cargarsitiosBD() {
+    cargarsitiosBD(id_cat) {
       this.mapa = true;
+      this.markers = []
       axios
-        .get(this.url)
+        .get(this.url+'/'+id_cat)
         .then(response => {
           // Obtenemos los datos
 
           let sitios = response.data;
+          console.log(sitios)
+          
+
           let image = "";
 
           if (this.categoria == 1) {

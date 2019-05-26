@@ -41,15 +41,15 @@ async function _handleGetWithQS(req, res) {
         res.status(err.status).json(err)
     }
 }
-
-router.get('/:dni', async (req, res) => {
+*/
+router.get('/:cat', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
 
     try {
-        if (isNaN(req.params.dni))
-            throw { status: 400, descripcion: 'el dni provisto no es un número o es inválido' }
+        if (isNaN(req.params.cat))
+            throw { status: 400, descripcion: 'Categoría inválida' }
 
-        const resultado = await sitiosDAO.getByDni(req.params.dni)
+        const resultado = await sitiosDAO.getByCategoria(req.params.cat)
 
         if (!resultado)
             throw { status: 404, descripcion: 'estudiante no encontrado' }
@@ -59,7 +59,9 @@ router.get('/:dni', async (req, res) => {
         res.status(err.status).json(err)
     }
 })
-*/
+
+
+/*
 router.post('/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
@@ -76,7 +78,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-/*
+
 router.delete('/:dni', async (req, res) => {
     console.log(`DELETING: ${baseURI}${req.url}`)
 

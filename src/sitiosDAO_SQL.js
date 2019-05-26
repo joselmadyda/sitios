@@ -6,6 +6,13 @@ async function getAll() {
     // const result = await knex.select('*').from('estudiantes')
     return result
 }
+
+async function getByCategoria(cat) {
+    const selectByCategoria = `SELECT * FROM sitios WHERE id_categoria='${cat}';`
+    const result = await knex.raw(selectByCategoria)
+    return result
+}
+
 /*
 async function getByAge(edadMin, edadMax) {
     const selectByEdadQuery = `SELECT * FROM estudiantes WHERE edad >= ${edadMin} AND edad <= ${edadMax};`
@@ -49,7 +56,8 @@ async function updateByDni(dni, nuevoEstu) {
 }
 */
 module.exports = {
-    getAll
+    getAll,
+    getByCategoria
     /*,
     getByAge,
     getByDni,
