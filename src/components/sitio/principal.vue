@@ -3,41 +3,83 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <button
-            type="button"
-            @click="listarCategoria(1)"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >R E S T A U R A N T E S</button>
+          <span v-if="categoria == null || categoria != 1 || mapa == true">
+            <button
+              type="button"
+              @click="listarCategoria(1)"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >R E S T A U R A N T E S</button>
+          </span>
+          <span v-else>
+            <button
+              type="button"
+              @click="cargarsitiosBD()"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >M A P S</button>
+          </span>
         </div>
 
         <div class="col">
-          <button
-            type="button"
-            @click="listarCategoria(2)"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >B A R E S</button>
+          <span v-if="categoria == null || categoria != 2 || mapa == true">
+            <button
+              type="button"
+              @click="listarCategoria(2)"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >B A R E S</button>
+          </span>
+          <span v-else>
+            <button
+              type="button"
+              @click="cargarsitiosBD()"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >M A P S</button>
+          </span>
         </div>
 
         <div class="col">
+          <span v-if="categoria == null || categoria != 3 || mapa == true">
           <button
             type="button"
             @click="listarCategoria(3)"
             class="btn btn-block btn-outline-primary waves-effect"
           >T E A T R O S</button>
+          </span>
+          <span v-else>
+            <button
+            type="button"
+            @click="cargarsitiosBD()"
+            class="btn btn-block btn-outline-primary waves-effect"
+          >M A P S</button>
+            </span>
         </div>
       </div>
     </div>
     <br>
     <div v-if="categoria == null"></div>
     <div v-else>
-      <vue-bootstrap4-table
-        :rows="rows"
-        :columns="columns"
-        :config="config"
-        :actions="actions"
-        @on-eliminar="eliminar"
-        @on-agregar="agregar"
-      ></vue-bootstrap4-table>
+      <span v-if="mapa != false">
+        <gmap-map :center="center" :zoom="17" style="width:100%;  height: 500px;">
+          <gmap-marker
+            :key="index"
+            v-for="(m, index) in markers"
+            :position="m.position"
+            :clickable="false"
+            :draggable="false"
+            :icon="m.position.icon"
+            @click="center=m.position"
+          ></gmap-marker>
+        </gmap-map>
+      </span>
+      <span v-else>
+        <vue-bootstrap4-table
+          :rows="rows"
+          :columns="columns"
+          :config="config"
+          :actions="actions"
+          @on-eliminar="eliminar"
+          @on-agregar="agregar"
+        ></vue-bootstrap4-table>
+      </span>
     </div>
   </div>
 </template>
@@ -55,6 +97,7 @@ export default {
   data: function() {
     return {
       categoria: null,
+      mapa: false,
       rows: [],
       columns: [],
       action: [],
@@ -63,8 +106,16 @@ export default {
         checkbox_rows: true,
         rows_selectable: true,
         card_title: "",
-        per_page: 5, 
-      }
+        per_page: 5,
+        selected_rows_info: true
+      },
+      center: { lat: -34.609953, lng: -58.4292301 },
+      markers: [],
+      places: [],
+      //currentCoordinates: {lat: "", lng: ""},
+      currentPlace: null,
+      url: "http://localhost:8090/api/sitios",
+      info: ""
     };
   },
   methods: {
@@ -97,6 +148,7 @@ export default {
     },
 
     listarCategoria(id_cat) {
+      this.mapa = false;
       this.categoria = id_cat;
       //Setear Card Title
       if (id_cat == 1) {
@@ -159,8 +211,44 @@ export default {
     },
     eliminar(payload) {
       console.log(payload);
+    },
+    cargarsitiosBD() {
+      this.mapa = true;
+      axios
+        .get(this.url)
+        .then(response => {
+          // Obtenemos los datos
+
+          let sitios = response.data;
+          let image = "";
+
+          if (this.categoria == 1) {
+            image = img_resto;
+          }
+          if (this.categoria == 2) {
+            image = img_golf;
+          }
+          if (this.categoria == 3) {
+            image = img_teatro;
+          }
+
+          for (var i = 0; i < sitios.length; i++) {
+            const marker = {
+              lat: sitios[i].latitud,
+              lng: sitios[i].longitud,
+              icon: image,
+              nombre: sitios[i].nombre_sitio
+            };
+            this.markers.push({ position: marker });
+          }
+        })
+        .catch(e => {
+          // Capturamos los errores
+          console.log(2);
+        });
     }
   },
+
   components: {
     VueBootstrap4Table
   }
