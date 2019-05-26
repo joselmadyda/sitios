@@ -61,24 +61,24 @@ router.get('/:cat', async (req, res) => {
 })
 
 
-/*
+
 router.post('/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
     try {
         const nuevo = req.body
-
+        console.log(nuevo)
         //if (esEstudianteInvalido(nuevo))
         //    throw { status: 400, descripcion: 'el estudiante posee un formato json invalido o faltan datos' }
 
-        const sitioCreado = await sitiosDAO.add(nuevo)
-        res.status(201).json(estuCreado)
+        const categoriaCreada = await sitiosDAO.addCategory(nuevo)
+        res.status(201).json(categoriaCreada)
     } catch (err) {
         res.status(err.status).json(err)
     }
 })
 
-
+/*
 router.delete('/:dni', async (req, res) => {
     console.log(`DELETING: ${baseURI}${req.url}`)
 

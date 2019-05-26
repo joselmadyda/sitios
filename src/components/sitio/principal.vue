@@ -38,19 +38,19 @@
 
         <div class="col">
           <span v-if="categoria == null || categoria != 3 || mapa == true">
-          <button
-            type="button"
-            @click="listarCategoria(3)"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >T E A T R O S</button>
+            <button
+              type="button"
+              @click="listarCategoria(3)"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >T E A T R O S</button>
           </span>
           <span v-else>
             <button
-            type="button"
-            @click="cargarsitiosBD(3)"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >M A P S</button>
-            </span>
+              type="button"
+              @click="cargarsitiosBD(3)"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >M A P S</button>
+          </span>
         </div>
       </div>
     </div>
@@ -66,8 +66,17 @@
             :clickable="false"
             :draggable="false"
             :icon="m.position.icon"
-            @click="center=m.position"
+            @click="toggleInfoWindow(m,index)"
           ></gmap-marker>
+
+          <gmap-info-window
+            :options="infoOptions"
+            :position="infoWindowPos"
+            :opened="infoWinOpen"
+            @closeclick="infoWinOpen=false"
+          >
+            <div v-html="infoContent"></div>
+          </gmap-info-window>
         </gmap-map>
       </span>
       <span v-else>
@@ -115,14 +124,28 @@ export default {
       //currentCoordinates: {lat: "", lng: ""},
       currentPlace: null,
       url: "http://localhost:8090/api/sitios",
-      info: ""
+      info: "",
+      infoContent: "",
+      infoWindowPos: {
+        lat: 0,
+        lng: 0
+      },
+      infoWinOpen: false,
+      currentMidx: null,
+      //optional: offset infowindow so it visually sits nicely on top of our marker
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      }
     };
   },
   methods: {
     listarSitiosBD(id_cat) {
       (this.rows = []),
         axios
-          .get(this.url)
+          .get(this.url + "/" + id_cat)
           .then(response => {
             // Obtenemos los datos
 
@@ -210,19 +233,29 @@ export default {
       this.$router.push("../sitio/agregar");
     },
     eliminar(payload) {
-      console.log(payload);
+      //PROBANDO AGREGAR UNA CATEGORIA
+
+      axios
+        .post(this.url, {
+          nombre_cat: "POLO"
+        })
+        .then(function(response) {
+          console.log(response.status);
+        })
+        .catch(function(error) {
+          console.log(response.status);
+        });
     },
     cargarsitiosBD(id_cat) {
       this.mapa = true;
-      this.markers = []
+      this.markers = [];
       axios
-        .get(this.url+'/'+id_cat)
+        .get(this.url + "/" + id_cat)
         .then(response => {
           // Obtenemos los datos
 
           let sitios = response.data;
-          console.log(sitios)
-          
+          console.log(sitios);
 
           let image = "";
 
@@ -241,7 +274,10 @@ export default {
               lat: sitios[i].latitud,
               lng: sitios[i].longitud,
               icon: image,
-              nombre: sitios[i].nombre_sitio
+              nombre: sitios[i].nombre_sitio,
+              name: "House of Potgieter",
+              description: "description 2",
+              date_build: ""
             };
             this.markers.push({ position: marker });
           }
@@ -250,6 +286,42 @@ export default {
           // Capturamos los errores
           console.log(2);
         });
+    },
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoContent = this.getInfoWindowContent(marker);
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+
+    getInfoWindowContent: function(marker) {
+      return `<div class="card">
+  <div class="card-image">
+    <figure class="image is-4by3">
+      <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content">
+        <p class="title is-4">${marker.name}</p>
+      </div>
+    </div>
+    <div class="content">
+      ${marker.description}
+      <br>
+      <time datetime="2016-1-1">${marker.date_build}</time>
+    </div>
+  </div>
+</div>`;
     }
   },
 

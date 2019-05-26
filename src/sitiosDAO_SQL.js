@@ -28,11 +28,12 @@ async function getByDni(dni) {
     return result[0]
 }
 */
-async function add(nuevo) {
+//PROBANDOOOO AGREGAR NUEVA CATEGORIA
+async function addCategory(nuevo) {
     try {
-        let insertionQuery = 'INSERT INTO sitios '
-        insertionQuery += '(id_sitio, nombre_sitio, latitud, longitud, barrio) '
-        insertionQuery += `VALUES ('${nuevo.id_sitio}', '${nuevo.nombre_sitio}', ${nuevo.latitud}, ${nuevo.longitud}, '${nuevo.barrio}')`
+        let insertionQuery = 'INSERT INTO categorias '
+        insertionQuery += '(nombre_cat) '
+        insertionQuery += `VALUES ('${nuevo.nombre_cat}')`
         await knex.raw(insertionQuery)
         return nuevo
     } catch (err) {
@@ -57,7 +58,8 @@ async function updateByDni(dni, nuevoEstu) {
 */
 module.exports = {
     getAll,
-    getByCategoria
+    getByCategoria,
+    addCategory
     /*,
     getByAge,
     getByDni,
