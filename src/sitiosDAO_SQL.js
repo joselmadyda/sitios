@@ -35,6 +35,7 @@ async function getByDni(dni) {
 }
 */
 //PROBANDOOOO AGREGAR NUEVA CATEGORIA
+
 async function addCategory(nuevo) {
     try {
         let insertionQuery = 'INSERT INTO categorias '
@@ -46,13 +47,34 @@ async function addCategory(nuevo) {
         throw { status: 500, descripcion: err.message }
     }
 }
-/*
-async function deleteByDni(dni) {
-    const deleteByDniQuery = `DELETE FROM estudiantes WHERE dni=${dni}`
-    await knex.raw(deleteByDniQuery)
-    return
+
+
+
+
+//AGREGAR SITIO
+async function addSitio(nuevoSitio) {
+    try {
+        let insertionQuery = 'INSERT INTO sitios '
+        insertionQuery += '(id_categoria,nombre_sitio,barrio,latitud,longitud,url,responsable,hora_apertura,hora_cierre,voucher) '
+        insertionQuery += `VALUES ('${nuevoSitio.id_categoria}','${nuevoSitio.nombre_sitio}','${nuevoSitio.barrio}','${nuevoSitio.latitud}','${nuevoSitio.longitud}','${nuevoSitio.url}','${nuevoSitio.responsable}','${nuevoSitio.hora_apertura}','${nuevoSitio.hora_cierre}','${nuevoSitio.voucher}')`        
+        await knex.raw(insertionQuery)
+        return nuevoSitio
+    } catch (err) {
+        throw { status: 500, descripcion: err.message }       
+    }
 }
 
+
+async function deleteByIdSitio(idSitio) {
+    try {
+        const deleteByIdSitioQuery = `DELETE FROM sitios WHERE id_sitio=${idSitio}`
+        await knex.raw(deleteByIdSitioQuery)
+        return
+    } catch (err) {
+        throw { status: 500, descripcion: err.message }
+    }
+}
+/*
 async function updateByDni(dni, nuevoEstu) {
     let updateByDniQuery = 'UPDATE estudiantes '
     updateByDniQuery += `SET nombre='${nuevoEstu.nombre}', `
@@ -65,7 +87,9 @@ async function updateByDni(dni, nuevoEstu) {
 module.exports = {
     getAll,
     getByCategoria,
-    addCategory
+    addCategory,
+    addSitio,
+    deleteByIdSitio
     /*,
     getByAge,
     getByDni,

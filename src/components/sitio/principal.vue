@@ -55,40 +55,83 @@
       </div>
     </div>
     <br>
-    <div v-if="categoria == null"></div>
-    <div v-else>
-      <span v-if="mapa != false">
-        <gmap-map :center="center" :zoom="17" style="width:100%;  height: 500px;">
-          <gmap-marker
-            :key="index"
-            v-for="(m, index) in markers"
-            :position="m.position"
-            :clickable="false"
-            :draggable="false"
-            :icon="m.position.icon"
-            @click="toggleInfoWindow(m,index)"
-          ></gmap-marker>
 
-          <gmap-info-window
-            :options="infoOptions"
-            :position="infoWindowPos"
-            :opened="infoWinOpen"
-            @closeclick="infoWinOpen=false"
-          >
-            <div v-html="infoContent"></div>
-          </gmap-info-window>
-        </gmap-map>
-      </span>
-      <span v-else>
-        <vue-bootstrap4-table
-          :rows="rows"
-          :columns="columns"
-          :config="config"
-          :actions="actions"
-          @on-eliminar="eliminar"
-          @on-agregar="agregar"
-        ></vue-bootstrap4-table>
-      </span>
+    <div v-if="formSitio == true">
+      <label for>Nombre:</label>
+      <input type="text" id="nombre_sitio" class="form-control" v-model="sitio.nombre_sitio">
+      <br>
+      <label for>Url:</label>
+      <input type="text" id="nombre_sitio" class="form-control" v-model="sitio.url">
+      <br>
+      <label for>Responsable:</label>
+      <input type="text" id="nombre_sitio" class="form-control" v-model="sitio.responsable">
+      <br>
+      <label for>Hora Apertura:</label>
+      <input type="text" id="nombre_sitio" class="form-control" v-model="sitio.hora_apertura">
+      <br>
+      <label for>Hora Cierre:</label>
+      <input type="text" id="nombre_sitio" class="form-control" v-model="sitio.hora_cierre">
+      <br>
+      <label for>Voucher:</label>
+      <input type="text" id="nombre_sitio" class="form-control" v-model="sitio.voucher">
+      <br>
+
+      <gmap-autocomplete class="input" @place_changed="setPlace"></gmap-autocomplete>
+      <br>
+      <button
+        @click="buscarSitio"
+        class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+      >Buscar</button>
+      <gmap-map :center="center" :zoom="17" style="width:100%;  height: 500px;">
+        <gmap-marker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          :clickable="false"
+          :draggable="false"
+          :icon="m.position.icon"
+          @click="center=m.position"
+        ></gmap-marker>
+      </gmap-map>
+
+      <button class="btn btn-primary" @click="agregarSitio">Agregar</button>
+    </div>
+    <div v-else>
+      <div v-if="categoria == null"></div>
+      <div v-else>
+        <span v-if="mapa != false">
+          <gmap-map :center="center" :zoom="17" style="width:100%;  height: 500px;">
+            <gmap-marker
+              :key="index"
+              v-for="(m, index) in markers"
+              :position="m.position"
+              :clickable="false"
+              :draggable="false"
+              :icon="m.position.icon"
+              @click="toggleInfoWindow(m,index)"
+            ></gmap-marker>
+
+            <gmap-info-window
+              :options="infoOptions"
+              :position="infoWindowPos"
+              :opened="infoWinOpen"
+              @closeclick="infoWinOpen=false"
+            >
+              <div v-html="infoContent"></div>
+            </gmap-info-window>
+          </gmap-map>
+        </span>
+        <span v-else>
+          <vue-bootstrap4-table
+            :rows="rows"
+            :columns="columns"
+            :config="config"
+            :actions="actions"
+            @on-eliminar="eliminar"
+            @on-agregar="agregar"
+          ></vue-bootstrap4-table>
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -106,6 +149,8 @@ export default {
   data: function() {
     return {
       categoria: null,
+      categoria_seleccionada: null,
+      formSitio: false,
       mapa: false,
       rows: [],
       columns: [],
@@ -121,9 +166,7 @@ export default {
       center: { lat: -34.609953, lng: -58.4292301 },
       markers: [],
       places: [],
-      //currentCoordinates: {lat: "", lng: ""},
       currentPlace: null,
-      url: "http://localhost:8090/api/sitios",
       info: "",
       infoContent: "",
       infoWindowPos: {
@@ -138,6 +181,17 @@ export default {
           width: 0,
           height: -35
         }
+      },
+      sitio: {
+        nombre_sitio: "",
+        barrio: "",
+        latitud: "",
+        longitud: "",
+        url: "",
+        responsable: "",
+        hora_apertura: "",
+        hora_cierre: "",
+        voucher: 0
       }
     };
   },
@@ -169,9 +223,29 @@ export default {
             console.log(2);
           });
     },
-
+    setPlace(place) {
+      this.currentPlace = place;
+    },
+    buscarSitio() {
+      if (this.currentPlace) {
+        //console.log(JSON.stringify(this.currentPlace));
+        const marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng(),
+          icon: img_posicion
+        };
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
+        //Se agregan los datos de latitud, longitud y barrio que se enviarán por servicio
+        this.sitio.barrio = this.currentPlace.vicinity;
+        this.sitio.latitud = this.currentPlace.geometry.location.lat();
+        this.sitio.longitud = this.currentPlace.geometry.location.lng();
+      }
+    },
     listarCategoria(id_cat) {
       this.mapa = false;
+      this.formSitio = false;
       this.categoria = id_cat;
       //Setear Card Title
       if (id_cat == 1) {
@@ -230,14 +304,53 @@ export default {
     },
 
     agregar(payload) {
-      this.$router.push("../sitio/agregar");
+      //PARA REDIRECCIONAR A OTRA PÁGINA
+      //this.$router.push("../sitio/agregar");
+      this.formSitio = true;
+      this.categoria_seleccionada = this.categoria;
+      this.categoria = null;
+      this.geolocate();
     },
-    eliminar(payload) {
-      //PROBANDO AGREGAR UNA CATEGORIA
-
+    agregarSitio() {
+      /*
+          //PRUEBA TP2
+          id_categoria: this.categoria_seleccionada,
+          nombre_sitio: "PRUEBA",
+          barrio: "almagro",
+          latitud: "-54.88889898",
+          longitud: "-88.55558548",
+          url: "www.prueba.com.ar",
+          responsable: "PEPITO",
+          hora_apertura: "08:00",
+          hora_cierre: "19:00",
+          voucher: 1
+          */
       axios
         .post(this.url, {
-          nombre_cat: "POLO"
+          id_categoria: this.categoria_seleccionada,
+          nombre_sitio: this.sitio.nombre_sitio,
+          barrio: this.sitio.barrio,
+          latitud: this.sitio.latitud,
+          longitud: this.sitio.longitud,
+          url: this.sitio.url,
+          responsable: this.sitio.responsable,
+          hora_apertura: this.sitio.hora_apertura,
+          hora_cierre: this.sitio.hora_cierre,
+          voucher: this.sitio.voucher
+        })
+        .then(function(response) {
+          console.log(response.status);
+        })
+        .catch(function(error) {
+          console.log(response.status);
+        });
+    },
+    eliminar(payload) {
+      //console.log(payload);
+
+      axios
+        .delete(this.url, {
+          id_sitio: 16
         })
         .then(function(response) {
           console.log(response.status);
@@ -322,6 +435,14 @@ export default {
     </div>
   </div>
 </div>`;
+    },
+    geolocate: function() {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+      });
     }
   },
 
