@@ -553,7 +553,7 @@ export default {
     },
     obtenerSitiosxCatBarrio() {
       axios
-        .get(this.url + "/barrio/1/Almagro/-34.609953/-58.4292301")
+        .get(this.url + "/barrio/1/AlmagroS/-34.609953/-58.4292301")
         .then(response => {
           // Obtenemos los datos
           //console.log(response)

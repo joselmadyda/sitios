@@ -14,38 +14,10 @@ async function getByCategoria(cat) {
 }
 
 
-async function getByBarrio(barrio) {
-    const selectByBarrio = `SELECT * FROM sitios WHERE barrio='${barrio}';`
-    const result = await knex.raw(selectByBarrio)
+async function getByCategoriaBarrio(id_categoria,barrio) {
+    const selectCategoriaBarrio = `SELECT * FROM sitios WHERE id_categoria='${id_categoria}' and barrio ='${barrio}' ;`
+    const result = await knex.raw(selectCategoriaBarrio)
     return result
-}
-/*
-async function getByAge(edadMin, edadMax) {
-    const selectByEdadQuery = `SELECT * FROM estudiantes WHERE edad >= ${edadMin} AND edad <= ${edadMax};`
-    const result = await knex.raw(selectByEdadQuery)
-    //     .select('*').from('estudiantes')
-    //     .whereBetween('edad', [edadMin, edadMax])
-    return result
-}
-
-async function getByDni(dni) {
-    const selectByDni = `SELECT TOP 1 * FROM estudiantes WHERE dni='${dni}';`
-    const result = await knex.raw(selectByDni)
-    return result[0]
-}
-*/
-//PROBANDOOOO AGREGAR NUEVA CATEGORIA
-
-async function addCategory(nuevo) {
-    try {
-        let insertionQuery = 'INSERT INTO categorias '
-        insertionQuery += '(nombre_cat) '
-        insertionQuery += `VALUES ('${nuevo.nombre_cat}')`
-        await knex.raw(insertionQuery)
-        return nuevo
-    } catch (err) {
-        throw { status: 500, descripcion: err.message }
-    }
 }
 
 
@@ -64,7 +36,7 @@ async function addSitio(nuevoSitio) {
     }
 }
 
-
+//ELIMINAR SITIO
 async function deleteByIdSitio(idSitio) {
     try {
         const deleteByIdSitioQuery = `DELETE FROM sitios WHERE id_sitio=${idSitio}`
@@ -74,27 +46,12 @@ async function deleteByIdSitio(idSitio) {
         throw { status: 500, descripcion: err.message }
     }
 }
-/*
-async function updateByDni(dni, nuevoEstu) {
-    let updateByDniQuery = 'UPDATE estudiantes '
-    updateByDniQuery += `SET nombre='${nuevoEstu.nombre}', `
-    updateByDniQuery += `apellido='${nuevoEstu.apellido}', edad=${nuevoEstu.edad}, dni='${nuevoEstu.dni}' `
-    updateByDniQuery += `WHERE dni=${dni};`
-    await knex.raw(updateByDniQuery)
-    return nuevoEstu
-}
-*/
+
 module.exports = {
     getAll,
     getByCategoria,
-    addCategory,
+    getByCategoriaBarrio,
     addSitio,
     deleteByIdSitio
-    /*,
-    getByAge,
-    getByDni,
-    add,
-    deleteByDni,
-    updateByDni
-    */
+
 }
