@@ -415,7 +415,7 @@ export default {
         })
         .catch(e => {
           // Capturamos los errores
-          console.log(2);
+          console.log(response.data);
         });
     },
     toggleInfoWindow: function(marker, idx) {

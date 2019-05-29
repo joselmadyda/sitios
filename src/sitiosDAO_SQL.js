@@ -14,25 +14,22 @@ async function getByCategoria(cat) {
 }
 
 
-async function getByCategoriaBarrio(id_categoria,barrio) {
+async function getByCategoriaBarrio(id_categoria, barrio) {
     const selectCategoriaBarrio = `SELECT * FROM sitios WHERE id_categoria='${id_categoria}' and barrio ='${barrio}' ;`
     const result = await knex.raw(selectCategoriaBarrio)
     return result
 }
-
-
-
 
 //AGREGAR SITIO
 async function addSitio(nuevoSitio) {
     try {
         let insertionQuery = 'INSERT INTO sitios '
         insertionQuery += '(id_categoria,nombre_sitio,barrio,latitud,longitud,url,responsable,hora_apertura,hora_cierre,voucher) '
-        insertionQuery += `VALUES ('${nuevoSitio.id_categoria}','${nuevoSitio.nombre_sitio}','${nuevoSitio.barrio}','${nuevoSitio.latitud}','${nuevoSitio.longitud}','${nuevoSitio.url}','${nuevoSitio.responsable}','${nuevoSitio.hora_apertura}','${nuevoSitio.hora_cierre}','${nuevoSitio.voucher}')`        
+        insertionQuery += `VALUES ('${nuevoSitio.id_categoria}','${nuevoSitio.nombre_sitio}','${nuevoSitio.barrio}','${nuevoSitio.latitud}','${nuevoSitio.longitud}','${nuevoSitio.url}','${nuevoSitio.responsable}','${nuevoSitio.hora_apertura}','${nuevoSitio.hora_cierre}','${nuevoSitio.voucher}')`
         await knex.raw(insertionQuery)
         return nuevoSitio
     } catch (err) {
-        throw { status: 500, descripcion: err.message }       
+        throw { status: 500, descripcion: err.message }
     }
 }
 

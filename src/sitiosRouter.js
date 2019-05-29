@@ -104,7 +104,7 @@ router.get('/barrio/:id_cat/:barrio/:lat/:lng', async (req, res) => {
 
             if (resultado.length > 0) {
 
-                objBarrioResult.push({ status: 'SITIOS ENCONTRADOS' })
+                //objBarrioResult.push({ status: 'SITIOS ENCONTRADOS' })
                 for (var i = 0; i < resultado.length; i++) {
                     const objBarrio = {
                         nombre_sitio: resultado[i].nombre_sitio,
@@ -164,10 +164,10 @@ router.delete(':idsitio', async (req, res) => {
             res.status(204).send()
         } catch (err) {
             res.status(err.status).json(err)
-        }
-        */
+        }*/
+
 })
-/*
+
 router.put('/:dni', async (req, res) => {
     console.log(`REPLACING: ${baseURI}${req.url}`)
 
@@ -200,5 +200,5 @@ function esEstudianteInvalido(estudiante) {
     const { error } = Joi.validate(estudiante, schema);
     return error
 }
-*/
+
 module.exports = router
