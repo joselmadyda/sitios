@@ -129,6 +129,13 @@ export default {
             // Obtenemos los datos
             let sitios = response.data;
             for (var i = 0; i < sitios.length; i++) {
+              console.log(sitios[i].voucher)
+              /*if (sitios[i].voucher){
+                image = img_golf
+              }else{
+                image = img_resto
+              }
+              */
               const marker = {
                 lat: sitios[i].latitud,
                 lng: sitios[i].longitud,

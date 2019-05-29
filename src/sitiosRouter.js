@@ -110,6 +110,7 @@ router.get('/barrio/:id_cat/:barrio/:lat/:lng', async (req, res) => {
                         nombre_sitio: resultado[i].nombre_sitio,
                         latitud: resultado[i].latitud,
                         longitud: resultado[i].longitud,
+                        voucher: resultado[i].voucher,
                         distancia: getKilometros(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
                     }
                     objBarrioResult.push(objBarrio)
