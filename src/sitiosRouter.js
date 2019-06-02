@@ -93,12 +93,12 @@ router.post('/', async (req, res) => {
 })
 
 //CONSULTA TRIANGULADA: Obtener puntos de referencia de acuerdo a una categoria/barrio/latitud/longitud
-router.get('/barrio/:id_cat/:barrio/:lat/:lng', async (req, res) => {
+router.get('/barrio/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 
     try {
         //ALGUNA VALIDACION ??
 
-        const resultado = await sitiosDAO.getByCategoriaBarrio(req.params.id_cat, req.params.barrio)
+        const resultado = await sitiosDAO.getByCategoria(req.params.id_cat)
         const objBarrioResult = []
         if (resultado) {
 
@@ -106,14 +106,23 @@ router.get('/barrio/:id_cat/:barrio/:lat/:lng', async (req, res) => {
 
                 //objBarrioResult.push({ status: 'SITIOS ENCONTRADOS' })
                 for (var i = 0; i < resultado.length; i++) {
-                    const objBarrio = {
-                        nombre_sitio: resultado[i].nombre_sitio,
-                        latitud: resultado[i].latitud,
-                        longitud: resultado[i].longitud,
-                        voucher: resultado[i].voucher,
-                        distancia: getKilometros(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
+
+                    let distancia = getKilometros(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
+                    console.log(distancia)
+                    //Verificar distancia según coordenadas de entrada
+                    if (distancia <= req.params.distancia) {
+
+                        const objBarrio = {
+                            nombre_sitio: resultado[i].nombre_sitio,
+                            latitud: resultado[i].latitud,
+                            longitud: resultado[i].longitud,
+                            voucher: resultado[i].voucher,
+                            responsable: resultado[i].responsable,
+                            url: resultado[i].url,
+                            distancia: getKilometros(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
+                        }
+                        objBarrioResult.push(objBarrio)
                     }
-                    objBarrioResult.push(objBarrio)
                 }
 
             } else {
@@ -125,6 +134,7 @@ router.get('/barrio/:id_cat/:barrio/:lat/:lng', async (req, res) => {
 
         //Se informa estado 201, con las distancias calculadas de acuerdo a las coordenadas de origen y resultado del filtro
         res.status(201).json(objBarrioResult)
+        console.log(objBarrioResult)
 
     } catch (err) {
         res.status(err.status).json(err)

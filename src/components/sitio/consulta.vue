@@ -1,45 +1,100 @@
 <template>
   <div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <button
-            type="button"
-            @click="buscarSitiosBD(1)"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >R E S T A U R A N T E S</button>
-        </div>
+    <button
+      type="button"
+      @click="geolocate()"
+      class="btn btn-block btn-outline-primary waves-effect"
+    >LOCALIZAME</button>
+    <br>
+    <span v-if="indicadorLocalizacion == true">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <input v-model="distanciaRadial" class="btn btn-block btn-outline-primary waves-effect">
+          </div>
 
-        <div class="col">
-          <button
-            type="button"
-            @click="buscarSitiosBD(2)"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >G O L F</button>
-        </div>
+          <div class="col">
+            <button
+              type="button"
+              @click="buscarSitiosBD(1)"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >R E S T A U R A N T E S</button>
+          </div>
 
-        <div class="col">
-          <button
-            type="button"
-            @click="buscarSitiosBD(3)"
-            class="btn btn-block btn-outline-primary waves-effect"
-          >T E A T R O S</button>
+          <div class="col">
+            <button
+              type="button"
+              @click="buscarSitiosBD(2)"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >C I N E S</button>
+          </div>
+
+          <div class="col">
+            <button
+              type="button"
+              @click="buscarSitiosBD(3)"
+              class="btn btn-block btn-outline-primary waves-effect"
+            >T E A T R O S</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <br>
-    <gmap-map :center="center" :zoom="17" style="width:100%;  height: 500px;">
-      <gmap-marker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        :clickable="false"
-        :draggable="false"
-        :icon="m.position.icon"
-        @click="center=m.position"
-      ></gmap-marker>
-    </gmap-map>
+      <br>
+      <gmap-map :center="center" :zoom="14" style="width:100%;  height: 500px;">
+        <gmap-marker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          :clickable="false"
+          :draggable="false"
+          :icon="m.position.icon"
+          @click="center=m.position"
+        ></gmap-marker>
+      </gmap-map>
+      <br>
+      <table border="1" style="width:100%">
+        <tr>
+          <th>Categoría</th>
+          <th>Nombre</th>
+          <th>URL</th>
+          <th>Responsable</th>
+          <th>Distancia</th>
+          <th>Promoción</th>
+        </tr>
+
+        <tr v-for="m in markers" :key="m.index">
+          <td v-if="m.position.id_cat == 1">
+            <img :src="imagenResto" width="25">
+          </td>
+          <td v-if="m.position.id_cat == 2">
+            <img :src="imagenCine" width="25">
+          </td>
+          <td v-if="m.position.id_cat == 3">
+            <img :src="imagenTeatro" width="25">
+          </td>
+
+          <td>{{m.position.nombre}}</td>
+          <td>{{m.position.url}}</td>
+          <td>{{m.position.responsable}}</td>
+          <td>{{m.position.distancia}}</td>
+
+          <td v-if="m.position.voucher == 1">
+            <b-button id="show-btn" @click="showModal(m.position.id_cat)">
+              <img :src="imagenEmail" width="20">
+            </b-button>
+          </td>
+          <td v-else></td>
+        </tr>
+      </table>
+
+      <b-modal ref="my-modal" hide-footer title="Recibir Promoción">
+        <div class="d-block text-center">
+          <h3>Ingresar correo</h3>
+          <input type="text">
+        </div>
+        <b-button class="mt-2" variant="outline-warning" block @click="enviarMail">Enviar</b-button>
+      </b-modal>
+    </span>
   </div>
 </template>
 
@@ -52,6 +107,7 @@ import img_teatro from "../../assets/teatro.png";
 import img_resto from "../../assets/resto.png";
 import img_golf from "../../assets/golf.png";
 import img_posicion from "../../assets/mapa.png";
+import img_email from "../../assets/mail.png";
 
 export default {
   name: "GoogleMap",
@@ -59,6 +115,8 @@ export default {
     return {
       //Coordenadas por default [[ORT]]
       center: { lat: -34.609953, lng: -58.4292301 },
+      latActual: "",
+      lngActual: "",
       markers: [],
       places: [],
       //currentCoordinates: {lat: "", lng: ""},
@@ -68,16 +126,21 @@ export default {
       categoria: null,
       categoria1: false,
       categoria2: false,
-      categoria3: false
+      categoria3: false,
+      distanciaRadial: 0.1,
+      latitudActual: "",
+      longituActual: "",
+      indicadorLocalizacion: false,
+      imagenResto: img_resto,
+      imagenCine: img_golf,
+      imagenTeatro: img_teatro,
+      imagenEmail: img_email,
+      emailCat: ""
     };
   },
 
   //Una vez cargado el DOM se ejecuta lo que contiene mounted
-  mounted() {
-    //this.markersIniciales();
-    //this.geolocate();
-    //this.cargarsitiosBD();
-  },
+  mounted() {},
 
   methods: {
     // receives a place object via the autocomplete component
@@ -100,7 +163,7 @@ export default {
       }
       if (id_cat == 2) {
         image = img_golf;
-           if (this.categoria2 == false) {
+        if (this.categoria2 == false) {
           this.categoria2 = true;
           consultar = true;
         } else {
@@ -110,7 +173,7 @@ export default {
       }
       if (id_cat == 3) {
         image = img_teatro;
-           if (this.categoria3 == false) {
+        if (this.categoria3 == false) {
           this.categoria3 = true;
           consultar = true;
         } else {
@@ -121,27 +184,32 @@ export default {
 
       if (consultar) {
         axios
-          //.get(this.url + "/"+id_cat)
+
           .get(
-            this.url + "/barrio/" + id_cat + "/Almagro/-34.609953/-58.4292301"
+            this.url +
+              "/barrio/" +
+              this.distanciaRadial +
+              "/" +
+              id_cat +
+              "/" +
+              this.latitudActual +
+              "/" +
+              this.longituActual
           )
           .then(response => {
             // Obtenemos los datos
             let sitios = response.data;
             for (var i = 0; i < sitios.length; i++) {
-              console.log(sitios[i].voucher)
-              /*if (sitios[i].voucher){
-                image = img_golf
-              }else{
-                image = img_resto
-              }
-              */
               const marker = {
                 lat: sitios[i].latitud,
                 lng: sitios[i].longitud,
                 icon: image,
                 nombre: sitios[i].nombre_sitio,
-                id_cat: id_cat
+                id_cat: id_cat,
+                voucher: sitios[i].voucher,
+                distancia: sitios[i].distancia,
+                url: sitios[i].url,
+                responsable: sitios[i].responsable
               };
               this.markers.push({ position: marker });
             }
@@ -150,11 +218,18 @@ export default {
             console.log(response.data);
           });
       } else {
-        console.log('no')
         this.markers = this.markers.filter(m => m.position.id_cat != id_cat);
-        console.log(2);
-        console.log(this.markers);
       }
+    },
+    showModal(param) {
+      this.emailCat = param;
+      this.$refs["my-modal"].show();
+    },
+    hideModal() {
+      this.$refs["my-modal"].hide();
+    },
+    enviarMail() {
+      alert(this.emailCat);
     },
     buscarSitio() {
       if (this.currentPlace) {
@@ -163,6 +238,7 @@ export default {
           lng: this.currentPlace.geometry.location.lng(),
           icon: img_posicion
         };
+
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
         this.center = marker;
@@ -189,7 +265,19 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
+
+        this.marker = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          icon: img_posicion
+        };
+
+        this.latitudActual = position.coords.latitude;
+        this.longituActual = position.coords.longitude;
+
+        this.markers.push({ position: this.marker });
       });
+      this.indicadorLocalizacion = true;
     }
   }
 };
