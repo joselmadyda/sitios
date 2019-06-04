@@ -38,17 +38,40 @@ async function deleteByIdSitio(idSitio) {
     try {
         const deleteByIdSitioQuery = `DELETE FROM sitios WHERE id_sitio=${idSitio}`
         await knex.raw(deleteByIdSitioQuery)
-        return
+        return 1
     } catch (err) {
         throw { status: 500, descripcion: err.message }
     }
 }
 
+// SELECT X SITIO
+async function getSitio(idSitio) {
+    const selectSitio = `SELECT * FROM sitios WHERE id_sitio=${idSitio}`
+    const result = await knex.raw(selectSitio)
+    return result
+}
+
+// MODIFICAR SITIO
+async function updateSitio(idSitio,url) {
+    try {
+        const updateSitioQuery = `
+            UPDATE sitios 
+            SET url =${url} 
+            WHERE id_sitio=${idSitio}`
+
+        await knex.raw(updateSitioQuery)
+        return 1
+    } catch (err) {
+        throw { status: 500, descripcion: err.message }
+    }
+}
 module.exports = {
     getAll,
     getByCategoria,
     getByCategoriaBarrio,
     addSitio,
-    deleteByIdSitio
+    getSitio,
+    deleteByIdSitio,
+    updateSitio
 
 }
