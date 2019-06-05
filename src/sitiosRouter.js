@@ -87,11 +87,6 @@ router.post('/del/:idsitio/', async (req, res) => {
 router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 
     try {
-<<<<<<< HEAD
-
-=======
-        //ALGUNA VALIDACION ??
->>>>>>> 3bea6a375154e4bc6ca9f2a14ab8ab54ca9f518e
         const resultado = await sitiosDAO.getByCategoria(req.params.id_cat)
         const objBarrioResult = []
         if (resultado) {
@@ -151,7 +146,6 @@ function getKilometros(lat1, lon1, lat2, lon2) {
 }
 
 
-<<<<<<< HEAD
 router.delete(':idsitio', async (req, res) => {
     console.log(`DELETING: ${baseURI}${req.url}`)
 
@@ -169,8 +163,6 @@ router.delete(':idsitio', async (req, res) => {
 
 })
 /*
-=======
->>>>>>> 3bea6a375154e4bc6ca9f2a14ab8ab54ca9f518e
 router.put('/:dni', async (req, res) => {
     console.log(`REPLACING: ${baseURI}${req.url}`)
 
