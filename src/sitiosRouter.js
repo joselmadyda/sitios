@@ -27,26 +27,6 @@ async function _handleGetAll(req, res) {
     }
 }
 
-
-
-/*
-async function _handleGetWithQS(req, res) {
-    try {
-        if (isNaN(req.query.edadMin) || isNaN(req.query.edadMax))
-            throw { status: 400, descripcion: 'las edades provistas no son numéricas' }
-
-        if (req.query.edadMin < 0 || req.query.edadMax < 0)
-            throw { status: 400, descripcion: 'las edades provistas no son positivas' }
-
-        const result = await sitiosDAO.getByAge(req.query.edadMin, req.query.edadMax)
-        res.json(result)
-    } catch (err) {
-        res.status(err.status).json(err)
-    }
-}
-*/
-
-
 router.get('/:cat', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
 
@@ -65,6 +45,16 @@ router.get('/:cat', async (req, res) => {
     }
 })
 
+router.get('/sel/:idsitio/', async (req, res) => {
+    console.log(`GETTING SITIO: ${baseURI}${req.url}`)
+    try {
+        const resultado = await sitiosDAO.getSitio(req.params.idsitio)
+        res.status(200).json(resultado)
+    } catch (err) {
+        res.status(err.status).json(err)
+    }
+})
+
 //AGREGAR NUEVO SITIO
 router.post('/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
@@ -73,21 +63,22 @@ router.post('/', async (req, res) => {
         const sitioNuevo = req.body
         console.log(sitioNuevo)
 
-        //if (esEstudianteInvalido(nuevo))
-        //    throw { status: 400, descripcion: 'el estudiante posee un formato json invalido o faltan datos' }
-
-        //Enviamos el Insert a la tabla de Sitios
         const sitioCreado = await sitiosDAO.addSitio(sitioNuevo)
-
-
         const mensajeResponse = { status: 'SITIO CREADO CORRECTAMENTE', sitioCreado }
-
         res.status(201).json(mensajeResponse)
 
-
-
     } catch (err) {
+        res.status(err.status).json(err)
+    }
+})
 
+// BORRAR SITIO
+router.post('/del/:idsitio/', async (req, res) => {
+    console.log(`POSTING DELETE: ${baseURI}${req.url}`)
+    try {
+        const resultado = await sitiosDAO.deleteByIdSitio(req.params.idsitio)
+        res.status(200).json(resultado)
+    } catch (err) {
         res.status(err.status).json(err)
     }
 })
@@ -96,16 +87,18 @@ router.post('/', async (req, res) => {
 router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 
     try {
+<<<<<<< HEAD
 
+=======
+        //ALGUNA VALIDACION ??
+>>>>>>> 3bea6a375154e4bc6ca9f2a14ab8ab54ca9f518e
         const resultado = await sitiosDAO.getByCategoria(req.params.id_cat)
         const objBarrioResult = []
         if (resultado) {
 
             if (resultado.length > 0) {
-
                 //objBarrioResult.push({ status: 'SITIOS ENCONTRADOS' })
                 for (var i = 0; i < resultado.length; i++) {
-
                     let distancia = getKilometros(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
                     console.log(distancia)
                     //Verificar distancia según coordenadas de entrada
@@ -123,7 +116,6 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
                         objBarrioResult.push(objBarrio)
                     }
                 }
-
             } else {
                 objBarrioResult.push({ status: 'SITIOS NO ENCONTRADOS' })
             }
@@ -159,6 +151,7 @@ function getKilometros(lat1, lon1, lat2, lon2) {
 }
 
 
+<<<<<<< HEAD
 router.delete(':idsitio', async (req, res) => {
     console.log(`DELETING: ${baseURI}${req.url}`)
 
@@ -176,6 +169,8 @@ router.delete(':idsitio', async (req, res) => {
 
 })
 /*
+=======
+>>>>>>> 3bea6a375154e4bc6ca9f2a14ab8ab54ca9f518e
 router.put('/:dni', async (req, res) => {
     console.log(`REPLACING: ${baseURI}${req.url}`)
 
