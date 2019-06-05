@@ -69,7 +69,21 @@ router.post('/', async (req, res) => {
 
 
 
+router.delete('/:cat', async (req, res) => {
+    console.log(`DELETING: ${baseURI}${req.url}`)
 
+    try {
+        if (isNaN(req.params.cat))
+            throw { status: 400, descripcion: 'id categoria inválido' }
+
+            const resultado = await categoriasDAO.deleteByCategoria(req.params.cat)
+            
+
+        res.json(resultado)
+    } catch (err) {
+        res.json(err)
+    }
+})
 
 
 module.exports = router

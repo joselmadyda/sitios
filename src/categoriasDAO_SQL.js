@@ -3,7 +3,7 @@ const knex = require('./db/knex')
 async function getAllCategories() {
     const selectAllQuery = `SELECT * FROM categorias;`
     const result = await knex.raw(selectAllQuery)
-    
+
     return result
 }
 
@@ -20,16 +20,21 @@ async function addCategory(nuevo) {
 }
 
 async function getByIdCategory(cat) {
-    
+
     const selectByIdCategory = `SELECT * FROM categorias WHERE id_cat='${cat}';`
     const result = await knex.raw(selectByIdCategory)
-   
+
     return result
 }
-
+async function deleteByCategoria(cat) {
+    const deleteByIdCategory = `DELETE FROM categorias WHERE id_cat=${cat}`
+    await knex.raw(deleteByIdCategory)
+    return
+}
 
 module.exports = {
     getAllCategories,
     getByIdCategory,
-    addCategory
+    addCategory,
+    deleteByCategoria
 }

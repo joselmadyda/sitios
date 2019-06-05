@@ -93,10 +93,9 @@ router.post('/', async (req, res) => {
 })
 
 //CONSULTA TRIANGULADA: Obtener puntos de referencia de acuerdo a una categoria/barrio/latitud/longitud
-router.get('/barrio/:distancia/:id_cat/:lat/:lng', async (req, res) => {
+router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 
     try {
-        //ALGUNA VALIDACION ??
 
         const resultado = await sitiosDAO.getByCategoria(req.params.id_cat)
         const objBarrioResult = []
@@ -127,9 +126,7 @@ router.get('/barrio/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 
             } else {
                 objBarrioResult.push({ status: 'SITIOS NO ENCONTRADOS' })
-
             }
-
         }
 
         //Se informa estado 201, con las distancias calculadas de acuerdo a las coordenadas de origen y resultado del filtro
@@ -178,7 +175,7 @@ router.delete(':idsitio', async (req, res) => {
         }*/
 
 })
-
+/*
 router.put('/:dni', async (req, res) => {
     console.log(`REPLACING: ${baseURI}${req.url}`)
 
@@ -211,5 +208,5 @@ function esEstudianteInvalido(estudiante) {
     const { error } = Joi.validate(estudiante, schema);
     return error
 }
-
+*/
 module.exports = router

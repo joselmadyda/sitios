@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "testCategorias": "node src/db/test/unitTestCategorias.js",
+    "testSitios": "node src/db/test/testSitios.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
@@ -28,7 +30,8 @@
     "mdbvue": "^5.4.0",
     "moment": "^2.24.0",
     "mssql": "^5.1.0",
-    "nodemailer": "^6.2.1",
+    "nodemailer": "latest",
+    "nodemailer-express-handlebars": "^3.0.0",
     "popper.js": "^1.15.0",
     "request": "^2.88.0",
     "vue": "^2.6.10",

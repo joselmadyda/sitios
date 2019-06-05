@@ -90,7 +90,7 @@
       <b-modal ref="my-modal" hide-footer title="Recibir Promoción">
         <div class="d-block text-center">
           <h3>Ingresar correo</h3>
-          <input type="text">
+          <input type="text" v-model="email">
         </div>
         <b-button class="mt-2" variant="outline-warning" block @click="enviarMail">Enviar</b-button>
       </b-modal>
@@ -122,6 +122,7 @@ export default {
       //currentCoordinates: {lat: "", lng: ""},
       currentPlace: null,
       url: "http://localhost:8090/api/sitios",
+      emailUrl: "http://localhost:3000/api/email",
       info: "",
       categoria: null,
       categoria1: false,
@@ -135,7 +136,8 @@ export default {
       imagenCine: img_golf,
       imagenTeatro: img_teatro,
       imagenEmail: img_email,
-      emailCat: ""
+      emailCat: "",
+      email: ""
     };
   },
 
@@ -187,7 +189,8 @@ export default {
 
           .get(
             this.url +
-              "/barrio/" +
+              "/" +
+              //"/barrio/" +
               this.distanciaRadial +
               "/" +
               id_cat +
@@ -229,7 +232,15 @@ export default {
       this.$refs["my-modal"].hide();
     },
     enviarMail() {
-      alert(this.emailCat);
+      axios
+        .get(this.emailUrl + "/" + this.email)
+        .then(response => {
+          alert("Email enviado");
+          this.hideModal();
+        })
+        .catch(e => {
+          console.log(2);
+        });
     },
     buscarSitio() {
       if (this.currentPlace) {
@@ -262,18 +273,18 @@ export default {
     geolocate: function() {
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lat: -34.609953,
+          lng: -58.4292301 
         };
-
+//-34.609953, lng: -58.4292301 
         this.marker = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
+          lat: -34.609953,
+          lng: -58.4292301 ,
           icon: img_posicion
         };
 
-        this.latitudActual = position.coords.latitude;
-        this.longituActual = position.coords.longitude;
+        this.latitudActual = -34.609953;
+        this.longituActual = -58.4292301 ;
 
         this.markers.push({ position: this.marker });
       });
