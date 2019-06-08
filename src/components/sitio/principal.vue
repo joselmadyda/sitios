@@ -24,7 +24,7 @@
             <button type="button" @click="cargarsitiosBD(3)" class="btn btn-block btn-outline-primary waves-effect">M A P S</button></span>
         </div>
       </div>
-
+      <br>
       <!-- fila2 --->
       <div class="row">
         <button type="button"  @click="formAddSitio()" class="btn btn-block btn-outline-primary waves-effect">Crear nuevo sitio</button>
@@ -34,7 +34,7 @@
       <div class="row">
         <table class="table table-hover table-sm"  v-if="tablaSitios == true">
           <thead>
-              <td v-for="column in columns">{{column}}</td>
+              <td v-for="column in columns" >{{column}}</td>
               <td></td><td></td>
           </thead>
           <tbody>
@@ -45,8 +45,8 @@
               <td>{{row.url}}</td>
               <td>{{row.apertura}}</td>
               <td>{{row.cierre}}</td>
-              <td><button type="button" @click="formModSitio(row.id)" >Modificar </button></td>
-              <td><button type="button" @click="delSitio(row.id)" >Borrar    </button></td>
+              <td><button type="button" @click="formModSitio(row.id)" class="btn btn-block btn-outline-primary waves-effect">Modificar </button></td>
+              <td><button type="button" @click="delSitio(row.id)" class="btn btn-block btn-outline-primary waves-effect">Borrar    </button></td>
             </tr>
           </tbody>
 
@@ -95,7 +95,7 @@
                     </div>
 
                     <div v-if="formTipo=='mod'" class="form-group col-sm-12">
-                    <button type="button" @click="modSitio(row.id)" >Modificar Sitio    </button>
+                    <button type="button" @click="updSitio(row.id)" >Modificar Sitio    </button>
                     </div>
 
 
@@ -229,11 +229,14 @@ export default {
               this.places.push(this.currentPlace);
               this.center = marker;
 
-              //Se agregan los datos de latitud, longitud y barrio que se enviarán por servicio
+              // Se agregan los datos de latitud, longitud y barrio que se enviarán por servicio
               this.sitio.barrio = this.currentPlace.vicinity;
               this.sitio.latitud = this.currentPlace.geometry.location.lat();
               this.sitio.longitud = this.currentPlace.geometry.location.lng();
-            
+
+              // Se agrega propiedad del form
+              this.formUpd.latitud = this.sitio.latitud 
+              this.formUpd.longitud = this.sitio.longitud
             }
           },
 
@@ -376,11 +379,13 @@ export default {
           console.log(response.status);
         });
     },
+
     updSitio(){
-      axios
+      alert("hace el update")
+      axios         
         .post(this.url + "/upd/", 
                     {
-                      id_sitio:         idSitio,
+                      id_sitio:         this.formUpd.idSitio,
                       id_categoria:     this.categoria_seleccionada,
                       nombre_sitio:     this.formUpd.nombre_sitio,
                       barrio:           this.formUpd.barrio,
@@ -401,7 +406,6 @@ export default {
     },
 
     selSitio(idSitio) {
-      (this.rows = []),
         axios
           .get(this.url + "/sel/" + idSitio)
           .then(response => {

@@ -72,6 +72,26 @@ router.post('/', async (req, res) => {
     }
 })
 
+
+//UPDATE NUEVO SITIO
+router.post('/upd/', async (req, res) => {
+    console.log(`POSTING: ${baseURI}${req.url}`)
+
+    try {
+
+        console.log(req.body)
+
+        // const sitioNuevo = req.body
+        // console.log(sitioNuevo)
+        // const sitioCreado = await sitiosDAO.updateSitio(sitioNuevo)
+        // const mensajeResponse = { status: 'SITIO CREADO CORRECTAMENTE', sitioCreado }
+        // res.status(201).json(mensajeResponse)
+        
+    } catch (err) {
+        res.status(err.status).json(err)
+    }
+})
+
 // BORRAR SITIO
 router.post('/del/:idsitio/', async (req, res) => {
     console.log(`POSTING DELETE: ${baseURI}${req.url}`)

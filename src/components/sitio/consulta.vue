@@ -6,7 +6,20 @@
       class="btn btn-block btn-outline-primary waves-effect"
     >LOCALIZAME</button>
     <br>
+
     <span v-if="indicadorLocalizacion == true">
+      <div>
+        <label for="range-2">Example range with step value</label>
+        <b-form-input
+          id="range-2"
+          v-model="distanciaRadial"
+          type="range"
+          min="0"
+          max="5"
+          step="0.5"
+        ></b-form-input>
+        <div class="mt-2">Distancia (km): {{ distanciaRadial }}</div>
+      </div>
       <div class="container-fluid">
         <div class="row">
           <div class="col">
@@ -59,6 +72,7 @@
           <th>URL</th>
           <th>Responsable</th>
           <th>Distancia</th>
+          <th>Horarios</th>
           <th>Promoción</th>
         </tr>
 
@@ -77,7 +91,7 @@
           <td>{{m.position.url}}</td>
           <td>{{m.position.responsable}}</td>
           <td>{{m.position.distancia}}</td>
-
+          <td>{{m.position.abiertoCerrado}}</td>
           <td v-if="m.position.voucher == 1">
             <b-button id="show-btn" @click="showModal(m.position.id_cat)">
               <img :src="imagenEmail" width="20">
@@ -211,6 +225,9 @@ export default {
                 id_cat: id_cat,
                 voucher: sitios[i].voucher,
                 distancia: sitios[i].distancia,
+
+                abiertoCerrado: true,
+
                 url: sitios[i].url,
                 responsable: sitios[i].responsable
               };
@@ -231,6 +248,13 @@ export default {
     hideModal() {
       this.$refs["my-modal"].hide();
     },
+    identificarHorario() {
+      var f = new Date();
+      cad = f.getHours();
+
+      return cad;
+    },
+
     enviarMail() {
       axios
         .get(this.emailUrl + "/" + this.email)
@@ -274,22 +298,25 @@ export default {
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {
           lat: -34.609953,
-          lng: -58.4292301 
+          lng: -58.4292301
         };
-//-34.609953, lng: -58.4292301 
+        //-34.609953, lng: -58.4292301
         this.marker = {
           lat: -34.609953,
-          lng: -58.4292301 ,
+          lng: -58.4292301,
           icon: img_posicion
         };
 
         this.latitudActual = -34.609953;
-        this.longituActual = -58.4292301 ;
+        this.longituActual = -58.4292301;
 
         this.markers.push({ position: this.marker });
       });
       this.indicadorLocalizacion = true;
     }
+  },
+  watch: {
+    
   }
 };
 </script>
