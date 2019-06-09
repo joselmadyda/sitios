@@ -9,7 +9,7 @@
 
     <span v-if="indicadorLocalizacion == true">
       <div>
-        <label for="range-2">Example range with step value</label>
+        <label for="range-2">Distancia Actual (km): <b>{{ distanciaRadial }}</b></label>
         <b-form-input
           id="range-2"
           v-model="distanciaRadial"
@@ -18,38 +18,12 @@
           max="5"
           step="0.5"
         ></b-form-input>
-        <div class="mt-2">Distancia (km): {{ distanciaRadial }}</div>
       </div>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col">
-            <input v-model="distanciaRadial" class="btn btn-block btn-outline-primary waves-effect">
-          </div>
 
-          <div class="col">
-            <button
-              type="button"
-              @click="buscarSitiosBD(1)"
-              class="btn btn-block btn-outline-primary waves-effect"
-            >R E S T A U R A N T E S</button>
-          </div>
-
-          <div class="col">
-            <button
-              type="button"
-              @click="buscarSitiosBD(2)"
-              class="btn btn-block btn-outline-primary waves-effect"
-            >C I N E S</button>
-          </div>
-
-          <div class="col">
-            <button
-              type="button"
-              @click="buscarSitiosBD(3)"
-              class="btn btn-block btn-outline-primary waves-effect"
-            >T E A T R O S</button>
-          </div>
-        </div>
+      <div>
+        <b-form-group>
+          <b-form-checkbox-group v-model="selectedCategories" :options="optionsCategorias" switches></b-form-checkbox-group>
+        </b-form-group>
       </div>
 
       <br>
@@ -65,14 +39,14 @@
         ></gmap-marker>
       </gmap-map>
       <br>
-      <table border="1" style="width:100%">
+      <table border="0" style="width:100%">
         <tr>
           <th>Categoría</th>
           <th>Nombre</th>
           <th>URL</th>
           <th>Responsable</th>
           <th>Distancia</th>
-          <th>Horarios</th>
+          
           <th>Promoción</th>
         </tr>
 
@@ -91,7 +65,7 @@
           <td>{{m.position.url}}</td>
           <td>{{m.position.responsable}}</td>
           <td>{{m.position.distancia}}</td>
-          <td>{{m.position.abiertoCerrado}}</td>
+          
           <td v-if="m.position.voucher == 1">
             <b-button id="show-btn" @click="showModal(m.position.id_cat)">
               <img :src="imagenEmail" width="20">
@@ -133,6 +107,15 @@ export default {
       lngActual: "",
       markers: [],
       places: [],
+      selectedCategories: [],
+      optionsCategorias: [
+        { text: "Restaurantes", value: "1" },
+        { text: "Bares", value: "2" },
+        { text: "Cines (próximamente)", value: "4", disabled: true },
+        { text: "Teatros", value: "3" },
+        { text: "Veterinarias (próximamente)", value: "5", disabled: true },
+        { text: "Starbucks (próximamente)", value: "6", disabled: true }
+      ],
       //currentCoordinates: {lat: "", lng: ""},
       currentPlace: null,
       url: "http://localhost:8090/api/sitios",
@@ -142,7 +125,7 @@ export default {
       categoria1: false,
       categoria2: false,
       categoria3: false,
-      distanciaRadial: 0.1,
+      distanciaRadial: 0,
       latitudActual: "",
       longituActual: "",
       indicadorLocalizacion: false,
@@ -163,83 +146,61 @@ export default {
     setPlace(place) {
       this.currentPlace = place;
     },
-    buscarSitiosBD(id_cat) {
+
+    filtrarSitiosBD(id_cat, distancia) {
       let image = "";
-      let consultar = false;
 
-      if (id_cat == 1) {
-        image = img_resto;
-        if (this.categoria1 == false) {
-          this.categoria1 = true;
-          consultar = true;
-        } else {
-          this.categoria1 = false;
-          consultar = false;
-        }
-      }
-      if (id_cat == 2) {
-        image = img_golf;
-        if (this.categoria2 == false) {
-          this.categoria2 = true;
-          consultar = true;
-        } else {
-          this.categoria2 = false;
-          consultar = false;
-        }
-      }
-      if (id_cat == 3) {
-        image = img_teatro;
-        if (this.categoria3 == false) {
-          this.categoria3 = true;
-          consultar = true;
-        } else {
-          this.categoria3 = false;
-          consultar = false;
-        }
+      switch (id_cat) {
+        case "1":
+          image = img_resto;
+          break;
+        case "2":
+          image = img_golf;
+          break;
+        case "3":
+          image = img_teatro;
+          break;
       }
 
-      if (consultar) {
-        axios
+      axios
+        .get(
+          this.url +
+            "/" +            
+            distancia +
+            "/" +
+            id_cat +
+            "/" +
+            this.latitudActual +
+            "/" +
+            this.longituActual
+        )
+        .then(response => {
+          // Obtenemos los datos
+          let sitios = response.data;
+          for (var i = 0; i < sitios.length; i++) {
+            const marker = {
+              lat: sitios[i].latitud,
+              lng: sitios[i].longitud,
+              icon: image,
+              nombre: sitios[i].nombre_sitio,
+              id_cat: id_cat,
+              voucher: sitios[i].voucher,
+              distancia: sitios[i].distancia,
 
-          .get(
-            this.url +
-              "/" +
-              //"/barrio/" +
-              this.distanciaRadial +
-              "/" +
-              id_cat +
-              "/" +
-              this.latitudActual +
-              "/" +
-              this.longituActual
-          )
-          .then(response => {
-            // Obtenemos los datos
-            let sitios = response.data;
-            for (var i = 0; i < sitios.length; i++) {
-              const marker = {
-                lat: sitios[i].latitud,
-                lng: sitios[i].longitud,
-                icon: image,
-                nombre: sitios[i].nombre_sitio,
-                id_cat: id_cat,
-                voucher: sitios[i].voucher,
-                distancia: sitios[i].distancia,
+              abiertoCerrado: true,
 
-                abiertoCerrado: true,
-
-                url: sitios[i].url,
-                responsable: sitios[i].responsable
-              };
-              this.markers.push({ position: marker });
-            }
-          })
-          .catch(e => {
-            console.log(response.data);
-          });
-      } else {
-        this.markers = this.markers.filter(m => m.position.id_cat != id_cat);
-      }
+              url: sitios[i].url,
+              responsable: sitios[i].responsable
+            };
+            this.markers.push({ position: marker });
+          }
+        })
+        .catch(e => {
+          console.log(response.data);
+        });
+      //} else {
+      //  this.markers = this.markers.filter(m => m.position.id_cat != id_cat);
+      //}
     },
     showModal(param) {
       this.emailCat = param;
@@ -291,7 +252,6 @@ export default {
         this.center = marker;
 
         this.currentPlace = null;
-        //console.log(JSON.stringify(this.places));
       }
     },
     geolocate: function() {
@@ -300,7 +260,6 @@ export default {
           lat: -34.609953,
           lng: -58.4292301
         };
-        //-34.609953, lng: -58.4292301
         this.marker = {
           lat: -34.609953,
           lng: -58.4292301,
@@ -313,10 +272,31 @@ export default {
         this.markers.push({ position: this.marker });
       });
       this.indicadorLocalizacion = true;
+    },
+    distanciaButton: function() {
+      //Recorrer el array de options para saber que categoría se requiere localizar
+      alert(4);
+    },
+    colocarSitiosEnMapa() {
+      //Se limpian los marcadores existentes y se realiza la geolocalización
+      this.markers = [];
+      this.geolocate();
+      //Se recorre el array de categorias seleccionadas para localizar los sitios en el mapa
+      for (var i = 0; i < this.selectedCategories.length; i++) {
+        this.filtrarSitiosBD(this.selectedCategories[i], this.distanciaRadial);
+      }
     }
   },
+
   watch: {
-    
+    //Cuando se modifica el valor de la propiedad distanciaRadial en el range, se dispara la acción que deseamos, en este caso se llama al método colocarSitiosEnMapa
+    distanciaRadial() {
+      this.colocarSitiosEnMapa();
+    },
+    selectedCategories() {
+      //Cuando se modifica el array de categorias seleccionadas, disparamos el método colocarSitiosEnMapa
+      this.colocarSitiosEnMapa();
+    }
   }
 };
 </script>
