@@ -9,7 +9,10 @@
 
     <span v-if="indicadorLocalizacion == true">
       <div>
-        <label for="range-2">Distancia Actual (km): <b>{{ distanciaRadial }}</b></label>
+        <label for="range-2">
+          Distancia Actual (km):
+          <b>{{ distanciaRadial }}</b>
+        </label>
         <b-form-input
           id="range-2"
           v-model="distanciaRadial"
@@ -46,7 +49,7 @@
           <th>URL</th>
           <th>Responsable</th>
           <th>Distancia</th>
-          
+
           <th>Promoción</th>
         </tr>
 
@@ -65,7 +68,7 @@
           <td>{{m.position.url}}</td>
           <td>{{m.position.responsable}}</td>
           <td>{{m.position.distancia}}</td>
-          
+
           <td v-if="m.position.voucher == 1">
             <b-button id="show-btn" @click="showModal(m.position.id_cat)">
               <img :src="imagenEmail" width="20">
@@ -139,7 +142,9 @@ export default {
   },
 
   //Una vez cargado el DOM se ejecuta lo que contiene mounted
-  mounted() {},
+  mounted() {
+    this.showInitialMessage();
+  },
 
   methods: {
     // receives a place object via the autocomplete component
@@ -165,7 +170,7 @@ export default {
       axios
         .get(
           this.url +
-            "/" +            
+            "/" +
             distancia +
             "/" +
             id_cat +
@@ -198,9 +203,6 @@ export default {
         .catch(e => {
           console.log(response.data);
         });
-      //} else {
-      //  this.markers = this.markers.filter(m => m.position.id_cat != id_cat);
-      //}
     },
     showModal(param) {
       this.emailCat = param;
@@ -272,6 +274,23 @@ export default {
         this.markers.push({ position: this.marker });
       });
       this.indicadorLocalizacion = true;
+      if (this.distanciaRadial == 0) {
+        this.$noty.info("Arrastrá el scroll para obtener resultados!", {
+          killer: true,
+          timeout: 3000,
+          layout: "topRight",
+          progressBar: true
+        });
+      }
+
+ if (this.selectedCategories.length == 0) {
+        this.$noty.info("Selecciona al menos una categoría!", {
+          killer: true,
+          timeout: 3000,
+          layout: "topRight",
+          progressBar: true
+        });
+      }
     },
     distanciaButton: function() {
       //Recorrer el array de options para saber que categoría se requiere localizar
@@ -285,6 +304,14 @@ export default {
       for (var i = 0; i < this.selectedCategories.length; i++) {
         this.filtrarSitiosBD(this.selectedCategories[i], this.distanciaRadial);
       }
+    },
+    showInitialMessage() {
+      this.$noty.info("Por favor haz click en LOCALIZAME para comenzar!", {
+        killer: true,
+        timeout: 3000,
+        layout: "topRight",
+        progressBar: true
+      });
     }
   },
 
@@ -293,7 +320,7 @@ export default {
     distanciaRadial() {
       this.colocarSitiosEnMapa();
     },
-    selectedCategories() {
+    selectedCategories() {      
       //Cuando se modifica el array de categorias seleccionadas, disparamos el método colocarSitiosEnMapa
       this.colocarSitiosEnMapa();
     }
