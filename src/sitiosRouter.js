@@ -56,7 +56,7 @@ router.get('/sel/:idsitio/', async (req, res) => {
 })
 
 //AGREGAR NUEVO SITIO
-router.post('/', async (req, res) => {
+router.post('/add/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
     try {
@@ -79,13 +79,13 @@ router.post('/upd/', async (req, res) => {
 
     try {
 
-        console.log(req.body)
+        //console.log(req.body)
 
-        // const sitioNuevo = req.body
-        // console.log(sitioNuevo)
-        // const sitioCreado = await sitiosDAO.updateSitio(sitioNuevo)
-        // const mensajeResponse = { status: 'SITIO CREADO CORRECTAMENTE', sitioCreado }
-        // res.status(201).json(mensajeResponse)
+        const sitioUpdated = req.body
+        console.log(sitioUpdated)
+        const sitioAct = await sitiosDAO.updateSitio(sitioUpdated)
+        const mensajeResponse = { status: 'SITIO MODIFICADO CORRECTAMENTE', sitioAct }
+        res.status(201).json(mensajeResponse)
         
     } catch (err) {
         res.status(err.status).json(err)
