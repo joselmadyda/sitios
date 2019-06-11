@@ -37,7 +37,7 @@ router.get('/:email', async (req, res) => {
         text: "",
         template: "voucher"
     }
-    console.log(mailOptions);
+    
     smtpTransport.sendMail(mailOptions, function (error, response) {
         if (error) {
             

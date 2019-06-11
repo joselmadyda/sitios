@@ -24,14 +24,9 @@ app.use('/api/categorias', categoriasRouter)
 app.use('/api/email', emailRouter)
 
 const appPort = 8090
-const emailPort = 3000
 
 //App Port
 app.listen(appPort, () => {
     console.log(`servidor inicializado en puerto ${appPort}`)
 })
 
-//Email Port
-app.listen(emailPort, () => {
-    console.log(`servidor de correo inicializado en puerto ${emailPort}`)
-})

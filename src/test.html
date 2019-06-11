@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>SITIOSVIP API</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    @import url('https://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200');
+    
+    
+</head>
+
+<body class="preload"><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a>
+    <div class="container-fluid">
+        <div class="row">
+            <nav>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#top">Overview</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#header-api-version">API Version</a></li>
+                            <li><a href="#header-api-changelog">API Changelog</a></li>
+                            <li><a href="#header-api-host">API Host</a></li>
+                            <li><a href="#header-interactuar-con-la-api">Interactuar con la API</a></li>
+                            <li><a href="#header-codigos-de-estado-de-respuesta-http">Codigos de estado de respuesta
+                                    HTTP</a></li>
+                            <li><a href="#header-formato-de-respuestas-de-la-api">Formato de respuestas de la API</a>
+                            </li>
+                            <li><a href="#header-como-autentificarse-en-la-api">Como autentificarse en la API</a></li>
+                            <li><a href="#header-modo-mantenimiento">Modo Mantenimiento</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#autentificacion">Autentificacion</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#autentificacion-obtener-un-token-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Obtener un token</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#precios-envio-sms">Precios Envio SMS</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#precios-envio-sms-obtener-precios-envio-sms-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener precios envio SMS</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#saldo">Saldo</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#saldo-obtener-el-saldo-actual-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener el saldo actual</a></li>
+                            <li><a href="#saldo-obtener-todas-las-compras-de-saldo-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener todas las compras de saldo</a>
+                            </li>
+                            <li><a href="#saldo-obtener-una-compra-de-saldo-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener una compra de saldo</a></li>
+                            <li><a href="#saldo-realizar-una-compra-de-saldo-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Realizar una compra de saldo</a></li>
+                            <li><a href="#saldo-aceptar-una-compra-de-saldo-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Aceptar una compra de saldo</a></li>
+                            <li><a href="#saldo-cancelar-una-compra-de-saldo-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Cancelar una compra de saldo</a></li>
+                            <li><a href="#saldo-rechazar-una-compra-de-saldo-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Rechazar una compra de saldo</a></li>
+                            <li><a href="#saldo-remitir-una-compra-de-saldo-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Remitir una compra de saldo</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#configuraciones-de-envio">Configuraciones de envio</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#configuraciones-de-envio-obtener-todas-las-configuraciones-de-envio-get"><span
+                                        class="badge get"><i class="fa fa-arrow-down"></i></span>Obtener todas las
+                                    configuraciones de envio</a></li>
+                            <li><a href="#configuraciones-de-envio-obtener-una-configuracion-de-envio-get"><span
+                                        class="badge get"><i class="fa fa-arrow-down"></i></span>Obtener una
+                                    configuracion de envio</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#agendas">Agendas</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#agendas-obtener-todas-las-agendas-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener todas las agendas</a></li>
+                            <li><a href="#agendas-obtener-una-agenda-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener una agenda</a></li>
+                            <li><a href="#agendas-crear-una-agenda-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Crear una agenda</a></li>
+                            <li><a href="#agendas-actualizar-una-agenda-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Actualizar una agenda</a></li>
+                            <li><a href="#agendas-eliminar-una-agenda-delete"><span class="badge delete"><i
+                                            class="fa fa-times"></i></span>Eliminar una agenda</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#contactos">Contactos</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#contactos-obtener-todas-los-contactos-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener todas los contactos</a></li>
+                            <li><a href="#contactos-obtener-un-contacto-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener un contacto</a></li>
+                            <li><a href="#contactos-crear-un-contacto-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Crear un contacto</a></li>
+                            <li><a href="#contactos-importar-contactos-mediante-json-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Importar contactos mediante JSON</a></li>
+                            <li><a href="#contactos-importar-contactos-mediante-archivo-post"><span
+                                        class="badge post"><i class="fa fa-plus"></i></span>Importar contactos mediante
+                                    archivo</a></li>
+                            <li><a href="#contactos-actualizar-un-contacto-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Actualizar un contacto</a></li>
+                            <li><a href="#contactos-eliminar-un-contacto-delete"><span class="badge delete"><i
+                                            class="fa fa-times"></i></span>Eliminar un contacto</a></li>
+                            <li><a href="#contactos-asignar-agendas-a-un-contacto-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Asignar agendas a un contacto</a></li>
+                            <li><a href="#contactos-desasignar-agendas-a-un-contacto-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Desasignar agendas a un contacto</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#campos-personalizados">Campos Personalizados</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#campos-personalizados-obtener-todos-los-campos-personalizados-get"><span
+                                        class="badge get"><i class="fa fa-arrow-down"></i></span>Obtener todos los
+                                    campos personalizados</a></li>
+                            <li><a href="#campos-personalizados-obtener-un-campo-personalizado-get"><span
+                                        class="badge get"><i class="fa fa-arrow-down"></i></span>Obtener un campo
+                                    personalizado</a></li>
+                            <li><a href="#campos-personalizados-crear-un-campo-personalizado-post"><span
+                                        class="badge post"><i class="fa fa-plus"></i></span>Crear un campo
+                                    personalizado</a></li>
+                            <li><a href="#campos-personalizados-eliminar-un-campo-personalizado-delete"><span
+                                        class="badge delete"><i class="fa fa-times"></i></span>Eliminar un campo
+                                    personalizado</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#envios-sms">Envios
+                            SMS</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#envios-sms-envio-simple-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Envio Simple</a></li>
+                            <li><a href="#envios-sms-envio-multiple-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Envio Multiple</a></li>
+                            <li><a href="#envios-sms-envio-masivo-campañas-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Envio Masivo - Campañas</a></li>
+                            <li><a href="#envios-sms-envio-masivo-a-traves-de-archivo-campañas-post"><span
+                                        class="badge post"><i class="fa fa-plus"></i></span>Envio Masivo a traves de
+                                    archivo - Campañas</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#envio-masivo-campañas">Envio Masivo - Campañas</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#envio-masivo-campañas-obtener-todas-las-campañas-get"><span
+                                        class="badge get"><i class="fa fa-arrow-down"></i></span>Obtener todas las
+                                    campañas</a></li>
+                            <li><a href="#envio-masivo-campañas-obtener-una-campaña-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener una campaña</a></li>
+                            <li><a href="#envio-masivo-campañas-crear-una-campaña-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Crear una campaña</a></li>
+                            <li><a href="#envio-masivo-campañas-crear-una-campaña-a-traves-de-archivo-post"><span
+                                        class="badge post"><i class="fa fa-plus"></i></span>Crear una campaña a traves
+                                    de archivo</a></li>
+                            <li><a href="#envio-masivo-campañas-activar-una-campaña-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Activar una campaña</a></li>
+                            <li><a href="#envio-masivo-campañas-desactivar-una-campaña-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Desactivar una campaña</a></li>
+                            <li><a href="#envio-masivo-campañas-enviar-ahora-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Enviar ahora</a></li>
+                            <li><a href="#envio-masivo-campañas-eliminar-una-campaña-delete"><span
+                                        class="badge delete"><i class="fa fa-times"></i></span>Eliminar una campaña</a>
+                            </li>
+                            <li><a href="#envio-masivo-campañas-simulador-de-coste-de-campaña-post"><span
+                                        class="badge post"><i class="fa fa-plus"></i></span>Simulador de coste de
+                                    campaña</a></li>
+                            <li><a href="#envio-masivo-campañas-obtener-resumen-notificaciones-de-entrega-get"><span
+                                        class="badge get"><i class="fa fa-arrow-down"></i></span>Obtener resumen
+                                    Notificaciones de Entrega</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#notificaciones-de-entrega">Notificaciones de Entrega</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#notificaciones-de-entrega-obtener-notificaciones-de-entrega-get"><span
+                                        class="badge get"><i class="fa fa-arrow-down"></i></span>Obtener notificaciones
+                                    de entrega</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#voz">VOZ</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#voz-campañas-de-voz-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Campañas de VOZ</a></li>
+                            <li><a href="#voz-obtener-desglose-de-llamadas-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener desglose de llamadas</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#2-factor-authentication">2-Factor Authentication</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#2-factor-authentication-crear-y-enviar-pin-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Crear y enviar PIN</a></li>
+                            <li><a href="#2-factor-authentication-comprobar-pin-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Comprobar PIN</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#procesos">Procesos</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#procesos-obtener-todos-los-procesos-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener todos los procesos</a></li>
+                            <li><a href="#procesos-obtener-un-proceso-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener un proceso</a></li>
+                            <li><a href="#procesos-eliminar-un-proceso-delete"><span class="badge delete"><i
+                                            class="fa fa-times"></i></span>Eliminar un proceso</a></li>
+                            <li><a href="#procesos-obtener-resumen-de-importacion-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener resumen de importacion</a></li>
+                            <li><a href="#procesos-obtener-errores-de-importacion-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener errores de importacion</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a
+                            href="#herramientas">Herramientas</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#herramientas-preview-mensaje-a-enviar-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Preview Mensaje a Enviar</a></li>
+                            <li><a href="#herramientas-obtener-url-formulario-de-baja-get"><span class="badge get"><i
+                                            class="fa fa-arrow-down"></i></span>Obtener URL Formulario de Baja</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resource-group">
+                    <div class="heading">
+                        <div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#premium">Premium</a>
+                    </div>
+                    <div class="collapse-content">
+                        <ul>
+                            <li><a href="#premium-premium-gateway-post"><span class="badge post"><i
+                                            class="fa fa-plus"></i></span>Premium Gateway</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="content">
+                <header>
+                    <h1 id="top">SITIOSVIP API</h1>
+                </header>
+                <h2 id="header-api-version">API Version <a class="permalink" href="#header-api-version"
+                        aria-hidden="true">¶</a></h2>
+
+</html>
