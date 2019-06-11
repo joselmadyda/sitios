@@ -1,7 +1,7 @@
 const knex = require('./db/knex')
 
 async function getAllCategories() {
-    const selectAllQuery = `exec sitiosWeb @Tarea= 'ALLCATEGORIAS'`
+    const selectAllQuery = `SELECT * FROM categorias;`
     const result = await knex.raw(selectAllQuery)
 
     return result
@@ -21,13 +21,13 @@ async function addCategory(nuevo) {
 
 async function getByIdCategory(cat) {
 
-    const selectByIdCategory = `exec sitiosWeb @Tarea= 'CATEGORIAPORID', @IdCategoria=${cat};`
+    const selectByIdCategory = `SELECT * FROM categorias WHERE id_cat='${cat}';`
     const result = await knex.raw(selectByIdCategory)
 
     return result
 }
 async function deleteByCategoria(cat) {
-    const deleteByIdCategory = `exec sitiosWeb @Tarea= 'DELETECATEGORIA', @IdCategoria=${cat}`
+    const deleteByIdCategory = `DELETE FROM categorias WHERE id_cat=${cat}`
     await knex.raw(deleteByIdCategory)
     return
 }

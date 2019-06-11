@@ -4,9 +4,10 @@ dotenv.config()
 
 const dbConfigs = {
     home: {
-        client: 'mssql',
+        client: 'mssql'   ,
         connection: {
-            server: 'localhost',
+           // server: 'localhost//SQLEXPRESS',
+           server: 'DESKTOP-VFJA0I7\\SQLEXPRESS',
             port: 1433,
             user: 'web',
             password: '1234',

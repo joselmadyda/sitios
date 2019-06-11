@@ -1,21 +1,21 @@
 const knex = require('./db/knex')
 
 async function getAll() {
-    const selectAllQuery = `exec sitiosWeb @Tarea= 'ALLSITIOS';`
+    const selectAllQuery = `SELECT * FROM sitios;`
     const result = await knex.raw(selectAllQuery)
     // const result = await knex.select('*').from('estudiantes')
     return result
 }
 
 async function getByCategoria(cat) {
-    const selectByCategoria = `exec sitiosWeb @Tarea= 'SITIOPORCATEGORIA', @IdCategoria= ${cat};`
+    const selectByCategoria = `SELECT * FROM sitios WHERE id_categoria='${cat}';`
     const result = await knex.raw(selectByCategoria)
     return result
 }
 
 
 async function getByCategoriaBarrio(id_categoria, barrio) {
-    const selectCategoriaBarrio = `exec sitiosWeb @Tarea= 'SITIOPORCATYBARRIO', @IdCategoria=${id_categoria}, @Barrio='${barrio}'`
+    const selectCategoriaBarrio = `SELECT * FROM sitios WHERE id_categoria='${id_categoria}' and barrio ='${barrio}' ;`
     const result = await knex.raw(selectCategoriaBarrio)
     return result
 }
@@ -23,11 +23,9 @@ async function getByCategoriaBarrio(id_categoria, barrio) {
 //AGREGAR SITIO
 async function addSitio(nuevoSitio) {
     try {
-        let insertionQuery = `exec sitiosWeb @Tarea='ALTASITIO', @IdCategoria='${nuevoSitio.id_categoria}',`
-        insertionQuery += `@NombreSitio='${nuevoSitio.nombre_sitio}', @Barrio= '${nuevoSitio.barrio}', `
-        insertionQuery += `@Latitud=${nuevoSitio.latitud}, @Longitud=${nuevoSitio.longitud}, @Url='${nuevoSitio.url}',`
-        insertionQuery += `@Responsable='${nuevoSitio.responsable}', @HoraApertura='${nuevoSitio.hora_apertura}',`
-        insertionQuery += `@HoraCierre='${nuevoSitio.hora_cierre}', @Voucher= ${nuevoSitio.voucher}`  
+        let insertionQuery = 'INSERT INTO sitios '
+        insertionQuery += '(id_categoria,nombre_sitio,barrio,latitud,longitud,url,responsable,hora_apertura,hora_cierre,voucher) '
+        insertionQuery += `VALUES ('${nuevoSitio.id_categoria}','${nuevoSitio.nombre_sitio}','${nuevoSitio.barrio}','${nuevoSitio.latitud}','${nuevoSitio.longitud}','${nuevoSitio.url}','${nuevoSitio.responsable}','${nuevoSitio.hora_apertura}','${nuevoSitio.hora_cierre}','${nuevoSitio.voucher}')`
         await knex.raw(insertionQuery)
         return nuevoSitio
     } catch (err) {
@@ -38,7 +36,7 @@ async function addSitio(nuevoSitio) {
 //ELIMINAR SITIO
 async function deleteByIdSitio(idSitio) {
     try {
-        const deleteByIdSitioQuery = `exec sitiosWeb @Tarea= 'DELETESITIO', @IdSitio= ${idSitio}`
+        const deleteByIdSitioQuery = `DELETE FROM sitios WHERE id_sitio=${idSitio}`
         await knex.raw(deleteByIdSitioQuery)
         return 1
     } catch (err) {
@@ -48,7 +46,7 @@ async function deleteByIdSitio(idSitio) {
 
 // SELECT X SITIO
 async function getSitio(idSitio) {
-    const selectSitio = `exec sitiosWeb @Tarea= 'SITIOPORID', @IdSitio= ${idSitio}`
+    const selectSitio = `SELECT * FROM sitios WHERE id_sitio=${idSitio}`
     const result = await knex.raw(selectSitio)
     return result
 }
@@ -56,8 +54,11 @@ async function getSitio(idSitio) {
 // MODIFICAR SITIO
 async function updateSitio(idSitio,url) {
     try {
-     //   const updateSitioQuery = `exec sitiosWeb @Tarea= 'UPDATESITIO', @Url='${url}', @IdSitio=${idSitio}`
-     const updateSitioQuery = `update sitios set url= '${url}' where id_sitio=${idSitio}`
+        const updateSitioQuery = `
+            UPDATE sitios 
+            SET url =${url} 
+            WHERE id_sitio=${idSitio}`
+
         await knex.raw(updateSitioQuery)
         return 1
     } catch (err) {
