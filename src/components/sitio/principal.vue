@@ -4,35 +4,30 @@
       
       <!-- fila1 --->
       <div class="row">
-        
-        <div class="col">
-          <span v-if="categoria == null || categoria != 1 || mapa == true"> 
-          <button type="button" @click="listarCategoria(1)" class="btn btn-block btn-outline-primary waves-effect">R E S T A U R A N T E S</button> </span>
-          <span v-else>
-            <button type="button" @click="cargarsitiosBD(1)" class="btn btn-block btn-outline-primary waves-effect">M A P S</button></span>
+        <div class="col">       
+          <button type="button" @click="listarCategoria(1)" class="btn btn-block btn-outline-primary waves-effect">R E S T A U R A N T E S</button> 
         </div>
         <div class="col">
-          <span v-if="categoria == null || categoria != 2 || mapa == true">
-            <button type="button"  @click="listarCategoria(2)" class="btn btn-block btn-outline-primary waves-effect" >B A R E S</button></span>
-          <span v-else>
-            <button  type="button" @click="cargarsitiosBD(2)"  class="btn btn-block btn-outline-primary waves-effect"  >M A P S</button></span>
+          <button type="button" @click="listarCategoria(2)" class="btn btn-block btn-outline-primary waves-effect">B A R E S</button>
         </div>
         <div class="col">
-          <span v-if="categoria == null || categoria != 3 || mapa == true">
-            <button type="button"  @click="listarCategoria(3)" class="btn btn-block btn-outline-primary waves-effect">T E A T R O S</button></span>
-          <span v-else>
-            <button type="button" @click="cargarsitiosBD(3)" class="btn btn-block btn-outline-primary waves-effect">M A P S</button></span>
+          <button type="button" @click="listarCategoria(3)" class="btn btn-block btn-outline-primary waves-effect">T E A T R O S</button>
+        </div>
+        <div class="col">
+          <button type="button" @click="listarCategoria(4)" class="btn btn-block btn-outline-primary waves-effect">C A F E T E R I A S</button>
         </div>
       </div>
       <br>
+
       <!-- fila2 --->
       <div class="row">
         <button type="button"  @click="formAddSitio()" class="btn btn-block btn-outline-primary waves-effect">Crear nuevo sitio</button>
+        <br><br>
       </div>
 
       <!-- fila3 --->
-      <div class="row">
-        <table class="table table-hover table-sm"  v-if="tablaSitios == true">
+      <div v-if="tablaSitios == true" class="row">
+         <table class="table table-hover table-sm">
           <thead>
               <td v-for="column in columns" >{{column}}</td>
               <td></td><td></td>
@@ -53,52 +48,53 @@
         </table>
       </div>
 
-    <!-- fila4 --->
+    <!-- fila4--->
       <div v-if="formTipo =='add' || formTipo == 'mod' " class="row">
+        <button type="button"  @click="formVolver()" class="btn btn-block btn-outline-primary waves-effect">Cerrar</button>
+      </div>
+
+    <!-- fila5 --->
+      <div v-if="formTipo =='add' || formTipo == 'mod' " class="row">
+        
         <div class="col">
           <b-card class="mt-3" v-bind:header="this.titulo">
               <div> 
                 <form id="frm1_upd">
-                    <label for="frm1_idsitio">IdSitio:</label>
-                    <input type="text" id="frm1_idsitio" class="form-control" v-model="this.formUpd.idSitio" readonly>
-                    <br>
-                    <label for="frm1_nombresitio">Nombre:</label>
-                    <input type="text" id="frm1_nombresitio" class="form-control" v-model="this.formUpd.nombre_sitio">
-                    <br>
-                    <label for="frm1_url">Url:</label>
-                    <input type="text" id="frm1_url" class="form-control" v-model="this.formUpd.url">
-                    <br>
-                    <label for="frm1_responsable">Responsable:</label>
-                    <input type="text" id="frm1_responsable" class="form-control" v-model="this.formUpd.responsable">
-                    <br>
-                    
-                    <label for="frm1_latitud">Latitud:</label>
-                    <input type="text" id="frm1_latitud" class="form-control" v-model="this.formUpd.latitud">
-                    <br>
-                    <label for="frm1_longitud">Longitud:</label>
-                    <input type="text" id="frm1_longitud" class="form-control" v-model="this.formUpd.longitud">
+                    <label for="frm1_radio">Categoria:</label>
+                    <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
                     <br>
 
+                    <div v-if="formTipo == 'mod'">
+                      <label for="frm1_idsitio">IdSitio:</label>
+                      <input type="text" id="frm1_idsitio" class="form-control" v-model="this.formUpd.idSitio" readonly>
+                      <br>
+                    </div>
+
+                    <label for="frm1_nombresitio">Nombre:</label>
+                    <input type="text" id="frm1_nombresitio" class="form-control" v-model="this.alta.nombre_sitio">
+                    <br>
+                    <label for="frm1_url">Url:</label>
+                    <input type="text" id="frm1_url" class="form-control" v-model="this.alta.url">
+                    <br>
+                    <label for="frm1_responsable">Responsable:</label>
+                    <input type="text" id="frm1_responsable" class="form-control" v-model="this.alta.responsable">
+                    <br>
                     <label for="frm1_apertura">Hora Apertura:</label>
                     <input type="text" id="frm1_apertura" class="form-control" v-model="this.formUpd.hora_apertura">
                     <br>
                     <label for="frm1_cierre">Hora Cierre:</label>
                     <input type="text" id="frm1_cierre" class="form-control" v-model="this.formUpd.hora_cierre">
                     <br>
-
                     <label for="frm1_voucher">Voucher:</label>
                     <input type="text" id="frm1_voucher" class="form-control" v-model="this.formUpd.voucher">
                     <br>
 
                     <div v-if="formTipo=='add'" class="form-group col-sm-12">
-                    <button type="button" @click="addSitio()" > Agregar Sitio    </button>
+                    <button type="button" @click="addSitio()"          class="btn btn-info"> Agregar Sitio   </button>
                     </div>
-
                     <div v-if="formTipo=='mod'" class="form-group col-sm-12">
-                    <button type="button" @click="updSitio(row.id)" >Modificar Sitio    </button>
+                    <button type="button" @click="updSitio(row.id)"    class="btn btn-info"> Modificar Sitio </button>
                     </div>
-
-
                 </form>
               </div>
           </b-card>
@@ -119,6 +115,7 @@
           </gmap-map>
 
           </b-card>
+          <input type="text" id="frm1_idsitio" class="form-control" v-model="this.formUpd.coordenadas" readonly>
         </div>
       <br>
 
@@ -139,16 +136,34 @@ export default {
 
   data: function() {
     return {
+
+      alta: {
+        nombre_sitio:'',
+        url:'',
+        responsable:''
+      },
+
       categoria: null,
       categoria_seleccionada: null,
-
-
+      selected: null,
+      options: [
+          { text: 'Restaurant',  value: 1 },
+          { text: 'Bar',         value: 2 },
+          { text: 'Teatro',      value: 3 },
+          { text: 'Cafeteria',   value: 4 },
+        ],
       formTipo: '',
       tablaSitios: true,
 
       formUpd: {
-        nombreSitio: "Test",
-        url: "url"
+        nombre_sitio	 : ''  ,
+        url            : ''  ,
+        latitud        : ''  ,
+        longitud       : ''  ,
+        responsable    : ''  ,
+        hora_apertura  : ''  ,
+        hora_cierre    : ''  ,
+        voucher        : ''
       },
 
       mapa: false,
@@ -237,6 +252,7 @@ export default {
               // Se agrega propiedad del form
               this.formUpd.latitud = this.sitio.latitud 
               this.formUpd.longitud = this.sitio.longitud
+              this.formUpd.coordenadas =  ('Lat: ' + this.sitio.latitud + ' || Long: ' + this.sitio.longitud)
             }
           },
 
@@ -287,6 +303,7 @@ export default {
       this.mapa = false;
       this.formSitio = false;
       this.categoria = id_cat;
+      this.formVolver();
 
       //Setear Card Title
       switch(id_cat){
@@ -347,11 +364,40 @@ export default {
         })    
     },
 
+    formVolver() {
+        this.tablaSitios = true
+        this.formTipo = ''
+        // Reset Campos
+        this.formUpd.id_sitio = ''
+        this.formUpd.nombreSitio = ''
+        this.formUpd.url = ''
+        this.formUpd.latitud = ''
+        this.formUpd.longitud = ''
+        this.formUpd.hora_apertura = ''
+        this.formUpd.hora_cierre = ''
+        this.formUpd.voucher = ''
+    },
+
     formAddSitio() {
+      this.tablaSitios = false
       this.formTipo = 'add'
       this.titulo = 'Alta de Nuevo Sitio'
+      
+      // Reset Campos
+        this.selected = null
+        this.formUpd.idSitio = ''
+        this.formUpd.nombre_sitio = ''
+        this.formUpd.responsable = ''
+        this.formUpd.url = ''
+        this.formUpd.latitud = ''
+        this.formUpd.longitud = ''
+        this.formUpd.hora_apertura = ''
+        this.formUpd.hora_cierre = ''
+        this.formUpd.voucher = ''
+
     },
     formModSitio(idSitio) {
+      this.tablaSitios = false
       this.selSitio(idSitio)
       this.formTipo = 'mod'  
       this.titulo = 'Modificacion de Sitio'  
@@ -411,6 +457,7 @@ export default {
           .then(response => {
 
             this.sitioUpd = response.data;   
+            this.selected              =      this.sitioUpd[0].id_categoria
             this.formUpd.idSitio       =      idSitio
             this.formUpd.nombre_sitio  =      this.sitioUpd[0].nombre_sitio
             this.formUpd.url           =      this.sitioUpd[0].url
@@ -420,6 +467,7 @@ export default {
             this.formUpd.hora_apertura =      this.sitioUpd[0].hora_apertura
             this.formUpd.hora_cierre   =      this.sitioUpd[0].hora_cierre
             this.formUpd.voucher       =      this.sitioUpd[0].voucher
+            this.formUpd.coordenadas   =      ('Lat: ' + this.sitioUpd[0].latitud + ' || Long: ' + this.sitioUpd[0].longitud)
             
             ubicarSitio(this.sitioUpd[0].latitud, this.sitioUpd[0].longitud)
 
