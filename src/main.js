@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './sitio.vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueNoty from 'vuejs-noty'
-
+import VueApexCharts from 'vue-apexcharts'
 
 
 import * as VueGoogleMaps from "vue2-google-maps";
@@ -25,8 +25,9 @@ Vue.use(vueResource);
 Vue.use(BootstrapVue);
 Vue.use(bootstrap4)
 Vue.use(VueNoty)
+Vue.component('apexchart', VueApexCharts)
 
-
+Vue.use(VueApexCharts)
 
 const router = new vueRouter({
   routes
