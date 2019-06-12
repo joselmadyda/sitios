@@ -17,7 +17,7 @@
           id="range-2"
           v-model="distanciaRadial"
           type="range"
-          min="0"
+          min="1"
           max="5"
           step="0.5"
         ></b-form-input>
@@ -128,7 +128,7 @@ export default {
       categoria1: false,
       categoria2: false,
       categoria3: false,
-      distanciaRadial: 0,
+      distanciaRadial: 1,
       latitudActual: "",
       longituActual: "",
       indicadorLocalizacion: false,

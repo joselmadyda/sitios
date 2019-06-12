@@ -6,8 +6,8 @@ const dbConfigs = {
     home: {
         client: 'mssql'   ,
         connection: {
-            server: 'localhost\\SQLEXPRESS',
-           //server: 'DESKTOP-VFJA0I7\\SQLEXPRESS',
+            //server: 'localhost\\SQLEXPRESS',
+           server: 'DESKTOP-VFJA0I7\\SQLEXPRESS',
             port: 1433,
             user: 'web',
             password: '1234',

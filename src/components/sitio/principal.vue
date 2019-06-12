@@ -202,7 +202,7 @@
           <h3>¿Seguro que desea borrar el sitio:  ?</h3>
           <input type="text" v-model="email">
         </div>
-        <b-button class="mt-2" variant="outline-warning" block @click="delSitio(sitioABorrar)">Si</b-button>
+        <b-button class="mt-2" variant="outline-warning" block @click="deleteSitio()">Si</b-button>
         <b-button class="mt-2" variant="outline-warning" block @click="hideModal">No</b-button>
       </b-modal>
   </div>
@@ -406,7 +406,7 @@ export default {
     },
 
 modalDel(IdSitio){
-      sitioABorrar=IdSitio
+      this.sitioABorrar=IdSitio
       this.$refs["my-modal"].show();
 },
 
@@ -457,10 +457,10 @@ modalDel(IdSitio){
         });
     },
 
-    delSitio(idSitio) {
+    deleteSitio() {
       //alert("borrar: " + idSitio);
 
-      axios.post(this.url + "/del/" + idSitio).then(response => {
+      axios.post(this.url + "/del/" + this.sitioABorrar).then(response => {
 
 //     alert(response.data.status)
       });
