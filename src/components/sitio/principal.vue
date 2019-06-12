@@ -1,36 +1,57 @@
 <template>
   <div>
     <div class="container-fluid">
-      
       <!-- fila1 --->
       <div class="row">
-        <div class="col">       
-          <button type="button" @click="listarCategoria(1)" class="btn btn-block btn-outline-primary waves-effect">R E S T A U R A N T E S</button> 
+        <div class="col">
+          <button
+            type="button"
+            @click="listarCategoria(1)"
+            class="btn btn-block btn-outline-primary waves-effect"
+          >R E S T A U R A N T E S</button>
         </div>
         <div class="col">
-          <button type="button" @click="listarCategoria(2)" class="btn btn-block btn-outline-primary waves-effect">B A R E S</button>
+          <button
+            type="button"
+            @click="listarCategoria(2)"
+            class="btn btn-block btn-outline-primary waves-effect"
+          >B A R E S</button>
         </div>
         <div class="col">
-          <button type="button" @click="listarCategoria(3)" class="btn btn-block btn-outline-primary waves-effect">T E A T R O S</button>
+          <button
+            type="button"
+            @click="listarCategoria(3)"
+            class="btn btn-block btn-outline-primary waves-effect"
+          >T E A T R O S</button>
         </div>
         <div class="col">
-          <button type="button" @click="listarCategoria(4)" class="btn btn-block btn-outline-primary waves-effect">C A F E T E R I A S</button>
+          <button
+            type="button"
+            @click="listarCategoria(4)"
+            class="btn btn-block btn-outline-primary waves-effect"
+          >C A F E T E R I A S</button>
         </div>
       </div>
       <br>
 
       <!-- fila2 --->
       <div class="row">
-        <button type="button"  @click="formAddSitio()" class="btn btn-block btn-outline-primary waves-effect">Crear nuevo sitio</button>
-        <br><br>
+        <button
+          type="button"
+          @click="formAddSitio()"
+          class="btn btn-block btn-outline-primary waves-effect"
+        >Crear nuevo sitio</button>
+        <br>
+        <br>
       </div>
 
       <!-- fila3 --->
       <div v-if="tablaSitios == true" class="row">
-         <table class="table table-hover table-sm">
+        <table class="table table-hover table-sm">
           <thead>
-              <td v-for="column in columns" >{{column}}</td>
-              <td></td><td></td>
+            <td v-for="column in columns">{{column}}</td>
+            <td></td>
+            <td></td>
           </thead>
           <tbody>
             <tr v-for="row in rows">
@@ -40,87 +61,141 @@
               <td>{{row.url}}</td>
               <td>{{row.apertura}}</td>
               <td>{{row.cierre}}</td>
-              <td><button type="button" @click="formModSitio(row.id)" class="btn btn-block btn-outline-primary waves-effect">Modificar </button></td>
-              <td><button type="button" @click="delSitio(row.id)" class="btn btn-block btn-outline-primary waves-effect">Borrar    </button></td>
+              <td><button type="button"  @click="formModSitio(row.id)"  class="btn btn-block btn-outline-primary waves-effect" >Modificar</button>              </td>
+              <td><button type="button"  @click="delSitio(row.id)"  class="btn btn-block btn-outline-primary waves-effect" >Borrar</button>
+              </td>
             </tr>
           </tbody>
-
         </table>
       </div>
 
-    <!-- fila4--->
+      <!-- fila4--->
       <div v-if="formTipo =='add' || formTipo == 'mod' " class="row">
-        <button type="button"  @click="formVolver()" class="btn btn-block btn-outline-primary waves-effect">Cerrar</button>
+        <button
+          type="button"
+          @click="formVolver()"
+          class="btn btn-block btn-outline-primary waves-effect"
+        >Cerrar</button>
       </div>
 
-    <!-- fila5 --->
+      <!-- fila5 --->
       <div v-if="formTipo =='add' || formTipo == 'mod' " class="row">
-        
         <div class="col">
           <b-card class="mt-3" v-bind:header="this.titulo">
-              <div> 
-                <form id="frm1_upd">
-                    <label for="frm1_radio">Categoria:</label>
-                    <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
-                    <br>
+            <div>
+              <form id="frm1_upd">
+                <label for="frm1_radio">Categoria:</label>
+                <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
+                <br>
 
-                    <div v-if="formTipo == 'mod'">
-                      <label for="frm1_idsitio">IdSitio:</label>
-                      <input type="text" id="frm1_idsitio" class="form-control" v-model="this.formUpd.idSitio" readonly>
-                      <br>
-                    </div>
+                <div v-if="formTipo == 'mod'">
+                  <label for="frm1_idsitio">IdSitio:</label>
+                  <input
+                    type="text"
+                    id="frm1_idsitio"
+                    class="form-control"
+                    v-model="formUpd.idSitio"
+                    readonly
+                  >
+                  <br>
+                </div>
 
-                    <label for="frm1_nombresitio">Nombre:</label>
-                    <input type="text" id="frm1_nombresitio" class="form-control" v-model="this.alta.nombre_sitio">
-                    <br>
-                    <label for="frm1_url">Url:</label>
-                    <input type="text" id="frm1_url" class="form-control" v-model="this.alta.url">
-                    <br>
-                    <label for="frm1_responsable">Responsable:</label>
-                    <input type="text" id="frm1_responsable" class="form-control" v-model="this.alta.responsable">
-                    <br>
-                    <label for="frm1_apertura">Hora Apertura:</label>
-                    <input type="text" id="frm1_apertura" class="form-control" v-model="this.formUpd.hora_apertura">
-                    <br>
-                    <label for="frm1_cierre">Hora Cierre:</label>
-                    <input type="text" id="frm1_cierre" class="form-control" v-model="this.formUpd.hora_cierre">
-                    <br>
-                    <label for="frm1_voucher">Voucher:</label>
-                    <input type="text" id="frm1_voucher" class="form-control" v-model="this.formUpd.voucher">
-                    <br>
+                <label for="frm1_nombresitio">Nombre:</label>
+                <input
+                  type="text"
+                  id="frm1_nombresitio"
+                  class="form-control"
+                  v-model="formUpd.nombre_sitio"
+                >
+                <br>
+                <label for="frm1_url">Url:</label>
+                <input
+                  type="text"
+                  id="frm1_url"
+                  class="form-control"
+                  v-model="formUpd.url"
+                >
+                <br>
+                <label for="frm1_responsable">Responsable:</label>
+                <input
+                  type="text"
+                  id="frm1_responsable"
+                  class="form-control"
+                  v-model="formUpd.responsable"
+                >
+                <br>
+                <label for="frm1_apertura">Hora Apertura:</label>
+                <input
+                  type="text"
+                  id="frm1_apertura"
+                  class="form-control"
+                  v-model="formUpd.hora_apertura"
+                >
+                <br>
+                <label for="frm1_cierre">Hora Cierre:</label>
+                <input
+                  type="text"
+                  id="frm1_cierre"
+                  class="form-control"
+                  v-model="formUpd.hora_cierre"
+                >
+                <br>
 
-                    <div v-if="formTipo=='add'" class="form-group col-sm-12">
-                    <button type="button" @click="addSitio()"          class="btn btn-info"> Agregar Sitio   </button>
-                    </div>
-                    <div v-if="formTipo=='mod'" class="form-group col-sm-12">
-                    <button type="button" @click="updSitio(row.id)"    class="btn btn-info"> Modificar Sitio </button>
-                    </div>
-                </form>
-              </div>
+                <b-form-checkbox
+                      id="frm1_voucher"
+                      v-model="formUpd.voucher"
+                      name="checkbox-1"
+                      value=true
+                      unchecked-value=false
+                    >
+                      Voucher
+                    </b-form-checkbox>
+
+                <br>
+
+                <div v-if="formTipo=='add'" class="form-group col-sm-12">
+                  <button type="button" @click="addSitio()" class="btn btn-info">Agregar Sitio</button>
+                </div>
+                <div v-if="formTipo=='mod'" class="form-group col-sm-12">     
+                  <button type="button" @click="updSitio(row.id)" class="btn btn-info">Modificar Sitio</button>
+                </div>
+              </form>
+            </div>
           </b-card>
         </div>
 
         <!-- Columna Mapa -->
         <div class="col">
           <b-card class="mt-3" header="Mapa">
-          <gmap-autocomplete class="input" @place_changed="setPlace"></gmap-autocomplete>
-          <br>
-          <button @click="buscarSitio" class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"> Buscar </button>
+            <gmap-autocomplete class="input" @place_changed="setPlace"></gmap-autocomplete>
+            <br>
+            <button
+              @click="buscarSitio"
+              class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+            >Buscar</button>
 
-          <gmap-map :center="center" :zoom="17" style="width:100%;  height: 350px;">
-            <gmap-marker   :key="index" v-for="(m, index) in markers"
-              :position="m.position" :clickable="false"  :draggable="false"
-              :icon="m.position.icon"  @click="center=m.position" >
-            </gmap-marker>
-          </gmap-map>
-
+            <gmap-map :center="center" :zoom="17" style="width:100%;  height: 350px;">
+              <gmap-marker
+                :key="index"
+                v-for="(m, index) in markers"
+                :position="m.position"
+                :clickable="false"
+                :draggable="false"
+                :icon="m.position.icon"
+                @click="center=m.position"
+              ></gmap-marker>
+            </gmap-map>
           </b-card>
-          <input type="text" id="frm1_idsitio" class="form-control" v-model="this.formUpd.coordenadas" readonly>
+          <input
+            type="text"
+            id="frm1_idsitio"
+            class="form-control"
+            v-model="this.formUpd.coordenadas"
+            readonly
+          >
         </div>
-      <br>
-
+        <br>
       </div>
-
     </div>
   </div>
 </template>
@@ -136,40 +211,46 @@ export default {
 
   data: function() {
     return {
-
       alta: {
-        nombre_sitio:'',
-        url:'',
-        responsable:''
+        nombre_sitio: "prueba 1",
+        url: "",
+        responsable: ""
       },
 
       categoria: null,
       categoria_seleccionada: null,
       selected: null,
       options: [
-          { text: 'Restaurant',  value: 1 },
-          { text: 'Bar',         value: 2 },
-          { text: 'Teatro',      value: 3 },
-          { text: 'Cafeteria',   value: 4 },
-        ],
-      formTipo: '',
+        { text: "Restaurant", value: 1 },
+        { text: "Bar", value: 2 },
+        { text: "Teatro", value: 3 },
+        { text: "Cafeteria", value: 4 }
+      ],
+      formTipo: "",
       tablaSitios: true,
 
       formUpd: {
-        nombre_sitio	 : ''  ,
-        url            : ''  ,
-        latitud        : ''  ,
-        longitud       : ''  ,
-        responsable    : ''  ,
-        hora_apertura  : ''  ,
-        hora_cierre    : ''  ,
-        voucher        : ''
+        nombre_sitio: "",
+        url: "",
+        latitud: "",
+        longitud: "",
+        responsable: "",
+        hora_apertura: "",
+        hora_cierre: "",
+        voucher: ""
       },
 
       mapa: false,
       campoTest: "Test",
       rows: [],
-      columns: ['Id','Nombre','Barrio','URL','Hora Apertura','Hora Cierre'],
+      columns: [
+        "Id",
+        "Nombre",
+        "Barrio",
+        "URL",
+        "Hora Apertura",
+        "Hora Cierre"
+      ],
       action: [],
       url: "http://localhost:8090/api/sitios",
       urlCategorias: "http://localhost:8090/api/categorias",
@@ -229,47 +310,47 @@ export default {
 
   methods: {
     setPlace(place) {
-            this.currentPlace = place;
-          },
+      this.currentPlace = place;
+    },
     buscarSitio() {
-            if (this.currentPlace) {
+      if (this.currentPlace) {
+        const marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng(),
+          icon: img_posicion
+        };
 
-              const marker = {
-                lat: this.currentPlace.geometry.location.lat(),
-                lng: this.currentPlace.geometry.location.lng(),
-                icon: img_posicion
-              };
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
 
-              this.markers.push({ position: marker });
-              this.places.push(this.currentPlace);
-              this.center = marker;
+        // Se agregan los datos de latitud, longitud y barrio que se enviarán por servicio
+        this.sitio.barrio = this.currentPlace.vicinity;
+        this.sitio.latitud = this.currentPlace.geometry.location.lat();
+        this.sitio.longitud = this.currentPlace.geometry.location.lng();
 
-              // Se agregan los datos de latitud, longitud y barrio que se enviarán por servicio
-              this.sitio.barrio = this.currentPlace.vicinity;
-              this.sitio.latitud = this.currentPlace.geometry.location.lat();
-              this.sitio.longitud = this.currentPlace.geometry.location.lng();
+        // Se agrega propiedad del form
+        this.formUpd.latitud = this.sitio.latitud;
+        this.formUpd.longitud = this.sitio.longitud;
+        this.formUpd.barrio = this.sitio.barrio;
 
-              // Se agrega propiedad del form
-              this.formUpd.latitud = this.sitio.latitud 
-              this.formUpd.longitud = this.sitio.longitud
-              this.formUpd.coordenadas =  ('Lat: ' + this.sitio.latitud + ' || Long: ' + this.sitio.longitud)
-            }
-          },
+        this.formUpd.coordenadas =
+          "Lat: " + this.sitio.latitud + " || Long: " + this.sitio.longitud + " || Barrio: " + this.sitio.barrio;
+      }
+    },
 
-      ubicarSitio(pLat,pLon) {
+    ubicarSitio(pLat, pLon) {
+      const marker = {
+        lat: pLat,
+        lng: pLon,
+        icon: img_posicion
+      };
 
-              const marker = {
-                lat: pLat,
-                lng: pLon,
-                icon: img_posicion
-              };
+      this.markers.push({ position: marker });
+      this.places.push(this.currentPlace);
+      this.center = marker;
+    },
 
-              this.markers.push({ position: marker });
-              this.places.push(this.currentPlace);
-              this.center = marker;
-
-          },
-    
     listarSitiosBD(id_cat) {
       (this.rows = []),
         axios
@@ -295,10 +376,9 @@ export default {
           .catch(e => {
             // Capturamos los errores
             console.log(2);
-          }
-          )
+          });
     },
-        
+
     listarCategoria(id_cat) {
       this.mapa = false;
       this.formSitio = false;
@@ -306,16 +386,19 @@ export default {
       this.formVolver();
 
       //Setear Card Title
-      switch(id_cat){
-        case 1: this.config.card_title = "RESTAURANTES";
-        break;
-        case 2: this.config.card_title = "BARES";
-        break;       
-        case 3: this.config.card_title = "TEATROS";
-        break;          
+      switch (id_cat) {
+        case 1:
+          this.config.card_title = "RESTAURANTES";
+          break;
+        case 2:
+          this.config.card_title = "BARES";
+          break;
+        case 3:
+          this.config.card_title = "TEATROS";
+          break;
       }
-      this.listarSitiosBD(id_cat)
-    },       
+      this.listarSitiosBD(id_cat);
+    },
 
     cargarsitiosBD(id_cat) {
       this.mapa = true;
@@ -328,13 +411,16 @@ export default {
           let sitios = response.data;
           let image = "";
 
-          switch(this.categoria) {
-            case 1:image = img_resto;
-            break;
-            case 2:image = img_golf;
-            break;
-            case 3:image = img_teatro;
-            break;
+          switch (this.categoria) {
+            case 1:
+              image = img_resto;
+              break;
+            case 2:
+              image = img_golf;
+              break;
+            case 3:
+              image = img_teatro;
+              break;
           }
 
           for (var i = 0; i < sitios.length; i++) {
@@ -356,58 +442,54 @@ export default {
         });
     },
 
-    delSitio(idSitio){
-      alert("borrar: "+idSitio)
-      axios
-        .post(this.url + "/del/" + idSitio)
-        .then(response => {
-        })    
+    delSitio(idSitio) {
+      alert("borrar: " + idSitio);
+      axios.post(this.url + "/del/" + idSitio).then(response => {});
     },
 
     formVolver() {
-        this.tablaSitios = true
-        this.formTipo = ''
-        // Reset Campos
-        this.formUpd.id_sitio = ''
-        this.formUpd.nombreSitio = ''
-        this.formUpd.url = ''
-        this.formUpd.latitud = ''
-        this.formUpd.longitud = ''
-        this.formUpd.hora_apertura = ''
-        this.formUpd.hora_cierre = ''
-        this.formUpd.voucher = ''
+      this.tablaSitios = true;
+      this.formTipo = "";
+      // Reset Campos
+      this.formUpd.id_sitio = "";
+      this.formUpd.nombreSitio = "";
+      this.formUpd.url = "";
+      this.formUpd.latitud = "";
+      this.formUpd.longitud = "";
+      this.formUpd.hora_apertura = "";
+      this.formUpd.hora_cierre = "";
+      this.formUpd.voucher = "";
     },
 
     formAddSitio() {
-      this.tablaSitios = false
-      this.formTipo = 'add'
-      this.titulo = 'Alta de Nuevo Sitio'
-      
-      // Reset Campos
-        this.selected = null
-        this.formUpd.idSitio = ''
-        this.formUpd.nombre_sitio = ''
-        this.formUpd.responsable = ''
-        this.formUpd.url = ''
-        this.formUpd.latitud = ''
-        this.formUpd.longitud = ''
-        this.formUpd.hora_apertura = ''
-        this.formUpd.hora_cierre = ''
-        this.formUpd.voucher = ''
+      this.tablaSitios = false;
+      this.formTipo = "add";
+      this.titulo = "Alta de Nuevo Sitio";
 
+      // Reset Campos
+      this.selected = null;
+      this.formUpd.idSitio = "";
+      this.formUpd.nombre_sitio = "";
+      this.formUpd.responsable = "";
+      this.formUpd.url = "";
+      this.formUpd.latitud = "";
+      this.formUpd.longitud = "";
+      this.formUpd.hora_apertura = "";
+      this.formUpd.hora_cierre = "";
+      this.formUpd.voucher = "";
     },
     formModSitio(idSitio) {
-      this.tablaSitios = false
-      this.selSitio(idSitio)
-      this.formTipo = 'mod'  
-      this.titulo = 'Modificacion de Sitio'  
+      this.tablaSitios = false;
+      this.selSitio(idSitio);
+      this.formTipo = "mod";
+      this.titulo = "Modificacion de Sitio";
     },
 
     addSitio() {
-      axios
+     axios
         .post(this.url + "/add/", 
-                    {
-                      id_categoria:     this.categoria_seleccionada,
+        {          
+                      id_categoria:     this.selected,
                       nombre_sitio:     this.formUpd.nombre_sitio,
                       barrio:           this.formUpd.barrio,
                       latitud:          this.formUpd.latitud,
@@ -426,62 +508,62 @@ export default {
         });
     },
 
-    updSitio(){
-      alert("hace el update")
-      axios         
-        .post(this.url + "/upd/", 
-                    {
-                      id_sitio:         this.formUpd.idSitio,
-                      id_categoria:     this.categoria_seleccionada,
-                      nombre_sitio:     this.formUpd.nombre_sitio,
-                      barrio:           this.formUpd.barrio,
-                      latitud:          this.formUpd.latitud,
-                      longitud:         this.formUpd.longitud,
-                      url:              this.formUpd.url,
-                      responsable:      this.formUpd.responsable,
-                      hora_apertura:    this.formUpd.hora_apertura,
-                      hora_cierre:      this.formUpd.hora_cierre,
-                      voucher:          this.formUpd.voucher
+    updSitio() {
+      alert("hace el update");
+      axios
+        .post(this.url + "/upd/", {
+          id_sitio: this.formUpd.idSitio,
+          id_categoria: this.categoria_seleccionada,
+          nombre_sitio: this.formUpd.nombre_sitio,
+          barrio: this.formUpd.barrio,
+          latitud: this.formUpd.latitud,
+          longitud: this.formUpd.longitud,
+          url: this.formUpd.url,
+          responsable: this.formUpd.responsable,
+          hora_apertura: this.formUpd.hora_apertura,
+          hora_cierre: this.formUpd.hora_cierre,
+          voucher: this.formUpd.voucher
         })
         .then(function(response) {
           console.log(response.status);
         })
         .catch(function(error) {
           console.log(response.status);
-        }); 
+        });
     },
 
     selSitio(idSitio) {
-        axios
-          .get(this.url + "/sel/" + idSitio)
-          .then(response => {
+      axios
+        .get(this.url + "/sel/" + idSitio)
+        .then(response => {
+          this.sitioUpd = response.data;
+          
+          this.selected = this.sitioUpd[0].id_categoria;
+          this.formUpd.idSitio = idSitio;
+          this.formUpd.nombre_sitio = this.sitioUpd[0].nombre_sitio;
+          this.formUpd.url = this.sitioUpd[0].url;
+          this.formUpd.responsable = this.sitioUpd[0].responsable;
+          this.formUpd.latitud = this.sitioUpd[0].latitud;
+          this.formUpd.longitud = this.sitioUpd[0].longitud;
+          this.formUpd.hora_apertura = this.sitioUpd[0].hora_apertura;
+          this.formUpd.hora_cierre = this.sitioUpd[0].hora_cierre;
+          this.formUpd.voucher = this.sitioUpd[0].voucher;
+          this.formUpd.coordenadas =
+            "Lat: " +
+            this.sitioUpd[0].latitud +
+            " || Long: " +
+            this.sitioUpd[0].longitud;
 
-            this.sitioUpd = response.data;   
-            this.selected              =      this.sitioUpd[0].id_categoria
-            this.formUpd.idSitio       =      idSitio
-            this.formUpd.nombre_sitio  =      this.sitioUpd[0].nombre_sitio
-            this.formUpd.url           =      this.sitioUpd[0].url
-            this.formUpd.responsable   =      this.sitioUpd[0].responsable
-            this.formUpd.latitud       =      this.sitioUpd[0].latitud
-            this.formUpd.longitud      =      this.sitioUpd[0].longitud
-            this.formUpd.hora_apertura =      this.sitioUpd[0].hora_apertura
-            this.formUpd.hora_cierre   =      this.sitioUpd[0].hora_cierre
-            this.formUpd.voucher       =      this.sitioUpd[0].voucher
-            this.formUpd.coordenadas   =      ('Lat: ' + this.sitioUpd[0].latitud + ' || Long: ' + this.sitioUpd[0].longitud)
-            
-            ubicarSitio(this.sitioUpd[0].latitud, this.sitioUpd[0].longitud)
+          ubicarSitio(this.sitioUpd[0].latitud, this.sitioUpd[0].longitud);
+        })
 
-            })
-
-          .catch(e => {
-            // Capturamos los errores
-            console.log(2);
-          });
+        .catch(e => {
+          // Capturamos los errores
+          console.log(2);
+        });
     }
-
   }
-}
-    
+};
 </script>
 
 <style>
