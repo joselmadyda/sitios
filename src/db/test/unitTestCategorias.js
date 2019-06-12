@@ -1,6 +1,7 @@
 const testGetCategorias = require('./testGetCategorias')
 const testGetCategoriaById = require('./testGetCategoriaById')
 const testDeleteCategoriaById = require('./testDeleteCategoriaById')
+const testAddCategoria = require('./testAddCategoria')
 
 const serverUrl = 'http://127.0.0.1'
 const serverPort = '8090'
@@ -14,6 +15,9 @@ async function main() {
     await testGetCategorias(urlCategorias)
     await testGetCategoriaById(urlCategorias)
     await testDeleteCategoriaById(urlCategorias)
+
+    
+    //await testAddCategoria(urlCategorias)
 }
 
 main()
