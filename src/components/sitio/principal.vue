@@ -62,7 +62,7 @@
               <td>{{row.apertura}}</td>
               <td>{{row.cierre}}</td>
               <td><button type="button"  @click="formModSitio(row.id)"  class="btn btn-block btn-outline-primary waves-effect" >Modificar</button>              </td>
-              <td><button type="button"  @click="delSitio(row.id)"  class="btn btn-block btn-outline-primary waves-effect" >Borrar</button>
+              <td><button type="button"  @click="modalDel(row.id)"  class="btn btn-block btn-outline-primary waves-effect" >Borrar</button>
               </td>
             </tr>
           </tbody>
@@ -197,7 +197,16 @@
         <br>
       </div>
     </div>
+      <b-modal ref="my-modal" hide-footer title="Confirmar borrado">
+        <div class="d-block text-center">
+          <h3>¿Seguro que desea borrar el sitio:  ?</h3>
+          <input type="text" v-model="email">
+        </div>
+        <b-button class="mt-2" variant="outline-warning" block @click="delSitio(sitioABorrar)">Si</b-button>
+        <b-button class="mt-2" variant="outline-warning" block @click="hideModal">No</b-button>
+      </b-modal>
   </div>
+  
 </template>
 
 <script>
@@ -211,12 +220,8 @@ export default {
 
   data: function() {
     return {
-      alta: {
-        nombre_sitio: "prueba 1",
-        url: "",
-        responsable: ""
-      },
-
+ 
+      sitioABorrar: null,
       categoria: null,
       categoria_seleccionada: null,
       selected: null,
@@ -400,6 +405,16 @@ export default {
       this.listarSitiosBD(id_cat);
     },
 
+modalDel(IdSitio){
+      sitioABorrar=IdSitio
+      this.$refs["my-modal"].show();
+},
+
+  hideModal() {
+      this.$refs["my-modal"].hide(); 
+      
+      },
+
     cargarsitiosBD(id_cat) {
       this.mapa = true;
       this.markers = [];
@@ -443,8 +458,12 @@ export default {
     },
 
     delSitio(idSitio) {
-      alert("borrar: " + idSitio);
-      axios.post(this.url + "/del/" + idSitio).then(response => {});
+      //alert("borrar: " + idSitio);
+
+      axios.post(this.url + "/del/" + idSitio).then(response => {
+
+//     alert(response.data.status)
+      });
     },
 
     formVolver() {
@@ -509,20 +528,20 @@ export default {
     },
 
     updSitio() {
-      alert("hace el update");
+   
       axios
         .post(this.url + "/upd/", {
-          id_sitio: this.formUpd.idSitio,
-          id_categoria: this.categoria_seleccionada,
-          nombre_sitio: this.formUpd.nombre_sitio,
-          barrio: this.formUpd.barrio,
-          latitud: this.formUpd.latitud,
-          longitud: this.formUpd.longitud,
-          url: this.formUpd.url,
-          responsable: this.formUpd.responsable,
-          hora_apertura: this.formUpd.hora_apertura,
-          hora_cierre: this.formUpd.hora_cierre,
-          voucher: this.formUpd.voucher
+                      id_categoria:     this.selected,
+                      id_sitio:         this.formUpd.idSitio,
+                      nombre_sitio:     this.formUpd.nombre_sitio,
+                      barrio:           this.formUpd.barrio,
+                      latitud:          this.formUpd.latitud,
+                      longitud:         this.formUpd.longitud,
+                      url:              this.formUpd.url,
+                      responsable:      this.formUpd.responsable,
+                      hora_apertura:    this.formUpd.hora_apertura,
+                      hora_cierre:      this.formUpd.hora_cierre,
+                      voucher:          this.formUpd.voucher
         })
         .then(function(response) {
           console.log(response.status);
@@ -537,9 +556,9 @@ export default {
         .get(this.url + "/sel/" + idSitio)
         .then(response => {
           this.sitioUpd = response.data;
-          
+
           this.selected = this.sitioUpd[0].id_categoria;
-          this.formUpd.idSitio = idSitio;
+          this.formUpd.idSitio = idSitio; 
           this.formUpd.nombre_sitio = this.sitioUpd[0].nombre_sitio;
           this.formUpd.url = this.sitioUpd[0].url;
           this.formUpd.responsable = this.sitioUpd[0].responsable;

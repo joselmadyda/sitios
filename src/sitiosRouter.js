@@ -95,7 +95,8 @@ router.post('/del/:idsitio/', async (req, res) => {
     console.log(`POSTING DELETE: ${baseURI}${req.url}`)
     try {
         const resultado = await sitiosDAO.deleteByIdSitio(req.params.idsitio)
-        res.status(200).json(resultado)
+        const mensajeResponse = { status: 'SITIO ELIMINADO CORRECTAMENTE', resultado }
+        res.status(201).json(mensajeResponse)
     } catch (err) {
         res.status(err.status).json(err)
     }
