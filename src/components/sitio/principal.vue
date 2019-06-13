@@ -46,15 +46,15 @@
       </div>
 
       <!-- fila3 --->
-      <div v-if="tablaSitios == true" class="row">
+      <div v-show="tablaSitios == true" class="row">
         <table class="table table-hover table-sm">
           <thead>
-            <td v-for="column in columns">{{column}}</td>
+            <td v-for="(column,index) in columns" :key="index">{{column}}</td>
             <td></td>
             <td></td>
           </thead>
           <tbody>
-            <tr v-for="row in rows">
+            <tr v-for="row in rows" :key="row.id">
               <td>{{row.id}}</td>
               <td>{{row.nombre}}</td>
               <td>{{row.barrio}}</td>
@@ -69,8 +69,13 @@
         </table>
       </div>
 
+      
+<!-- 
+      <input type="text" id="frm1_url" class="form-control"  v-model="test_mensaje">
+      <button type="button"  @click="showMessages(test_mensaje)"  class="btn btn-block btn-outline-primary waves-effect" >Mensaje</button> -->
+
       <!-- fila4--->
-      <div v-if="formTipo =='add' || formTipo == 'mod' " class="row">
+      <div v-show="formTipo =='add' || formTipo == 'mod' " class="row">
         <button
           type="button"
           @click="formVolver()"
@@ -79,7 +84,7 @@
       </div>
 
       <!-- fila5 --->
-      <div v-if="formTipo =='add' || formTipo == 'mod' " class="row">
+      <div v-show="formTipo =='add' || formTipo == 'mod' " class="row">
         <div class="col">
           <b-card class="mt-3" v-bind:header="this.titulo">
             <div>
@@ -88,7 +93,7 @@
                 <b-form-radio-group v-model="selected" :options="options" name="radio-inline"></b-form-radio-group>
                 <br>
 
-                <div v-if="formTipo == 'mod'">
+                <div v-show="formTipo == 'mod'">
                   <label for="frm1_idsitio">IdSitio:</label>
                   <input
                     type="text"
@@ -153,10 +158,10 @@
 
                 <br>
 
-                <div v-if="formTipo=='add'" class="form-group col-sm-12">
+                <div v-show="formTipo=='add'" class="form-group col-sm-12">
                   <button type="button" @click="addSitio()" class="btn btn-info">Agregar Sitio</button>
                 </div>
-                <div v-if="formTipo=='mod'" class="form-group col-sm-12">     
+                <div v-show="formTipo=='mod'" class="form-group col-sm-12">     
                   <button type="button" @click="updSitio(row.id)" class="btn btn-info">Modificar Sitio</button>
                 </div>
               </form>
@@ -193,6 +198,12 @@
             v-model="this.formUpd.coordenadas"
             readonly
           >
+          <b-card>
+              {{formUpd}}
+          </b-card>
+
+
+
         </div>
         <br>
       </div>
@@ -200,7 +211,7 @@
       <b-modal ref="my-modal" hide-footer title="Confirmar borrado">
         <div class="d-block text-center">
           <h3>¿Seguro que desea borrar el sitio:  ?</h3>
-          <input type="text" v-model="email">
+   
         </div>
         <b-button class="mt-2" variant="outline-warning" block @click="deleteSitio()">Si</b-button>
         <b-button class="mt-2" variant="outline-warning" block @click="hideModal">No</b-button>
@@ -220,8 +231,11 @@ export default {
 
   data: function() {
     return {
+
+      test_mensaje: "",
  
       sitioABorrar: null,
+      nombreSitioABorrar: "",
       categoria: null,
       categoria_seleccionada: null,
       selected: null,
@@ -458,20 +472,25 @@ modalDel(IdSitio){
     },
 
     deleteSitio() {
-      //alert("borrar: " + idSitio);
+      axios.post(this.url + "/del/" + this.sitioABorrar)        
+        .then( response => { 
+          //console.log(response.data.status);
+          this.hideModal()
+          this.showMessages(response.data.status);
+          this.listarCategoria(this.categoria)
+        }
+        ).catch(function (error) {
+          this.showMessages(response.data.status)
 
-      axios.post(this.url + "/del/" + this.sitioABorrar).then(response => {
-
-//     alert(response.data.status)
-      });
+      })
     },
-
+  
     formVolver() {
       this.tablaSitios = true;
       this.formTipo = "";
       // Reset Campos
-      this.formUpd.id_sitio = "";
-      this.formUpd.nombreSitio = "";
+      this.formUpd.idSitio = "";
+      this.formUpd.nombre_sitio = "";
       this.formUpd.url = "";
       this.formUpd.latitud = "";
       this.formUpd.longitud = "";
@@ -519,20 +538,28 @@ modalDel(IdSitio){
                       hora_cierre:      this.formUpd.hora_cierre,
                       voucher:          this.formUpd.voucher
         })
-        .then(function(response) {
-          console.log(response.status);
+        .then( response => { 
+          //console.log(response.data.status);
+          this.showMessages(response.data.status);
         })
         .catch(function(error) {
-          console.log(response.status);
+         this.showMessages(response.data.status);
         });
     },
 
+    showMessages(mensaje) {
+      this.$noty.info(mensaje, {
+        killer: true,
+        timeout: 3000,
+        layout: "topRight",
+        progressBar: true
+      });
+    },
     updSitio() {
    
       axios
         .post(this.url + "/upd/", {
                       id_categoria:     this.selected,
-                      id_sitio:         this.formUpd.idSitio,
                       nombre_sitio:     this.formUpd.nombre_sitio,
                       barrio:           this.formUpd.barrio,
                       latitud:          this.formUpd.latitud,
@@ -543,8 +570,9 @@ modalDel(IdSitio){
                       hora_cierre:      this.formUpd.hora_cierre,
                       voucher:          this.formUpd.voucher
         })
-        .then(function(response) {
+        .then(response => {
           console.log(response.status);
+          this.showMessages("Test");
         })
         .catch(function(error) {
           console.log(response.status);

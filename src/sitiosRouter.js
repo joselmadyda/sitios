@@ -77,13 +77,12 @@ router.post('/upd/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
     try {
-
         const sitioUpdated = req.body
         console.log(sitioUpdated)
 
-        const sitioAct = await sitiosDAO.updateSitio(sitioUpdated)
-        const mensajeResponse = { status: 'SITIO MODIFICADO CORRECTAMENTE', sitioAct }
-        res.status(201).json(mensajeResponse)
+        // const sitioAct = await sitiosDAO.updateSitio(sitioUpdated)
+        // const mensajeResponse = { status: 'SITIO MODIFICADO CORRECTAMENTE', sitioAct }
+        // res.status(201).json(mensajeResponse)
         
     } catch (err) {
         res.status(err.status).json(err)
