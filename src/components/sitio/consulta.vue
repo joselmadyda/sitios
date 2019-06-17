@@ -168,16 +168,7 @@ export default {
       }
 
       axios
-        .get(
-          this.url +
-            "/" +
-            distancia +
-            "/" +
-            id_cat +
-            "/" +
-            this.latitudActual +
-            "/" +
-            this.longituActual
+        .get(`${this.url}/${distancia}/${id_cat}/${this.latitudActual}/${this.longituActual}`
         )
         .then(response => {
           // Obtenemos los datos que vienen desde el servidor
