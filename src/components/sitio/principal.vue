@@ -61,18 +61,28 @@
               <td>{{row.url}}</td>
               <td>{{row.apertura}}</td>
               <td>{{row.cierre}}</td>
-              <td><button type="button"  @click="formModSitio(row.id)"  class="btn btn-block btn-outline-primary waves-effect" >Modificar</button>              </td>
-              <td><button type="button"  @click="modalDel(row.id)"  class="btn btn-block btn-outline-primary waves-effect" >Borrar</button>
+              <td>
+                <button
+                  type="button"
+                  @click="formModSitio(row.id)"
+                  class="btn btn-block btn-outline-primary waves-effect"
+                >Modificar</button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  @click="modalDel(row.id)"
+                  class="btn btn-block btn-outline-primary waves-effect"
+                >Borrar</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      
-<!-- 
+      <!-- 
       <input type="text" id="frm1_url" class="form-control"  v-model="test_mensaje">
-      <button type="button"  @click="showMessages(test_mensaje)"  class="btn btn-block btn-outline-primary waves-effect" >Mensaje</button> -->
+      <button type="button"  @click="showMessages(test_mensaje)"  class="btn btn-block btn-outline-primary waves-effect" >Mensaje</button>-->
 
       <!-- fila4--->
       <div v-show="formTipo =='add' || formTipo == 'mod' " class="row">
@@ -114,12 +124,7 @@
                 >
                 <br>
                 <label for="frm1_url">Url:</label>
-                <input
-                  type="text"
-                  id="frm1_url"
-                  class="form-control"
-                  v-model="formUpd.url"
-                >
+                <input type="text" id="frm1_url" class="form-control" v-model="formUpd.url">
                 <br>
                 <label for="frm1_responsable">Responsable:</label>
                 <input
@@ -147,22 +152,24 @@
                 <br>
 
                 <b-form-checkbox
-                      id="frm1_voucher"
-                      v-model="formUpd.voucher"
-                      name="checkbox-1"
-                      value=true
-                      unchecked-value=false
-                    >
-                      Voucher
-                    </b-form-checkbox>
+                  id="frm1_voucher"
+                  v-model="formUpd.voucher"
+                  name="checkbox-1"
+                  value="true"
+                  unchecked-value="false"
+                >Voucher</b-form-checkbox>
 
                 <br>
 
                 <div v-show="formTipo=='add'" class="form-group col-sm-12">
                   <button type="button" @click="addSitio()" class="btn btn-info">Agregar Sitio</button>
                 </div>
-                <div v-show="formTipo=='mod'" class="form-group col-sm-12">     
-                  <button type="button" @click="updSitio(row.id)" class="btn btn-info">Modificar Sitio</button>
+                <div v-show="formTipo=='mod'" class="form-group col-sm-12">
+                  <button
+                    type="button"
+                    @click="updSitio(row.id)"
+                    class="btn btn-info"
+                  >Modificar Sitio</button>
                 </div>
               </form>
             </div>
@@ -198,26 +205,19 @@
             v-model="this.formUpd.coordenadas"
             readonly
           >
-          <b-card>
-              {{formUpd}}
-          </b-card>
-
-
-
+          <b-card>{{formUpd}}</b-card>
         </div>
         <br>
       </div>
     </div>
-      <b-modal ref="my-modal" hide-footer title="Confirmar borrado">
-        <div class="d-block text-center">
-          <h3>¿Seguro que desea borrar el sitio:  ?</h3>
-   
-        </div>
-        <b-button class="mt-2" variant="outline-warning" block @click="deleteSitio()">Si</b-button>
-        <b-button class="mt-2" variant="outline-warning" block @click="hideModal">No</b-button>
-      </b-modal>
+    <b-modal ref="my-modal" hide-footer title="Confirmar borrado">
+      <div class="d-block text-center">
+        <h3>¿Seguro que desea borrar el sitio: ?</h3>
+      </div>
+      <b-button class="mt-2" variant="outline-warning" block @click="deleteSitio()">Si</b-button>
+      <b-button class="mt-2" variant="outline-warning" block @click="hideModal">No</b-button>
+    </b-modal>
   </div>
-  
 </template>
 
 <script>
@@ -231,9 +231,8 @@ export default {
 
   data: function() {
     return {
-
       test_mensaje: "",
- 
+
       sitioABorrar: null,
       nombreSitioABorrar: "",
       categoria: null,
@@ -292,7 +291,7 @@ export default {
         lat: 0,
         lng: 0
       },
-
+      titulo: "",
       infoWinOpen: false,
       currentMidx: null,
       //optional: offset infowindow so it visually sits nicely on top of our marker
@@ -354,7 +353,12 @@ export default {
         this.formUpd.barrio = this.sitio.barrio;
 
         this.formUpd.coordenadas =
-          "Lat: " + this.sitio.latitud + " || Long: " + this.sitio.longitud + " || Barrio: " + this.sitio.barrio;
+          "Lat: " +
+          this.sitio.latitud +
+          " || Long: " +
+          this.sitio.longitud +
+          " || Barrio: " +
+          this.sitio.barrio;
       }
     },
 
@@ -419,15 +423,14 @@ export default {
       this.listarSitiosBD(id_cat);
     },
 
-modalDel(IdSitio){
-      this.sitioABorrar=IdSitio
+    modalDel(IdSitio) {
+      this.sitioABorrar = IdSitio;
       this.$refs["my-modal"].show();
-},
+    },
 
-  hideModal() {
-      this.$refs["my-modal"].hide(); 
-      
-      },
+    hideModal() {
+      this.$refs["my-modal"].hide();
+    },
 
     cargarsitiosBD(id_cat) {
       this.mapa = true;
@@ -472,19 +475,19 @@ modalDel(IdSitio){
     },
 
     deleteSitio() {
-      axios.post(this.url + "/del/" + this.sitioABorrar)        
-        .then( response => { 
+      axios
+        .post(this.url + "/del/" + this.sitioABorrar)
+        .then(response => {
           //console.log(response.data.status);
-          this.hideModal()
+          this.hideModal();
           this.showMessages(response.data.status);
-          this.listarCategoria(this.categoria)
-        }
-        ).catch(function (error) {
-          this.showMessages(response.data.status)
-
-      })
+          this.listarCategoria(this.categoria);
+        })
+        .catch(function(error) {
+          this.showMessages(response.data.status);
+        });
     },
-  
+
     formVolver() {
       this.tablaSitios = true;
       this.formTipo = "";
@@ -524,26 +527,25 @@ modalDel(IdSitio){
     },
 
     addSitio() {
-     axios
-        .post(this.url + "/add/", 
-        {          
-                      id_categoria:     this.selected,
-                      nombre_sitio:     this.formUpd.nombre_sitio,
-                      barrio:           this.formUpd.barrio,
-                      latitud:          this.formUpd.latitud,
-                      longitud:         this.formUpd.longitud,
-                      url:              this.formUpd.url,
-                      responsable:      this.formUpd.responsable,
-                      hora_apertura:    this.formUpd.hora_apertura,
-                      hora_cierre:      this.formUpd.hora_cierre,
-                      voucher:          this.formUpd.voucher
+      axios
+        .post(this.url + "/add/", {
+          id_categoria: this.selected,
+          nombre_sitio: this.formUpd.nombre_sitio,
+          barrio: this.formUpd.barrio,
+          latitud: this.formUpd.latitud,
+          longitud: this.formUpd.longitud,
+          url: this.formUpd.url,
+          responsable: this.formUpd.responsable,
+          hora_apertura: this.formUpd.hora_apertura,
+          hora_cierre: this.formUpd.hora_cierre,
+          voucher: this.formUpd.voucher
         })
-        .then( response => { 
+        .then(response => {
           //console.log(response.data.status);
           this.showMessages(response.data.status);
         })
         .catch(function(error) {
-         this.showMessages(response.data.status);
+          this.showMessages(response.data.status);
         });
     },
 
@@ -556,19 +558,18 @@ modalDel(IdSitio){
       });
     },
     updSitio() {
-   
       axios
         .post(this.url + "/upd/", {
-                      id_categoria:     this.selected,
-                      nombre_sitio:     this.formUpd.nombre_sitio,
-                      barrio:           this.formUpd.barrio,
-                      latitud:          this.formUpd.latitud,
-                      longitud:         this.formUpd.longitud,
-                      url:              this.formUpd.url,
-                      responsable:      this.formUpd.responsable,
-                      hora_apertura:    this.formUpd.hora_apertura,
-                      hora_cierre:      this.formUpd.hora_cierre,
-                      voucher:          this.formUpd.voucher
+          id_categoria: this.selected,
+          nombre_sitio: this.formUpd.nombre_sitio,
+          barrio: this.formUpd.barrio,
+          latitud: this.formUpd.latitud,
+          longitud: this.formUpd.longitud,
+          url: this.formUpd.url,
+          responsable: this.formUpd.responsable,
+          hora_apertura: this.formUpd.hora_apertura,
+          hora_cierre: this.formUpd.hora_cierre,
+          voucher: this.formUpd.voucher
         })
         .then(response => {
           console.log(response.status);
@@ -586,7 +587,7 @@ modalDel(IdSitio){
           this.sitioUpd = response.data;
 
           this.selected = this.sitioUpd[0].id_categoria;
-          this.formUpd.idSitio = idSitio; 
+          this.formUpd.idSitio = idSitio;
           this.formUpd.nombre_sitio = this.sitioUpd[0].nombre_sitio;
           this.formUpd.url = this.sitioUpd[0].url;
           this.formUpd.responsable = this.sitioUpd[0].responsable;

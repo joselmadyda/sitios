@@ -4,8 +4,8 @@
       
       <b-navbar toggleable="lg" type="dark" variant="info">
         <b-navbar-brand href="#">
-          <img src="https://placekitten.com/g/30/30" class="d-inline-block align-top" alt="Kitten">
-          SitiosVip
+          <img src="../src/assets/icono.png" width="50px" class="d-inline-block align-top" alt="Kitten">
+
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -17,13 +17,7 @@
             <b-nav-item href="/components/sitio/abm#/sitio/graficos">Graficos</b-nav-item>
           </b-navbar-nav>
 
-          <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-            <b-nav-form>
-              <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar Sitio"></b-form-input>
-              <b-button size="sm" class="my-2 my-sm-0">Buscar</b-button>
-            </b-nav-form>
-          </b-navbar-nav>
+    
         </b-collapse>
       </b-navbar>
     </div>

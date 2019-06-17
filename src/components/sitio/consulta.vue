@@ -259,17 +259,18 @@ export default {
     geolocate: function() {
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {
-          lat: -34.609953,
-          lng: -58.4292301
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
         };
+        
         this.marker = {
-          lat: -34.609953,
-          lng: -58.4292301,
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
           icon: img_posicion
         };
 
-        this.latitudActual = -34.609953;
-        this.longituActual = -58.4292301;
+        this.latitudActual = position.coords.latitude
+        this.longituActual = position.coords.longitude
 
         this.markers.push({ position: this.marker });
       });
@@ -283,7 +284,7 @@ export default {
         });
       }
 
- if (this.selectedCategories.length == 0) {
+      if (this.selectedCategories.length == 0) {
         this.$noty.info("Selecciona al menos una categoría!", {
           killer: true,
           timeout: 3000,
@@ -320,7 +321,7 @@ export default {
     distanciaRadial() {
       this.colocarSitiosEnMapa();
     },
-    selectedCategories() {      
+    selectedCategories() {
       //Cuando se modifica el array de categorias seleccionadas, disparamos el método colocarSitiosEnMapa
       this.colocarSitiosEnMapa();
     }
