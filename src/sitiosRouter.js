@@ -122,10 +122,12 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
         if (resultado) {
 
             if (resultado.length > 0) {
-                //objBarrioResult.push({ status: 'SITIOS ENCONTRADOS' })
+                
+                //Armar objeto con las coordenadas de los sitios que se encuentren dentro de la distancia ingresada
+
                 for (var i = 0; i < resultado.length; i++) {
                     let distancia = obtenerSitiosporDistancia(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
-                    console.log(distancia)
+                    
                     //Verificar distancia según coordenadas de entrada
                     if (distancia <= req.params.distancia) {
 
