@@ -1,5 +1,6 @@
 <template>
 <div>
+  <!-- Se muestra el componente apexchart que distribuye los valores de lo objetos options (tipo de gráfico y barrio) y series (datos por categoría) -->
   <apexchart width="1200" type="bar" :options="options" :series="series"></apexchart>
 </div>
 </template>

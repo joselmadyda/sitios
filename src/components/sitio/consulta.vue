@@ -1,12 +1,13 @@
 <template>
   <div>
+    <!-- Botón Inicial - Comienzo de circuito realiza la geolocalización actual para posicionar las coordendas actuales en el mapa-->
     <button
       type="button"
       @click="geolocate()"
       class="btn btn-block btn-outline-primary waves-effect"
     >LOCALIZAME</button>
     <br>
-
+    <!-- Si el indicador de Localización no se activó (true) no se muestra el mapa y la tabla de resultados -->
     <span v-if="indicadorLocalizacion == true">
       <div>
         <label for="range-2">
@@ -22,7 +23,7 @@
           step="0.5"
         ></b-form-input>
       </div>
-
+      <!-- Se muestran las categorías en un checkbox group leyendo un objeto de categorías [selectedCategories] en este caso-->
       <div>
         <b-form-group>
           <b-form-checkbox-group v-model="selectedCategories" :options="optionsCategorias" switches></b-form-checkbox-group>
@@ -30,6 +31,7 @@
       </div>
 
       <br>
+      <!--Mapa Google Maps-->
       <gmap-map :center="center" :zoom="14" style="width:100%;  height: 500px;">
         <gmap-marker
           :key="index"
@@ -42,6 +44,7 @@
         ></gmap-marker>
       </gmap-map>
       <br>
+      <!--Tabla de Sitios -->
       <table border="0" style="width:100%">
         <tr>
           <th>Categoría</th>
@@ -49,10 +52,9 @@
           <th>URL</th>
           <th>Responsable</th>
           <th>Distancia</th>
-
           <th>Promoción</th>
         </tr>
-
+        <!-- Se recorre el objeto markers, para listar todos los puntos en el mapa de acuerdo a sus coordenadas -->
         <tr v-for="m in markers" :key="m.index">
           <td v-if="m.position.id_cat == 1">
             <img :src="imagenResto" width="25">
@@ -63,13 +65,12 @@
           <td v-if="m.position.id_cat == 3">
             <img :src="imagenTeatro" width="25">
           </td>
-
           <td>{{m.position.nombre}}</td>
           <td>{{m.position.url}}</td>
           <td>{{m.position.responsable}}</td>
           <td>{{m.position.distancia}}</td>
-
           <td v-if="m.position.voucher == 1">
+            <!--Envío de mail: se despliega una ventana modal para que se pueda ingrear una dirección de email -->
             <b-button id="show-btn" @click="showModal(m.position.id_cat)">
               <img :src="imagenEmail" width="20">
             </b-button>
@@ -83,17 +84,15 @@
           <h3>Ingresar correo</h3>
           <input type="text" v-model="email">
         </div>
+        <!--Envío de mail -->
         <b-button class="mt-2" variant="outline-warning" block @click="enviarMail">Enviar</b-button>
       </b-modal>
     </span>
   </div>
 </template>
 
-
-
-
-
 <script>
+//Se importan las imágenes que se representarán en el mapa y en las tablas
 import img_teatro from "../../assets/teatro.png";
 import img_resto from "../../assets/resto.png";
 import img_golf from "../../assets/golf.png";
@@ -104,6 +103,8 @@ export default {
   name: "GoogleMap",
   data() {
     return {
+      //Se inicializan las propiedades de nuestro modelo
+
       //Coordenadas por default [[ORT]]
       center: { lat: -34.609953, lng: -58.4292301 },
       latActual: "",
@@ -119,10 +120,9 @@ export default {
         { text: "Veterinarias (próximamente)", value: "5", disabled: true },
         { text: "Starbucks (próximamente)", value: "6", disabled: true }
       ],
-      //currentCoordinates: {lat: "", lng: ""},
       currentPlace: null,
       url: "http://localhost:8090/api/sitios",
-      emailUrl: "http://localhost:3000/api/email",
+      //emailUrl: "http://localhost:3000/api/email",
       info: "",
       categoria: null,
       categoria1: false,
@@ -147,11 +147,12 @@ export default {
   },
 
   methods: {
-    // receives a place object via the autocomplete component
+    //Se setea el objeto currentPlace por medio de el ingreso manual de una dirección
     setPlace(place) {
       this.currentPlace = place;
     },
-
+    //Método que recibe id de categoría y distancia (km). Por medio de axios, realiza una consulta al servidor por get y si se obtiene resultado
+    //por el .then de la promesa, se listarán en una tabla desde el objeto sitios, caso contrario hace un console.log pero no devuelve nada en pantalla
     filtrarSitiosBD(id_cat, distancia) {
       let image = "";
 
@@ -180,7 +181,7 @@ export default {
             this.longituActual
         )
         .then(response => {
-          // Obtenemos los datos
+          // Obtenemos los datos que vienen desde el servidor
           let sitios = response.data;
           for (var i = 0; i < sitios.length; i++) {
             const marker = {
@@ -191,9 +192,7 @@ export default {
               id_cat: id_cat,
               voucher: sitios[i].voucher,
               distancia: sitios[i].distancia,
-
               abiertoCerrado: true,
-
               url: sitios[i].url,
               responsable: sitios[i].responsable
             };
@@ -204,86 +203,56 @@ export default {
           console.log(response.data);
         });
     },
+    //Método que muestra la ventana modal para el envío de mail
     showModal(param) {
       this.emailCat = param;
       this.$refs["my-modal"].show();
     },
+    //Método que oculta la ventana modal para el envío de mail
     hideModal() {
       this.$refs["my-modal"].hide();
     },
-    identificarHorario() {
-      var f = new Date();
-      cad = f.getHours();
-
-      return cad;
-    },
-
+    //Método que consume servicio de envío de mail por .get.
     enviarMail() {
       axios
-        .get(this.emailUrl + "/" + this.email)
+        .get(this.url + "/email/" + this.email)
         .then(response => {
           alert("Email enviado");
           this.hideModal();
         })
         .catch(e => {
-          console.log(2);
+          console.log(response.data);
         });
     },
-    buscarSitio() {
-      if (this.currentPlace) {
-        const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng(),
-          icon: img_posicion
-        };
-
-        this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-      }
-    },
-    addMarker() {
-      if (this.currentPlace) {
-        const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng(),
-          icon: image
-        };
-        this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-
-        this.currentPlace = null;
-      }
-    },
+    //Método que generar la geolocalización actual y el posicionamiento en el mapa de dichas coordenadas
     geolocate: function() {
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        
         this.marker = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
           icon: img_posicion
         };
-
-        this.latitudActual = position.coords.latitude
-        this.longituActual = position.coords.longitude
+        this.latitudActual = position.coords.latitude;
+        this.longituActual = position.coords.longitude;
 
         this.markers.push({ position: this.marker });
       });
       this.indicadorLocalizacion = true;
-      if (this.distanciaRadial == 0) {
-        this.$noty.info("Arrastrá el scroll para obtener resultados!", {
+
+      //Mensaje que se muestra cuando la distanciaRadial no se ha modificado valor 1
+      if (this.distanciaRadial == 1) {
+        this.$noty.info("Arrastrá el scroll para obtener más resultados!", {
           killer: true,
           timeout: 3000,
           layout: "topRight",
           progressBar: true
         });
       }
-
+      //Mensaje que se muestra cuando aún nos e ha seleccionado ninguna categoría
       if (this.selectedCategories.length == 0) {
         this.$noty.info("Selecciona al menos una categoría!", {
           killer: true,
@@ -293,10 +262,7 @@ export default {
         });
       }
     },
-    distanciaButton: function() {
-      //Recorrer el array de options para saber que categoría se requiere localizar
-      alert(4);
-    },
+
     colocarSitiosEnMapa() {
       //Se limpian los marcadores existentes y se realiza la geolocalización
       this.markers = [];
@@ -315,7 +281,7 @@ export default {
       });
     }
   },
-
+  //Eventos que se capturan cuando a las propiedades se les modifica su valor
   watch: {
     //Cuando se modifica el valor de la propiedad distanciaRadial en el range, se dispara la acción que deseamos, en este caso se llama al método colocarSitiosEnMapa
     distanciaRadial() {

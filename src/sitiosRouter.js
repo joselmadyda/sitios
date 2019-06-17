@@ -1,12 +1,17 @@
 const express = require('express')
 const _ = require('lodash')
-//const Joi = require('@hapi/joi')
-// const sitiosDAO = require('./sitiosDAO')
+var nodemailer = require("nodemailer");
+const hbs = require('nodemailer-express-handlebars');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const sitiosDAO = require('./sitiosDAO_SQL')
 
 const router = express.Router()
 
 const baseURI = '/api/sitios'
+
+
+
+
 
 router.get('/', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
@@ -83,7 +88,7 @@ router.post('/upd/', async (req, res) => {
         // const sitioAct = await sitiosDAO.updateSitio(sitioUpdated)
         // const mensajeResponse = { status: 'SITIO MODIFICADO CORRECTAMENTE', sitioAct }
         // res.status(201).json(mensajeResponse)
-        
+
     } catch (err) {
         res.status(err.status).json(err)
     }
@@ -143,7 +148,13 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
     }
 })
 
-
+/**
+ * 
+ * @param {int} lat1 //Latitud coordenada base
+ * @param {int} lon1 //Longitud coordenada base
+ * @param {int} lat2 //Latitud coordenada para obtener distancia
+ * @param {int} lon2 //Longitud coordenada para obtener distancia
+ */
 function getKilometros(lat1, lon1, lat2, lon2) {
     const rad = function (x) {
         return (x * Math.PI) / 180;
@@ -180,38 +191,55 @@ router.delete(':idsitio', async (req, res) => {
         }*/
 
 })
-/*
-router.put('/:dni', async (req, res) => {
-    console.log(`REPLACING: ${baseURI}${req.url}`)
 
-    try {
-        if (isNaN(req.params.dni))
-            throw { status: 400, descripcion: 'el dni provisto no es un número o es inválido' }
 
-        const nuevo = req.body
+router.get('/email/:email', async (req, res) => {
 
-        if (esEstudianteInvalido(nuevo))
-            throw { status: 400, descripcion: 'el estudiante posee un formato json invalido o faltan datos' }
 
-        if (req.params.dni != nuevo.dni)
-            throw { status: 400, descripcion: 'el dni provisto no coincide entre el recurso buscado y el nuevo' }
+    const handlebarOptions = {
+        viewEngine: {
+            extName: '.hbs',
+            partialsDir: './src/views/',
+            layoutsDir: './src//views/',
+            defaultLayout: 'voucher.hbs',
+        },
+        viewPath: './src//views/',
+        extName: '.hbs',
+    };
 
-        const estuActualizado = await sitiosDAO.updateByDni(req.params.dni, nuevo)
-        res.json(estuActualizado)
-    } catch (err) {
-        res.status(err.status).json(err)
+    var smtpTransport = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        auth: {
+            user: "tp.sitiosvip",
+            pass: "PaSSword123"
+        }
+    });
+
+
+    smtpTransport.use('compile', hbs(handlebarOptions));
+
+    var mailOptions = {
+        to: req.params.email,
+        subject: "DESCUENTO SITIO VIP",
+        text: "",
+        template: "voucher"
     }
+
+    smtpTransport.sendMail(mailOptions, function (error, response) {
+        if (error) {
+
+            res.json(false);
+        } else {
+
+            res.json(true);
+        }
+    });
+
 })
 
-function esEstudianteInvalido(estudiante) {
-    const schema = {
-        nombre: Joi.string().alphanum().min(1).required(),
-        apellido: Joi.string().alphanum().min(1).required(),
-        edad: Joi.number().integer().min(0).max(120).required(),
-        dni: Joi.number().integer().min(1).max(99999999).required()
-    }
-    const { error } = Joi.validate(estudiante, schema);
-    return error
-}
-*/
+
+
+
+
 module.exports = router

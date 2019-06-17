@@ -1,14 +1,13 @@
-//import home from './sitio.vue'
+//Se importan los componentes de sitio
 import principal from './components/sitio/principal.vue'
 import consulta from './components/sitio/consulta.vue'
 import graficos from './components/sitio/graficos.vue'
-import agregar from './components/sitio/agregar.vue'
 
+//Se genera la constante routes con las rutas de los componenetes a listar en el sitio
 const routes = [
   { path: '/', component: consulta },
   { path: '/sitio/principal', component: principal },
-  { path: '/sitio/agregar', component: agregar },
-  { path: '/sitio/consulta', component: consulta },  
+  { path: '/sitio/consulta', component: consulta },
   { path: '/sitio/graficos', component: graficos }
 ];
 
