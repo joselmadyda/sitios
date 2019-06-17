@@ -4,34 +4,30 @@ var nodemailer = require("nodemailer");
 const hbs = require('nodemailer-express-handlebars');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const sitiosDAO = require('./sitiosDAO_SQL')
-
 const router = express.Router()
 
+//Base URI
 const baseURI = '/api/sitios'
 
-
-
-
-
+/**
+ * Servicio GET: lista todos los sitios
+ */
 router.get('/', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
 
     if (_.isEmpty(req.query)) {
-        _handleGetAll(req, res)
-    } else {
-        //_handleGetWithQS(req, res)
+        try {
+            const result = await sitiosDAO.getAll()            
+            res.status(201).json(resultado)
+        } catch (err) {
+            res.status(err.status).json(err)
+        }
     }
 })
 
-async function _handleGetAll(req, res) {
-    try {
-        const result = await sitiosDAO.getAll()
-        res.json(result)
-    } catch (err) {
-        res.status(err.status).json(err)
-    }
-}
-
+/**
+ * Servicio GET: Lista sitios por categoría
+ */
 router.get('/:cat', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
 
@@ -42,25 +38,30 @@ router.get('/:cat', async (req, res) => {
         const resultado = await sitiosDAO.getByCategoria(req.params.cat)
 
         if (!resultado)
-            throw { status: 404, descripcion: 'estudiante no encontrado' }
+            throw { status: 404, descripcion: 'categoría no encontrada' }
 
-        res.status(200).json(resultado)
+        res.status(201).json(resultado)
     } catch (err) {
         res.status(err.status).json(err)
     }
 })
 
+/**
+ * Servicio GET: Lista sitio por id de sitio
+ */
 router.get('/sel/:idsitio/', async (req, res) => {
     console.log(`GETTING SITIO: ${baseURI}${req.url}`)
     try {
         const resultado = await sitiosDAO.getSitio(req.params.idsitio)
-        res.status(200).json(resultado)
+        res.status(201).json(resultado)
     } catch (err) {
         res.status(err.status).json(err)
     }
 })
 
-//AGREGAR NUEVO SITIO
+/**
+ * Servicio POST: Agrega nuevo sitio
+ */
 router.post('/add/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
@@ -77,7 +78,9 @@ router.post('/add/', async (req, res) => {
     }
 })
 
-//UPDATE NUEVO SITIO
+/**
+ * Servicio POST: Actualiza datos de un sitio
+ */
 router.post('/upd/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
@@ -94,7 +97,9 @@ router.post('/upd/', async (req, res) => {
     }
 })
 
-// BORRAR SITIO
+/**
+ * Servicio POST: Elimina sitio por id de Sitio
+ */
 router.post('/del/:idsitio/', async (req, res) => {
     console.log(`POSTING DELETE: ${baseURI}${req.url}`)
     try {
@@ -106,9 +111,11 @@ router.post('/del/:idsitio/', async (req, res) => {
     }
 })
 
-//CONSULTA TRIANGULADA: Obtener puntos de referencia de acuerdo a una categoria/barrio/latitud/longitud
+/**
+ * Servicio GET: Devuelve listado de sitios según distancia calculada entre coordenadas recibidas y km
+ */
 router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
-
+    console.log(`GETTING DISTANCE: ${baseURI}${req.body}`)
     try {
         const resultado = await sitiosDAO.getByCategoria(req.params.id_cat)
         const objBarrioResult = []
@@ -117,7 +124,7 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
             if (resultado.length > 0) {
                 //objBarrioResult.push({ status: 'SITIOS ENCONTRADOS' })
                 for (var i = 0; i < resultado.length; i++) {
-                    let distancia = getKilometros(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
+                    let distancia = obtenerSitiosporDistancia(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
                     console.log(distancia)
                     //Verificar distancia según coordenadas de entrada
                     if (distancia <= req.params.distancia) {
@@ -129,7 +136,7 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
                             voucher: resultado[i].voucher,
                             responsable: resultado[i].responsable,
                             url: resultado[i].url,
-                            distancia: getKilometros(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
+                            distancia: obtenerSitiosporDistancia(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
                         }
                         objBarrioResult.push(objBarrio)
                     }
@@ -149,13 +156,14 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 })
 
 /**
+ * Obtener distancia entre dos puntos geométricos
  * 
  * @param {int} lat1 //Latitud coordenada base
  * @param {int} lon1 //Longitud coordenada base
  * @param {int} lat2 //Latitud coordenada para obtener distancia
  * @param {int} lon2 //Longitud coordenada para obtener distancia
  */
-function getKilometros(lat1, lon1, lat2, lon2) {
+function obtenerSitiosporDistancia(lat1, lon1, lat2, lon2) {
     const rad = function (x) {
         return (x * Math.PI) / 180;
     };
@@ -174,28 +182,12 @@ function getKilometros(lat1, lon1, lat2, lon2) {
     return d.toFixed(2);
 }
 
-
-router.delete(':idsitio', async (req, res) => {
-    console.log(`DELETING: ${baseURI}${req.url}`)
-
-    console.log(req.params.id_sitio)
-    /*
-        try {
-            if (isNaN(req.params.id_sitio))
-                throw { status: 400, descripcion: 'El Sitio provisto no es un número o es inválido' }
-    
-            await sitiosDAO.deleteByIdSitio(req.params.id_sitio)
-            res.status(204).send()
-        } catch (err) {
-            res.status(err.status).json(err)
-        }*/
-
-})
-
-
+/**
+ * Servicio GET: Envío de mail por dirección de correo recibida
+ */
 router.get('/email/:email', async (req, res) => {
-
-
+    console.log(`GETTING EMAIL: ${baseURI}${req.params.email}`)
+    //Seteo de opciones para el objeto handlebar
     const handlebarOptions = {
         viewEngine: {
             extName: '.hbs',
@@ -207,6 +199,7 @@ router.get('/email/:email', async (req, res) => {
         extName: '.hbs',
     };
 
+    //Seteo de opciones para el objeto transporter
     var smtpTransport = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -216,9 +209,10 @@ router.get('/email/:email', async (req, res) => {
         }
     });
 
-
+    //Uso del objeto transporter
     smtpTransport.use('compile', hbs(handlebarOptions));
 
+    //Seteo opciones del objeto mail
     var mailOptions = {
         to: req.params.email,
         subject: "DESCUENTO SITIO VIP",
@@ -226,20 +220,14 @@ router.get('/email/:email', async (req, res) => {
         template: "voucher"
     }
 
-    smtpTransport.sendMail(mailOptions, function (error, response) {
+    //Envío de mail
+    smtpTransport.sendMail(mailOptions, function (error, response) {        
         if (error) {
-
             res.json(false);
         } else {
-
             res.json(true);
         }
     });
-
 })
-
-
-
-
 
 module.exports = router

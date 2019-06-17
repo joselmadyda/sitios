@@ -1,26 +1,35 @@
 const knex = require('./db/knex')
 
+/**
+ * Obtener todos los sitios | Tabla -> [sitios]
+ */
 async function getAll() {
     const selectAllQuery = `SELECT * FROM sitios;`
-    const result = await knex.raw(selectAllQuery)
-    // const result = await knex.select('*').from('estudiantes')
+    const result = await knex.raw(selectAllQuery)    
     return result
 }
 
+/**
+ * Obtener todos los sitios por Id de categoría | Tabla -> [sitios]
+ */
 async function getByCategoria(cat) {
     const selectByCategoria = `SELECT * FROM sitios WHERE id_categoria='${cat}';`
     const result = await knex.raw(selectByCategoria)
     return result
 }
 
-
+/**
+ * Obtener todos los sitios por barrio | Tabla -> [sitios]
+ */
 async function getByCategoriaBarrio(id_categoria, barrio) {
     const selectCategoriaBarrio = `SELECT * FROM sitios WHERE id_categoria='${id_categoria}' and barrio ='${barrio}' ;`
     const result = await knex.raw(selectCategoriaBarrio)
     return result
 }
 
-//AGREGAR SITIO
+/**
+ * Agregar Sitio | Tabla -> [sitios]
+ */
 async function addSitio(nuevoSitio) {
     try {
         let insertionQuery = 'INSERT INTO sitios '
@@ -33,7 +42,9 @@ async function addSitio(nuevoSitio) {
     }
 }
 
-//ELIMINAR SITIO
+/**
+ * Eliminar Sitio | Tabla -> [sitios]
+ */
 async function deleteByIdSitio(idSitio) {
     try {
         const deleteByIdSitioQuery = `DELETE FROM sitios WHERE id_sitio=${idSitio}`
@@ -44,21 +55,24 @@ async function deleteByIdSitio(idSitio) {
     }
 }
 
-// SELECT X SITIO
+/**
+ * Obtener Sitio por Id de Sitio | Tabla -> [sitios]
+ */
 async function getSitio(idSitio) {
     const selectSitio = `SELECT * FROM sitios WHERE id_sitio=${idSitio}`
     const result = await knex.raw(selectSitio)
     return result
 }
 
-// MODIFICAR SITIO
-async function updateSitio(idSitio,url) {
+/**
+ * Modificar Sitio | Tabla -> [sitios]
+ */
+async function updateSitio(idSitio, url) {
     try {
         const updateSitioQuery = `
             UPDATE sitios 
             SET url =${url} 
             WHERE id_sitio=${idSitio}`
-
         await knex.raw(updateSitioQuery)
         return 1
     } catch (err) {
@@ -73,5 +87,4 @@ module.exports = {
     getSitio,
     deleteByIdSitio,
     updateSitio
-
 }

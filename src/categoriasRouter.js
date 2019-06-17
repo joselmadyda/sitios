@@ -1,31 +1,31 @@
 const express = require('express')
 const _ = require('lodash')
-//const Joi = require('@hapi/joi')
-// const sitiosDAO = require('./sitiosDAO')
 const categoriasDAO = require('./categoriasDAO_SQL')
-
 const router = express.Router()
 
+//Base URI
 const baseURI = '/api/categorias'
 
+/**
+ * Servicio GET: Lista todas las categorías
+ */
 router.get('/', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
 
     if (_.isEmpty(req.query)) {
-        _handleGetAll(req, res)
+        try {
+            const result = await categoriasDAO.getAllCategories()
+            console.log(result)
+            res.json(result)
+        } catch (err) {
+            res.status(err.status).json(err)
+        }
     }
 })
 
-async function _handleGetAll(req, res) {
-    try {
-        const result = await categoriasDAO.getAllCategories()
-        console.log(result)
-        res.json(result)
-    } catch (err) {
-        res.status(err.status).json(err)
-    }
-}
-
+/**
+ * Servicio GET: Lista categoría por id de Categoría
+ */
 router.get('/:cat', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
 
@@ -46,39 +46,33 @@ router.get('/:cat', async (req, res) => {
     }
 })
 
-
-
-
+/**
+ * Servicio POST: Agrega nueva categoría
+ */
 router.post('/', async (req, res) => {
     console.log(`POSTING: ${baseURI}${req.url}`)
 
     try {
         const nuevaCategory = req.body
-
         const categoriaCreada = await categoriasDAO.addCategory(nuevaCategory)
-
         const mensajeResponse = { status: 'CREADO CORRECTAMENTE', categoriaCreada }
-
         res.status(201).json(mensajeResponse)
 
-        //res.status(201).json(categoriaCreada)
     } catch (err) {
         res.status(err.status).json(err)
     }
 })
 
-
-
+/**
+ * Servicio DELETE: Elimina categoría
+ */
 router.delete('/:cat', async (req, res) => {
     console.log(`DELETING: ${baseURI}${req.url}`)
 
     try {
         if (isNaN(req.params.cat))
             throw { status: 400, descripcion: 'id categoria inválido' }
-
-            const resultado = await categoriasDAO.deleteByCategoria(req.params.cat)
-            
-
+        const resultado = await categoriasDAO.deleteByCategoria(req.params.cat)
         res.json(resultado)
     } catch (err) {
         res.json(err)

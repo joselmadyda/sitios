@@ -1,5 +1,8 @@
 const knex = require('./db/knex')
 
+/**
+ * Obtener todos las categorias | Tabla -> [categorias]
+ */
 async function getAllCategories() {
     const selectAllQuery = `SELECT * FROM categorias;`
     const result = await knex.raw(selectAllQuery)
@@ -7,6 +10,9 @@ async function getAllCategories() {
     return result
 }
 
+/**
+ * Agregar categoria | Tabla -> [categorias]
+ */
 async function addCategory(nuevo) {
     try {
         let insertionQuery = 'INSERT INTO categorias '
@@ -19,6 +25,9 @@ async function addCategory(nuevo) {
     }
 }
 
+/**
+ * Obtener categoría por Id de categoria | Tabla -> [categorias]
+ */
 async function getByIdCategory(cat) {
 
     const selectByIdCategory = `SELECT * FROM categorias WHERE id_cat='${cat}';`
@@ -26,6 +35,10 @@ async function getByIdCategory(cat) {
 
     return result
 }
+
+/**
+ * Eliminar categoría por Id de categoria | Tabla -> [categorias]
+ */
 async function deleteByCategoria(cat) {
     const deleteByIdCategory = `DELETE FROM categorias WHERE id_cat=${cat}`
     await knex.raw(deleteByIdCategory)

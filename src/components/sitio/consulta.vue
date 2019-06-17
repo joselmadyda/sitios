@@ -122,7 +122,6 @@ export default {
       ],
       currentPlace: null,
       url: "http://localhost:8090/api/sitios",
-      //emailUrl: "http://localhost:3000/api/email",
       info: "",
       categoria: null,
       categoria1: false,

@@ -325,7 +325,10 @@ export default {
       }
     };
   },
-
+  mounted() {
+    let message="Aquí puedes: <br>-> Seleccionar una categoría para listar sus sitios. <br>-> Ingresar un sitio nuevo"
+    this.showMessages(message);
+  },
   methods: {
     setPlace(place) {
       this.currentPlace = place;
@@ -552,7 +555,8 @@ export default {
     showMessages(mensaje) {
       this.$noty.info(mensaje, {
         killer: true,
-        timeout: 3000,
+        timeout: 5000,
+        theme: 'sunset',
         layout: "topRight",
         progressBar: true
       });
