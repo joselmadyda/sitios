@@ -1,7 +1,7 @@
 const knex = require('./db/knex')
 
 /**
- * Obtener todos los sitios | Tabla -> [sitios]
+ * Obtener todos los sitios | Tabla -> sitios
  */
 async function getAll() {
     const selectAllQuery = `SELECT * FROM sitios;`
@@ -10,7 +10,7 @@ async function getAll() {
 }
 
 /**
- * Obtener todos los sitios por Id de categoría | Tabla -> [sitios]
+ * Obtener todos los sitios por Id de categoría | Tabla -> sitios
  */
 async function getByCategoria(cat) {
     const selectByCategoria = `SELECT * FROM sitios WHERE id_categoria='${cat}';`
@@ -19,7 +19,7 @@ async function getByCategoria(cat) {
 }
 
 /**
- * Obtener todos los sitios por barrio | Tabla -> [sitios]
+ * Obtener todos los sitios por barrio | Tabla -> sitios
  */
 async function getByCategoriaBarrio(id_categoria, barrio) {
     const selectCategoriaBarrio = `SELECT * FROM sitios WHERE id_categoria='${id_categoria}' and barrio ='${barrio}' ;`
@@ -28,7 +28,7 @@ async function getByCategoriaBarrio(id_categoria, barrio) {
 }
 
 /**
- * Agregar Sitio | Tabla -> [sitios]
+ * Agregar Sitio | Tabla -> sitios
  */
 async function addSitio(nuevoSitio) {
     try {
@@ -43,7 +43,7 @@ async function addSitio(nuevoSitio) {
 }
 
 /**
- * Eliminar Sitio | Tabla -> [sitios]
+ * Eliminar Sitio | Tabla -> sitios
  */
 async function deleteByIdSitio(idSitio) {
     try {
@@ -56,7 +56,7 @@ async function deleteByIdSitio(idSitio) {
 }
 
 /**
- * Obtener Sitio por Id de Sitio | Tabla -> [sitios]
+ * Obtener Sitio por Id de Sitio | Tabla -> sitios
  */
 async function getSitio(idSitio) {
     const selectSitio = `SELECT * FROM sitios WHERE id_sitio=${idSitio}`
@@ -65,26 +65,27 @@ async function getSitio(idSitio) {
 }
 
 /**
- * Modificar Sitio | Tabla -> [sitios]
+ * Modificar Sitio | Tabla -> sitios
  */
 async function updateSitio(sitio, url) {
     try {
         const updateSitioQuery = 
                  `UPDATE sitios
-                    SET  id_categoria = 1
-                        ,nombre_sitio = 'test upd'
-                        ,barrio = 'test barrio' 
-                        ,latitud = 10
-                        ,longitud = 11
-                        ,url = 'www.testupd.com.ar'
-                        ,responsable = 'responsable'
-                        ,hora_apertura = '10:00'
-                        ,hora_cierre = '11:00'
-                        ,voucher = '1'
-                   WHERE id_sitio=${sitio.idSitio}`
+                    SET  id_categoria   =    ${sitio.id_categoria}
+                        ,nombre_sitio   =   '${sitio.nombre_sitio}'
+                        ,barrio         =   '${sitio.barrio}'
+                        ,latitud        =    ${sitio.latitud}
+                        ,longitud       =    ${sitio.longitud}
+                        ,url            =   '${sitio.url}'
+                        ,responsable    =   '${sitio.responsable}'
+                        ,hora_apertura  =   '${sitio.hora_apertura}'
+                        ,hora_cierre    =   '${sitio.hora_cierre}'
+                        ,voucher        =   '${sitio.voucher}'
+                   WHERE id_sitio       =   ${sitio.idSitio}  `
 
-        await knex.raw(updateSitioQuery)
-        return 1
+        console.log(updateSitioQuery)
+        const result = await knex.raw(updateSitioQuery)
+        return result
     } catch (err) {
         throw { status: 500, descripcion: err.message }
     }

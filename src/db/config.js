@@ -7,10 +7,10 @@ const dbConfigs = {
         client: 'mssql'   ,
         connection: {
             //server: 'localhost',
-            server: 'localhost\\SQLEXPRESS',
-            port: 1433,
+            server: 'localhost',
+            port: 1433, 
             user: 'web',
-            password: '1234',
+            password: 'Jose1234',
             database: 'Sitios'        
         }
     },

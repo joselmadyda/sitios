@@ -214,6 +214,31 @@ export default {
           console.log(response.data);
         });
     },
+    buscarSitio() {
+      if (this.currentPlace) {
+        const marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng(),
+          icon: img_posicion
+        };
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
+      }
+    },
+    addMarker() {
+      if (this.currentPlace) {
+        const marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng(),
+          icon: image
+        };
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
+        this.currentPlace = null;
+      }
+    },
     //Método que generar la geolocalización actual y el posicionamiento en el mapa de dichas coordenadas
     geolocate: function() {
       navigator.geolocation.getCurrentPosition(position => {

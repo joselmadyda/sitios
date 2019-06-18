@@ -16,11 +16,9 @@ router.get('/', async (req, res) => {
     console.log(`GETTING: ${baseURI}${req.url}`)
 
     if (_.isEmpty(req.query)) {
-
         try {
-
-            const result = await sitiosDAO.getAll()
-            res.status(201).json(result)
+            const result = await sitiosDAO.getAll()            
+            res.status(201).json(resultado)
         } catch (err) {
             res.status(err.status).json(err)
         }
@@ -90,9 +88,9 @@ router.post('/upd/', async (req, res) => {
         const sitioUpdated = req.body
         console.log(sitioUpdated)
 
-        // const sitioAct = await sitiosDAO.updateSitio(sitioUpdated)
-        // const mensajeResponse = { status: 'SITIO MODIFICADO CORRECTAMENTE', sitioAct }
-        // res.status(201).json(mensajeResponse)
+        const sitioAct = await sitiosDAO.updateSitio(sitioUpdated)
+        const mensajeResponse = { status: 'SITIO MODIFICADO CORRECTAMENTE', sitioAct }
+        res.status(201).json(mensajeResponse)
 
     } catch (err) {
         res.status(err.status).json(err)
@@ -120,20 +118,31 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
     console.log(`GETTING DISTANCE: ${baseURI}${req.body}`)
     try {
         const resultado = await sitiosDAO.getByCategoria(req.params.id_cat)
-
         const objBarrioResult = []
-
         if (resultado) {
 
             if (resultado.length > 0) {
+                
+                //Armar objeto con las coordenadas de los sitios que se encuentren dentro de la distancia ingresada
 
-                try {
-                //Filtrar sitios por coordenadas de acuerdo a la distancia recibida
-                objBarrioResult = _filitrarDistanciaBarrios(resultado, req.params.lat, req.params.lng, req.params.distancia)
-                } catch(e){
+                for (var i = 0; i < resultado.length; i++) {
+                    let distancia = obtenerSitiosporDistancia(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
                     
-                }
+                    //Verificar distancia según coordenadas de entrada
+                    if (distancia <= req.params.distancia) {
 
+                        const objBarrio = {
+                            nombre_sitio: resultado[i].nombre_sitio,
+                            latitud: resultado[i].latitud,
+                            longitud: resultado[i].longitud,
+                            voucher: resultado[i].voucher,
+                            responsable: resultado[i].responsable,
+                            url: resultado[i].url,
+                            distancia: obtenerSitiosporDistancia(req.params.lat, req.params.lng, resultado[i].latitud, resultado[i].longitud)
+                        }
+                        objBarrioResult.push(objBarrio)
+                    }
+                }
             } else {
                 objBarrioResult.push({ status: 'SITIOS NO ENCONTRADOS' })
             }
@@ -141,48 +150,12 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 
         //Se informa estado 201, con las distancias calculadas de acuerdo a las coordenadas de origen y resultado del filtro
         res.status(201).json(objBarrioResult)
+        console.log(objBarrioResult)
 
     } catch (err) {
         res.status(err.status).json(err)
     }
 })
-
-/**
- * 
- * @param {obj Coordenadas} objCoordenadas 
- * @param {int} latInicial 
- * @param {int} lngInicial 
- * @param {int} distanciaParam 
- */
-function _filitrarDistanciaBarrios(objCoordenadas, latInicial, lngInicial, distanciaParam) {
-
-    //Inicialización objeto Resultado
-    objResult = []
-
-    //Armar objeto con las coordenadas de los sitios que se encuentren dentro de la distancia ingresada
-    for (var i = 0; i < objCoordenadas.length; i++) {
-
-        let distanciaCalculada = _obtenerSitiosporDistancia(latInicial, lngInicial, objCoordenadas[i].latitud, objCoordenadas[i].longitud)
-
-        //Verificar distancia según coordenadas de entrada
-        if (distanciaCalculada <= distanciaParam) {
-
-            const objBarrio = {
-                nombre_sitio: objCoordenadas[i].nombre_sitio,
-                latitud: objCoordenadas[i].latitud,
-                longitud: objCoordenadas[i].longitud,
-                voucher: objCoordenadas[i].voucher,
-                responsable: objCoordenadas[i].responsable,
-                url: objCoordenadas[i].url,
-                distancia: distanciaCalculada
-            }
-            objResult.push(objBarrio)
-        }
-    }
-
-    //Se devuelve objeto Resultado
-    return objResult
-}
 
 /**
  * Obtener distancia entre dos puntos geométricos
@@ -192,7 +165,7 @@ function _filitrarDistanciaBarrios(objCoordenadas, latInicial, lngInicial, dista
  * @param {int} lat2 //Latitud coordenada para obtener distancia
  * @param {int} lon2 //Longitud coordenada para obtener distancia
  */
-function _obtenerSitiosporDistancia(lat1, lon1, lat2, lon2) {
+function obtenerSitiosporDistancia(lat1, lon1, lat2, lon2) {
     const rad = function (x) {
         return (x * Math.PI) / 180;
     };
@@ -250,7 +223,7 @@ router.get('/email/:email', async (req, res) => {
     }
 
     //Envío de mail
-    smtpTransport.sendMail(mailOptions, function (error, response) {
+    smtpTransport.sendMail(mailOptions, function (error, response) {        
         if (error) {
             res.json(false);
         } else {

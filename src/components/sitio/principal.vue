@@ -80,10 +80,6 @@
         </table>
       </div>
 
-      <!-- 
-      <input type="text" id="frm1_url" class="form-control"  v-model="test_mensaje">
-      <button type="button"  @click="showMessages(test_mensaje)"  class="btn btn-block btn-outline-primary waves-effect" >Mensaje</button>-->
-
       <!-- fila4--->
       <div v-show="formTipo =='add' || formTipo == 'mod' " class="row">
         <button
@@ -165,7 +161,7 @@
                   <button type="button" @click="modal(null,null,'a')" class="btn btn-info">Agregar Sitio</button>
                 </div>
                 <div v-show="formTipo=='mod'" class="form-group col-sm-12">
-                  <button type="button" @click="updSitio(row.id)" class="btn btn-info" >Modificar Sitio</button>
+                  <button type="button" @click="modal(null,null,'m')" class="btn btn-info" >Modificar Sitio</button>
                 </div>
               </form>
             </div>
@@ -211,7 +207,7 @@
 
     <b-modal ref="my-modal-del" id="modal-del" hide-footer title="Confirmar borrado">
       <div class="d-block text-center">
-        <h3>¿Seguro que desea borrar el sitio: <b><em>{{sitioDel_Nombre}}</em></b>?</h3>
+        <h3>¿Seguro que desea borrar el sitio: <b><em>{{sitio_Nombre}}</em></b>?</h3>
       </div>
       <b-button class="mt-2" variant="outline-info" block @click="deleteSitio()">Si</b-button>
       <b-button class="mt-2" variant="outline-info" block @click="hideModal('d')">No</b-button>
@@ -227,10 +223,10 @@
 
     <b-modal ref="my-modal-mod" hide-footer title="Confirmar modificacion">
       <div class="d-block text-center">
-        <h3>¿Modificar Sitio?</h3>
+        <h3>¿Modificar Sitio: <b><em> {{formUpd.idSitio}} - {{formUpd.nombre_sitio}}</em></b> ?</h3>
       </div>
-      <b-button class="mt-2" variant="outline-warning" block @click="addSitio()"    >Si</b-button>
-      <b-button class="mt-2" variant="outline-warning" block @click="hideModal('m')">No</b-button>
+      <b-button class="mt-2" variant="outline-info" block @click="updSitio()"    >Si</b-button>
+      <b-button class="mt-2" variant="outline-info" block @click="hideModal('m')">No</b-button>
     </b-modal>
 
   </div>
@@ -247,12 +243,10 @@ export default {
 
   data: function() {
     return {
-      test_mensaje: "",
+     
+      sitio_Id: null,
+      sitio_Nombre:'',
 
-      sitioDel_Id: null,
-      sitioDel_Nombre:'',
-
-      nombreSitioABorrar: "",
       categoria: null,
       categoria_seleccionada: null,
       selected: null,
@@ -279,6 +273,14 @@ export default {
       mapa: false,
       campoTest: "Test",
       rows: [],
+      row: { 
+			        id:'',
+              nombre:'',
+              barrio:'',
+              url:'',
+              apertura:'',
+              cierre:''
+			},
       columns: [
         "Id",
         "Nombre",
@@ -447,9 +449,10 @@ export default {
     // ALERTAS Y MODALES
 
     modal(IdSitio,NomSitio,modo) {
-      this.sitioDel_Id= IdSitio;
-      this.sitioDel_Nombre = NomSitio;
-
+        
+      this.sitio_Id= IdSitio;
+      this.sitio_Nombre = NomSitio;
+           
       switch(modo){
         case 'a': this.$refs["my-modal-add"].show(); break;
         case 'm': this.$refs["my-modal-mod"].show(); break;
@@ -464,15 +467,16 @@ export default {
           case 'd': this.$refs["my-modal-del"].hide(); break;
         }
     },
-  
     showMessages(mensaje) {
-      this.$noty.info(mensaje, {
-        killer: true,
-        timeout: 3000,
-        layout: "topRight",
-        progressBar: true
-      });
-    },
+          this.$noty.info(mensaje, {
+            killer: true,
+            timeout: 5000,
+            theme: 'sunset',
+            layout: "topRight",
+            progressBar: true
+          });
+        }, 
+        
     cargarsitiosBD(id_cat) {
       this.mapa = true;
       this.markers = [];
@@ -515,22 +519,12 @@ export default {
         });
     },
 
-    deleteSitio() {
-      axios
-        .post(this.url + "/del/" + this.sitioDel_Id)
-        .then(response => {
-          this.$refs["my-modal-del"].hide();
-          this.showMessages(response.data.status);
-          this.listarCategoria(this.categoria);
-        })
-        .catch(function(error) {
-          this.showMessages(response.data.status);
-        });
-    },
+   
 
     formVolver() {
       this.tablaSitios = true;
       this.formTipo = "";
+      
       // Reset Campos
       this.formUpd.idSitio = "";
       this.formUpd.nombre_sitio = "";
@@ -539,7 +533,7 @@ export default {
       this.formUpd.longitud = "";
       this.formUpd.hora_apertura = "";
       this.formUpd.hora_cierre = "";
-      this.formUpd.voucher = "";
+      this.formUpd.voucher = "";  
     },
 
     formAddSitio() {
@@ -560,7 +554,7 @@ export default {
       this.formUpd.voucher = "";
     },
     formModSitio(idSitio) {
-      this.tablaSitios = true;
+      this.tablaSitios = false;
       this.selSitio(idSitio);
       this.formTipo = "mod";
       this.titulo = "Modificacion de Sitio";
@@ -581,30 +575,34 @@ export default {
           voucher: this.formUpd.voucher
         })
         .then(response => {
-          //console.log(response.data.status);
+          console.log(response.data.status);
           this.$refs["my-modal-add"].hide();
           this.showMessages(response.data.status);  
+          this.formVolver();
+          this.listarCategoria(this.categoria);
         })
         .catch(function(error) {
           this.$refs["my-modal-add"].hide();
           this.showMessages(response.data.status);
         });
-    },
-
-    showMessages(mensaje) {
-      this.$noty.info(mensaje, {
-        killer: true,
-        timeout: 5000,
-        theme: 'sunset',
-        layout: "topRight",
-        progressBar: true
-      });
+    }, 
+    deleteSitio() {
+      axios
+        .post(this.url + "/del/" + this.sitio_Id)
+        .then(response => {
+          this.$refs["my-modal-del"].hide();
+          this.showMessages(response.data.status);
+          this.formVolver();
+          this.listarCategoria(this.categoria);
+        })
+        .catch(function(error) {
+          this.showMessages(response.data.status);
+        });
     },
     updSitio() {
       axios
         .post(this.url + "/upd/", {
-          idSitio: this.formUpd.idSitio
-          /*
+          idSitio: this.formUpd.idSitio,
           id_categoria: this.selected,
           nombre_sitio: this.formUpd.nombre_sitio,
           barrio: this.formUpd.barrio,
@@ -614,16 +612,22 @@ export default {
           responsable: this.formUpd.responsable,
           hora_apertura: this.formUpd.hora_apertura,
           hora_cierre: this.formUpd.hora_cierre,
-          voucher: this.formUpd.voucher  */
+          voucher: this.formUpd.voucher  
         })
         .then(response => {
-          console.log(response.status);
-          this.showMessages("Test");
+          console.log(response.data.status);
+          this.$refs["my-modal-mod"].hide();
+          this.showMessages(response.data.status); 
+          this.formVolver();
+          this.listarCategoria(this.categoria);
         })
         .catch(function(error) {
-          console.log(response.status);
+          this.$refs["my-modal-mod"].hide();
+          this.showMessages(response.data.status);
         });
     },
+    
+    
 
     selSitio(idSitio) {
       axios
