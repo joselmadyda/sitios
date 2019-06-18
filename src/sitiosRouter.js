@@ -127,8 +127,12 @@ router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
 
             if (resultado.length > 0) {
 
+                try {
                 //Filtrar sitios por coordenadas de acuerdo a la distancia recibida
                 objBarrioResult = _filitrarDistanciaBarrios(resultado, req.params.lat, req.params.lng, req.params.distancia)
+                } catch(e){
+                    
+                }
 
             } else {
                 objBarrioResult.push({ status: 'SITIOS NO ENCONTRADOS' })
