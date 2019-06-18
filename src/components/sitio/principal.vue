@@ -586,6 +586,7 @@ export default {
           this.showMessages(response.data.status);
         });
     }, 
+    // delete 
     deleteSitio() {
       axios
         .post(this.url + "/del/" + this.sitio_Id)
