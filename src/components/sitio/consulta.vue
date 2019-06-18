@@ -85,7 +85,7 @@
           <input type="text" v-model="email">
         </div>
         <!--Envío de mail -->
-        <b-button class="mt-2" variant="outline-warning" block @click="enviarMail">Enviar</b-button>
+        <b-button class="mt-2" variant="outline-info" block @click="enviarMail">Enviar</b-button>
       </b-modal>
     </span>
   </div>

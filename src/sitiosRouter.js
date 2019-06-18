@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     if (_.isEmpty(req.query)) {
         try {
             const result = await sitiosDAO.getAll()            
-            res.status(201).json(resultado)
+            res.status(201).json(result)
         } catch (err) {
             res.status(err.status).json(err)
         }
@@ -116,7 +116,7 @@ router.post('/del/:idsitio/', async (req, res) => {
  * Servicio GET: Devuelve listado de sitios según distancia calculada entre coordenadas recibidas y km
  */
 router.get('/:distancia/:id_cat/:lat/:lng', async (req, res) => {
-    console.log(`GETTING DISTANCE: ${baseURI}${req.body}`)
+    console.log(`GETTING DISTANCE: ${baseURI}`)
     try {
         const resultado = await sitiosDAO.getByCategoria(req.params.id_cat)
         const objBarrioResult = []
