@@ -29,6 +29,7 @@
           <li><a href="#sitio-agregar-sitio-post"><span class="badge post"><i class="fa fa-plus"></i></span>Agregar un sitio</a></li>
           <li><a href="#sitio-actualizar-sitio-post"><span class="badge post"><i class="fa fa-plus"></i></span>Actualizar un sitio</a></li>
           <li><a href="#sitio-eliminar-sitio-delete"><span class="badge delete"><i class="fa fa-times"></i></span>Eliminar un sitio</a></li>
+          <li><a href="#sitio-enviar-email"><span class="badge post"><i class="fa fa-times"></i></span>Enviar E-mail</a></li>
           
         </ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div>
         
@@ -47,11 +48,11 @@
     
     <h2 id="header-api-sitios">API SITIOS <a class="permalink" href="#header-api-host" aria-hidden="true">�</a></h2>
     <p>Todas las peticiones que se realicen a la API de Sitios deben ser enviadas a la siguiente URL:</p>
-    <pre><code class="language-http">https://127.0.0.1:8090/api/sitios</code></pre>
+    <pre><code class="language-http">http://127.0.0.1:8090/api/sitios</code></pre>
     
     <h2 id="header-api-categorias">API CATEGORIAS <a class="permalink" href="#header-api-host" aria-hidden="true">�</a></h2>
     <p>Todas las peticiones que se realicen a la API de Categorias deben ser enviadas a la siguiente URL:</p>
-    <pre><code class="language-http">https://127.0.0.1:8090/api/categorias</code></pre>
+    <pre><code class="language-http">http://127.0.0.1:8090/api/categorias</code></pre>
 
 
 
@@ -60,11 +61,11 @@
 
     <!-- OBTENER LISTADO DE SITIOS-->
     <div id="sitio-obtener-listado-actual-get" class="resource"><h3 class="resource-heading">Obtener listado actual de sitios <a href="#sitio-obtener-listado-actual-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener listado de sitios</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/</code></h4><p>Obtener listado de sitios.</p>
-    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span>/</span></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span>/</span></div><div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
       {
         "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
         "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
-        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"COTO"</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"SUSHI FLORES"</span>
         "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
         "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
         "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
@@ -77,19 +78,149 @@
       {
         "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
         "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
-        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"ALIANZA"</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"Del Loft Restó"</span>
         "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
-        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6112837</span>
-        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4264576</span>
-        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.fabrica.com.ar"</span>
-        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"ALIANZA SA"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
         "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
         "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
-        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">false</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">3</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"Locos de Asar"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">4</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"Man - Ros"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"Coyote"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">6</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"Asamblea Plaza"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">7</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"COTO"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">8</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"ALIANZA"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">9</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">2</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"CINE ATLAS"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">10</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">3</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"DOS CARAS"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">11</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">3</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"RISAS"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">12</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">3</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"EL CHACAL"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
       </span>}
     </span>}</code></pre><div style="height: 1px;"></div></div></div>
     <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"SITIOS NO ENCONTRADOS"</span></span>
       </span>
     </span>}</code></pre><div style="height: 1px;"></div>
   
@@ -100,7 +231,7 @@
 
     <!-- OBTENER SITIO -->
     <div id="sitio-obtener-un-sitio-get" class="resource"><h3 class="resource-heading">Obtener un sitio en particular <a href="#sitio-obtener-un-sitio-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener un sitio</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">sel/{id_sitio}</code></h4><p>Obtener un sitio.</p>
-    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span>/sel/15</span></div>
+    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span>/sel/15</span></div>
     
     <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
         <dl class="inner"><dt>id_sitio</dt><dd><code>integer</code>&nbsp;<span class="required">(requerido)</span>&nbsp;<spanclass="text-muted example">
@@ -124,7 +255,7 @@
       </span>}
     </span>}</code></pre><div style="height: 1px;"></div></div></div>
     <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"SITIO NO ENCONTRADO"</span></span>
       </span>
     </span>}</code></pre><div style="height: 1px;"></div>
   
@@ -135,7 +266,7 @@
 
     <!-- OBTENER SITIOS POR CATEGORIA-->
     <div id="sitio-obtener-por-categoria-get" class="resource"><h3 class="resource-heading">Obtener Sitios por categoria <a href="#sitio-obtener-por-categoria-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener sitios por categoría</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/{id_categoria}</code></h4><p>Obtener sitios por categoría.</p>
-    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span>/1</span></div>
+    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span>/3</span></div>
     
     <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
         <dl class="inner"><dt>id_categoria</dt><dd><code>integer</code>&nbsp;<span class="required">(requerido)</span>&nbsp;<spanclass="text-muted example">
@@ -146,9 +277,9 @@
     
     <div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
       {
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
-        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"COTO"</span>
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">10</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">3</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"DOS CARAS"</span>
         "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
         "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
         "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
@@ -159,40 +290,45 @@
         "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
       </span>},
       {
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
-        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
-        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"ALIANZA"</span>
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">11</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">3</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"RISAS"</span>
         "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
-        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6112837</span>
-        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4264576</span>
-        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.fabrica.com.ar"</span>
-        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"ALIANZA SA"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
         "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
         "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
-        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">false</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">12</span></span>,
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">3</span>
+        "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-string">"EL CHACAL"</span>
+        "<span class="hljs-attribute">barrio</span>": <span class="hljs-value"><span class="hljs-string">"almagro"</span>
+        "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+        "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+        "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+        "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"DON COTO SA"</span>
+        "<span class="hljs-attribute">hora_apertura</span>": <span class="hljs-value"><span class="hljs-string">"08:00"</span>
+        "<span class="hljs-attribute">hora_cierre</span>": <span class="hljs-value"><span class="hljs-string">"21:00"</span>
+        "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">true</span>
       </span>}
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-       </span>}
-    </span>}</code></pre><div style="height: 1px;">
-    
-
-      
+    </span>}</code></pre><div style="height: 1px;">      
     </div></div></div>
     <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"CATEGORÍA NO ENCONTRADA"</span></span>
       </span>
-    </span>}</code></pre><div style="height: 1px;"></div>
-  
+   </span>}</code></pre><div style="height: 1px;"></div>
   </div></div>
-
-  
   </div></div>
 
 
 
     <!-- OBTENER SITIO POR DISTANCIA-->
-    <div id="sitio-obtener-sitios-por-distancia-get" class="resource"><h3 class="resource-heading">Obtener Sitios por distancia <a href="#sitio-obtener-sitios-por-distancia-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener sitios</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/{distancia}/{id_cat}/{lat}/{lng}</code></h4><p>Obtener sitios por distancia.</p>
-    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span><span class="hljs-attribute">/2/1/-34.6085476/-58.4311811</span></span></div><div class="title">
+    <div id="sitio-obtener-sitios-por-distancia-get" class="resource"><h3 class="resource-heading">Obtener Sitios por distancia <a href="#sitio-obtener-sitios-por-distancia-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener sitios por distancia</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/{distancia}/{id_cat}/{lat}/{lng}</code></h4><p>Obtener sitios por distancia.</p>
+    <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span><span class="hljs-attribute">/2/1/-34.6085476/-58.4311811</span></span></div><div class="title">
       
       
         <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
@@ -206,15 +342,29 @@
           <strong>Ejemplo:&nbsp;</strong><span>-58.4311811</span></span><p>Longitud de las coordenadas de partida</p></dd>
         </dl>
         </div>
-      
       <strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-      {
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-      </span>},
-      {
+        {
+          "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-number">"COTO"</span></span>,
+          "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+          "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+          "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+          "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"Anibal Alexander"</span>          
+          "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.coto.com.ar"</span>
+          "<span class="hljs-attribute">distancia</span>": <span class="hljs-value"><span class="hljs-string">0.56</span>
+        </span>},
+        {
+          "<span class="hljs-attribute">nombre_sitio</span>": <span class="hljs-value"><span class="hljs-number">"DOS CARAS"</span></span>,
+          "<span class="hljs-attribute">latitud</span>": <span class="hljs-value"><span class="hljs-string">-34.6085476</span>
+          "<span class="hljs-attribute">longitud</span>": <span class="hljs-value"><span class="hljs-string">-58.4311811</span>
+          "<span class="hljs-attribute">voucher</span>": <span class="hljs-value"><span class="hljs-string">0</span>
+          "<span class="hljs-attribute">responsable</span>": <span class="hljs-value"><span class="hljs-string">"Gestiona IT"</span>          
+          "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"www.doscaras.com.ar"</span>
+          "<span class="hljs-attribute">distancia</span>": <span class="hljs-value"><span class="hljs-string">4.56</span>
+        </span>}
+      
     </span>}</code></pre><div style="height: 1px;"></div></div></div>
     <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"SITIOS NO ENCONTRADOS"</span></span>
       </span>
     </span>}</code></pre><div style="height: 1px;"></div>
   
@@ -226,8 +376,8 @@
 
 
     <!-- AGREGAR SITIO  -->
-    <div id="sitio-agregar-sitio-post" class="resource"><h3 class="resource-heading">Agregar un sitio <a href="#sitio-agregar-sitio-post" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action post"><h4 class="action-heading"><div class="name">Obtener sitios</div><a href="#saldo-obtener-el-saldo-actual-get" class="method post">POST</a><code class="uri">/add/{req.body}</code></h4><p>Obtener sitios.</p>
-    <h4>Example URI</h4><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span>/add/</span></div><div class="title">
+    <div id="sitio-agregar-sitio-post" class="resource"><h3 class="resource-heading">Agregar un sitio <a href="#sitio-agregar-sitio-post" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action post"><h4 class="action-heading"><div class="name">Agregar sitio</div><a href="#saldo-obtener-el-saldo-actual-get" class="method post">POST</a><code class="uri">/add/{req.body}</code></h4><p>Agregar sitios</p>
+    <h4>Example URI</h4><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span>/add/</span></div><div class="title">
       
         <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
             <dl class="inner"><dt>nombre_sitio</dt><dd><code>string</code>&nbsp;<span class="required">(requerido)</span>&nbsp;<spanclass="text-muted example">
@@ -253,12 +403,12 @@
  
          <strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
       {
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-      </span>},
-      {
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"SITIO CREADO CORRECTAMENTE"</span></span>,
+      </span>}
+    }
     </span>}</code></pre><div style="height: 1px;"></div></div></div>
     <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"MENSAJE DE ERROR"</span></span>
       </span>
     </span>}</code></pre><div style="height: 1px;"></div>
   
@@ -269,8 +419,8 @@
 
 
     <!-- ACTUALIZAR SITIO  -->
-    <div id="sitio-actualizar-sitio-post" class="resource"><h3 class="resource-heading">Actualizar un sitio <a href="#sitio-actualizar-sitio-post" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action post"><h4 class="action-heading"><div class="name">Obtener sitios</div><a href="#saldo-obtener-el-saldo-actual-get" class="method post">POST</a><code class="uri">/upd/{req.body}</code></h4><p>Actualizar sitios.</p>
-    <h4>Example URI</h4><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span>/upd/</span></div>
+    <div id="sitio-actualizar-sitio-post" class="resource"><h3 class="resource-heading">Actualizar un sitio <a href="#sitio-actualizar-sitio-post" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action post"><h4 class="action-heading"><div class="name">Actualizar sitio</div><a href="#saldo-obtener-el-saldo-actual-get" class="method post">POST</a><code class="uri">/upd/{req.body}</code></h4><p>Actualizar sitio</p>
+    <h4>Example URI</h4><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span>/upd/</span></div>
     
     
     <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
@@ -299,13 +449,13 @@
 
     <div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
       {
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-      </span>},
-      {
-    </span>}</code></pre><div style="height: 1px;"></div></div></div>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"SITIO ACTUALIZADO CORRECTAMENTE"</span></span>,
+      </span>}
+    }  
+    </span></code></pre><div style="height: 1px;"></div></div></div>
   
     <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"MENSAJE DE ERROR"</span></span>
       </span>
     </span>}</code></pre><div style="height: 1px;"></div>
   
@@ -316,8 +466,8 @@
 
 
     <!-- ELIMINAR SITIO  -->
-    <div id="sitio-eliminar-sitio-delete" class="resource"><h3 class="resource-heading">Eliminar un sitio <a href="#sitio-eliminar-sitio-delete" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action delete"><h4 class="action-heading"><div class="name">Obtener sitios</div><a href="#saldo-obtener-el-saldo-actual-get" class="method delete">DELETE</a><code class="uri">/del/{id_sitio}</code></h4><p>Eliminar sitio.</p>
-    <h4>Example URI</h4><div class="definition"><span class="method delete">DELETE</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span>/del/15</span></div>
+    <div id="sitio-eliminar-sitio-delete" class="resource"><h3 class="resource-heading">Eliminar un sitio <a href="#sitio-eliminar-sitio-delete" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action delete"><h4 class="action-heading"><div class="name">Eliminar sitio</div><a href="#saldo-obtener-el-saldo-actual-get" class="method delete">DELETE</a><code class="uri">/del/{id_sitio}</code></h4><p>Eliminar sitio</p>
+    <h4>Example URI</h4><div class="definition"><span class="method delete">DELETE</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span>/del/15</span></div>
     
     
     <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
@@ -329,11 +479,11 @@
 
 
       <div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-     "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">CREADO CORRECTAMENTE</span></span>
+     "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"SITIOS ELIMINADO CORRECTAMENTE"</span></span>
     </span>}</code></pre><div style="height: 1px;"></div></div></div>
   
   <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-        "<span class="hljs-attribute">id_sitio</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+        "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"MENSAJE DE ERROR"</span></span>
       </span>
     </span>}</code></pre><div style="height: 1px;"></div>
   
@@ -342,7 +492,32 @@
 
 </div>
 
+      <!-- ENVIAR EMAIL  -->
+      <div id="sitio-enviar-email" class="resource"><h3 class="resource-heading">Enviar Email <a href="#ssitio-enviar-email" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action post"><h4 class="action-heading"><div class="name">Enviar Email</div><a href="#saldo-obtener-el-saldo-actual-get" class="method post">POST</a><code class="uri">/email/{email}</code></h4><p>Enviar Email</p>
+      <h4>Example URI</h4><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios/email</span>/alejandro.salinas@gmail.com</span></div>
+      
+      
+      <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
+          <dl class="inner"><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(requerido)</span>&nbsp;<spanclass="text-muted example">
+          <strong>Ejemplo:&nbsp;</strong><span>alejandro.salinas@gmail.com</span></span><p>Email a enviar correo electrónico</p></dd>
+        </dl>
+        </div>
+      
   
+  
+        <div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+       "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"EMAIL ENVIADO CORRECTAMENTE"</span></span>
+      </span>}</code></pre><div style="height: 1px;"></div></div></div>
+    
+    <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+          "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"MENSAJE DE ERROR"</span></span>
+        </span>
+      </span>}</code></pre><div style="height: 1px;"></div>
+    
+    </div></div></div>
+    
+  
+  </div>
 
   </section>
     
@@ -351,34 +526,32 @@
        <section id="categorias" class="resource-group"><h2 class="group-heading">Categorías <a href="#saldo" class="permalink">&para;</a></h2><p>Obtener, actualizar y eliminar la informaci�n de Categorías.</p>
 
         <!-- OBTENER LISTADO DE CATEGORIAS-->
-        <div id="categoria-obtener-listado-actual-get" class="resource"><h3 class="resource-heading">Obtener listado actual de categorías <a href="#categoria-obtener-listado-actual-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener listado de sitios</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/</code></h4><p>Obtener listado de categorías.</p>
-        <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/categorias</span>/</span></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-          {            
-            "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
-            "<span class="hljs-attribute">nombre_categoria</span>": <span class="hljs-value"><span class="hljs-string">"RESTAURANTES"</span>           
-          </span>},
-          {
-            "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">2</span>
-            "<span class="hljs-attribute">nombre_categoria</span>": <span class="hljs-value"><span class="hljs-string">"BARES"</span>     
-      }
+        <div id="categoria-obtener-listado-actual-get" class="resource"><h3 class="resource-heading">Obtener listado actual de categorías <a href="#categoria-obtener-listado-actual-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener listado de categorías</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/</code></h4><p>Obtener listado de categorías</p>
+        <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/categorias</span>/</span></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+      {            
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">1</span>
+        "<span class="hljs-attribute">nombre_categoria</span>": <span class="hljs-value"><span class="hljs-string">"RESTAURANTES"</span>           
+       </span>},
+      {
+        "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">2</span>
+        "<span class="hljs-attribute">nombre_categoria</span>": <span class="hljs-value"><span class="hljs-string">"BARES"</span>     
+      },
       {
         "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-string">3</span>
         "<span class="hljs-attribute">nombre_categoria</span>": <span class="hljs-value"><span class="hljs-string">"CINES"</span>     
-  }
-    </span>}</code></pre><div style="height: 1px;"></div></div></div>
+        }
+</span>}</code></pre><div style="height: 1px;"></div></div></div>
         <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-            "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+            "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"CATEGORÍAS NO ENCONTRADAS"</span></span>
           </span>
         </span>}</code></pre><div style="height: 1px;"></div>
       
       </div></div>
-    
-      
       </div></div>
     
         <!-- OBTENER CATEGORIA -->
-        <div id="categoria-obtener-una-categoria-get" class="resource"><h3 class="resource-heading">Obtener una categoría <a href="#categoria-obtener-una-categoria-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener un sitio</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/{id_categoria}</code></h4><p>Obtener una categoría.</p>
-        <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/categorias</span>/15</span></div>
+        <div id="categoria-obtener-una-categoria-get" class="resource"><h3 class="resource-heading">Obtener una categoría <a href="#categoria-obtener-una-categoria-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action get"><h4 class="action-heading"><div class="name">Obtener una categoría</div><a href="#saldo-obtener-el-saldo-actual-get" class="method get">GET</a><code class="uri">/{id_categoria}</code></h4><p>Obtener una categoría</p>
+        <h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/categorias</span>/15</span></div>
         
         <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
             <dl class="inner"><dt>id_categoria</dt><dd><code>integer</code>&nbsp;<span class="required">(requerido)</span>&nbsp;<spanclass="text-muted example">
@@ -393,7 +566,7 @@
           </span>}
         </span>}</code></pre><div style="height: 1px;"></div></div></div>
         <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-            "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+            "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"CATEGORÍA NO ENCONTRADA"</span></span>
           </span>
         </span>}</code></pre><div style="height: 1px;"></div>
       
@@ -403,11 +576,9 @@
       </div></div>
     
       
-    
-    
         <!-- ACTUALIZAR CATEGORIA  -->
-        <div id="categoria-actualizar-categoria-post" class="resource"><h3 class="resource-heading">Actualizar una categoría <a href="#categoria-actualizar-categoria-post" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action post"><h4 class="action-heading"><div class="name">Obtener sitios</div><a href="#saldo-obtener-el-saldo-actual-get" class="method post">POST</a><code class="uri">/upd/{req.body}</code></h4><p>Actualizar categorias.</p>
-        <h4>Example URI</h4><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/categorias</span>/upd/</span></div>
+        <div id="categoria-actualizar-categoria-post" class="resource"><h3 class="resource-heading">Actualizar una categoría <a href="#categoria-actualizar-categoria-post" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action post"><h4 class="action-heading"><div class="name">Actualizar categoria</div><a href="#saldo-obtener-el-saldo-actual-get" class="method post">POST</a><code class="uri">/upd/{req.body}</code></h4><p>Actualizar categoria</p>
+        <h4>Example URI</h4><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/categorias</span>/upd/</span></div>
         
         
         <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
@@ -420,13 +591,13 @@
     
         <div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
           {
-            "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-number">CATEGORIA ACTUALIZADA</span></span>
-          </span>},
-          {
-        </span>}</code></pre><div style="height: 1px;"></div></div></div>
+            "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"CATEGORIA ACTUALIZADA"</span></span>
+    </span>}
+          
+        </span></code></pre><div style="height: 1px;"></div></div></div>
       
         <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-            "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+            "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"MENSAJE DE ERROR"</span></span>
           </span>
         </span>}</code></pre><div style="height: 1px;"></div>
       
@@ -437,8 +608,8 @@
     
     
         <!-- ELIMINAR CATEGORIA  -->
-        <div id="categoria-eliminar-categoria-get" class="resource"><h3 class="resource-heading">Eliminar una categoría <a href="#categoria-eliminar-categoria-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action delete"><h4 class="action-heading"><div class="name">Eliminar categoría</div><a href="#saldo-obtener-el-saldo-actual-get" class="method delete">DELETE</a><code class="uri">/del/{id_categoria}</code></h4><p>Eliminar categoria.</p>
-        <h4>Example URI</h4><div class="definition"><span class="method delete">DELETE</span>&nbsp;<span class="uri"><span class="hostname">https://127.0.0.1:8090/api/sitios</span>/del/2</span></div>
+        <div id="categoria-eliminar-categoria-get" class="resource"><h3 class="resource-heading">Eliminar una categoría <a href="#categoria-eliminar-categoria-get" class="permalink">&nbsp;&para;</a></h3><div id="saldo-obtener-el-saldo-actual-get" class="action delete"><h4 class="action-heading"><div class="name">Eliminar categoría</div><a href="#saldo-obtener-el-saldo-actual-get" class="method delete">DELETE</a><code class="uri">/del/{id_categoria}</code></h4><p>Eliminar categoria</p>
+        <h4>Example URI</h4><div class="definition"><span class="method delete">DELETE</span>&nbsp;<span class="uri"><span class="hostname">http://127.0.0.1:8090/api/sitios</span>/del/2</span></div>
         
         
         <div class="title"><strong>URI Parameters</strong><div class="collapse-button"><span class="close">Hide</span><span class="open"></spanclass>Show</span></div></div><div class="collapse-content">
@@ -450,11 +621,11 @@
     
     
           <div class="title"><strong>Response&nbsp;&nbsp;<code>201</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-         "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-number">CATEGORIA ELIMINADA CORRECTAMENTE</span></span>
+         "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"CATEGORIA ELIMINADA CORRECTAMENTE"</span></span>
         </span>}</code></pre><div style="height: 1px;"></div></div></div>
       
       <div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-            "<span class="hljs-attribute">id_categoria</span>": <span class="hljs-value"><span class="hljs-number">MENSAJE DE ERROR</span></span>
+            "<span class="hljs-attribute">STATUS</span>": <span class="hljs-value"><span class="hljs-number">"MENSAJE DE ERROR"</span></span>
           </span>
         </span>}</code></pre><div style="height: 1px;"></div>
       
@@ -470,7 +641,7 @@
     
     
     
-    </div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 06 May 2019</p><script>/* eslint-env browser */
+    </div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="http://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 06 May 2019</p><script>/* eslint-env browser */
     /* eslint quotes: [2, "single"] */
     'use strict';
     
