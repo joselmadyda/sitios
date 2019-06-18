@@ -71,7 +71,7 @@
               <td>
                 <button
                   type="button"
-                  @click="modalDel(row.id)"
+                  @click="modal(row.id,row.nombre,'d')"
                   class="btn btn-block btn-outline-primary waves-effect"
                 >Borrar</button>
               </td>
@@ -161,15 +161,11 @@
 
                 <br>
 
-                <div v-show="formTipo=='add'" class="form-group col-sm-12">
-                  <button type="button" @click="addSitio()" class="btn btn-info">Agregar Sitio</button>
+               <div v-show="formTipo=='add'" class="form-group col-sm-12">
+                  <button type="button" @click="modal(null,null,'a')" class="btn btn-info">Agregar Sitio</button>
                 </div>
                 <div v-show="formTipo=='mod'" class="form-group col-sm-12">
-                  <button
-                    type="button"
-                    @click="updSitio(row.id)"
-                    class="btn btn-info"
-                  >Modificar Sitio</button>
+                  <button type="button" @click="updSitio(row.id)" class="btn btn-info" >Modificar Sitio</button>
                 </div>
               </form>
             </div>
@@ -210,13 +206,33 @@
         <br>
       </div>
     </div>
-    <b-modal ref="my-modal" hide-footer title="Confirmar borrado">
+   
+   <!-- Carteles de confirmacion -->
+
+    <b-modal ref="my-modal-del" id="modal-del" hide-footer title="Confirmar borrado">
       <div class="d-block text-center">
-        <h3>¿Seguro que desea borrar el sitio: ?</h3>
+        <h3>¿Seguro que desea borrar el sitio: <b><em>{{sitioDel_Nombre}}</em></b>?</h3>
       </div>
-      <b-button class="mt-2" variant="outline-warning" block @click="deleteSitio()">Si</b-button>
-      <b-button class="mt-2" variant="outline-warning" block @click="hideModal">No</b-button>
+      <b-button class="mt-2" variant="outline-info" block @click="deleteSitio()">Si</b-button>
+      <b-button class="mt-2" variant="outline-info" block @click="hideModal('d')">No</b-button>
     </b-modal>
+
+    <b-modal ref="my-modal-add" hide-footer title="Confirmar alta">
+      <div class="d-block text-center">
+        <h3>¿Dar de alta el Nuevo Sitio: <b><em>{{this.formUpd.nombre_sitio}}</em></b> ?</h3>
+      </div>
+      <b-button class="mt-2" variant="outline-info" block @click="addSitio()"    >Si</b-button>
+      <b-button class="mt-2" variant="outline-info" block @click="hideModal('a')">No</b-button>
+    </b-modal>
+
+    <b-modal ref="my-modal-mod" hide-footer title="Confirmar modificacion">
+      <div class="d-block text-center">
+        <h3>¿Modificar Sitio?</h3>
+      </div>
+      <b-button class="mt-2" variant="outline-warning" block @click="addSitio()"    >Si</b-button>
+      <b-button class="mt-2" variant="outline-warning" block @click="hideModal('m')">No</b-button>
+    </b-modal>
+
   </div>
 </template>
 
@@ -233,7 +249,9 @@ export default {
     return {
       test_mensaje: "",
 
-      sitioABorrar: null,
+      sitioDel_Id: null,
+      sitioDel_Nombre:'',
+
       nombreSitioABorrar: "",
       categoria: null,
       categoria_seleccionada: null,
@@ -426,15 +444,35 @@ export default {
       this.listarSitiosBD(id_cat);
     },
 
-    modalDel(IdSitio) {
-      this.sitioABorrar = IdSitio;
-      this.$refs["my-modal"].show();
+    // ALERTAS Y MODALES
+
+    modal(IdSitio,NomSitio,modo) {
+      this.sitioDel_Id= IdSitio;
+      this.sitioDel_Nombre = NomSitio;
+
+      switch(modo){
+        case 'a': this.$refs["my-modal-add"].show(); break;
+        case 'm': this.$refs["my-modal-mod"].show(); break;
+        case 'd': this.$refs["my-modal-del"].show(); break;
+      }
     },
 
-    hideModal() {
-      this.$refs["my-modal"].hide();
+    hideModal(modo){
+      switch(modo){
+          case 'a': this.$refs["my-modal-add"].hide(); break;
+          case 'm': this.$refs["my-modal-mod"].hide(); break;
+          case 'd': this.$refs["my-modal-del"].hide(); break;
+        }
     },
-
+  
+    showMessages(mensaje) {
+      this.$noty.info(mensaje, {
+        killer: true,
+        timeout: 3000,
+        layout: "topRight",
+        progressBar: true
+      });
+    },
     cargarsitiosBD(id_cat) {
       this.mapa = true;
       this.markers = [];
@@ -479,10 +517,9 @@ export default {
 
     deleteSitio() {
       axios
-        .post(this.url + "/del/" + this.sitioABorrar)
+        .post(this.url + "/del/" + this.sitioDel_Id)
         .then(response => {
-          //console.log(response.data.status);
-          this.hideModal();
+          this.$refs["my-modal-del"].hide();
           this.showMessages(response.data.status);
           this.listarCategoria(this.categoria);
         })
@@ -523,7 +560,7 @@ export default {
       this.formUpd.voucher = "";
     },
     formModSitio(idSitio) {
-      this.tablaSitios = false;
+      this.tablaSitios = true;
       this.selSitio(idSitio);
       this.formTipo = "mod";
       this.titulo = "Modificacion de Sitio";
@@ -545,9 +582,11 @@ export default {
         })
         .then(response => {
           //console.log(response.data.status);
-          this.showMessages(response.data.status);
+          this.$refs["my-modal-add"].hide();
+          this.showMessages(response.data.status);  
         })
         .catch(function(error) {
+          this.$refs["my-modal-add"].hide();
           this.showMessages(response.data.status);
         });
     },
@@ -564,6 +603,8 @@ export default {
     updSitio() {
       axios
         .post(this.url + "/upd/", {
+          idSitio: this.formUpd.idSitio
+          /*
           id_categoria: this.selected,
           nombre_sitio: this.formUpd.nombre_sitio,
           barrio: this.formUpd.barrio,
@@ -573,7 +614,7 @@ export default {
           responsable: this.formUpd.responsable,
           hora_apertura: this.formUpd.hora_apertura,
           hora_cierre: this.formUpd.hora_cierre,
-          voucher: this.formUpd.voucher
+          voucher: this.formUpd.voucher  */
         })
         .then(response => {
           console.log(response.status);
@@ -589,7 +630,6 @@ export default {
         .get(this.url + "/sel/" + idSitio)
         .then(response => {
           this.sitioUpd = response.data;
-
           this.selected = this.sitioUpd[0].id_categoria;
           this.formUpd.idSitio = idSitio;
           this.formUpd.nombre_sitio = this.sitioUpd[0].nombre_sitio;
@@ -600,12 +640,7 @@ export default {
           this.formUpd.hora_apertura = this.sitioUpd[0].hora_apertura;
           this.formUpd.hora_cierre = this.sitioUpd[0].hora_cierre;
           this.formUpd.voucher = this.sitioUpd[0].voucher;
-          this.formUpd.coordenadas =
-            "Lat: " +
-            this.sitioUpd[0].latitud +
-            " || Long: " +
-            this.sitioUpd[0].longitud;
-
+          this.formUpd.coordenadas =  "Lat: " + this.sitioUpd[0].latitud + " || Long: " + this.sitioUpd[0].longitud; 
           ubicarSitio(this.sitioUpd[0].latitud, this.sitioUpd[0].longitud);
         })
 

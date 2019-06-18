@@ -67,12 +67,22 @@ async function getSitio(idSitio) {
 /**
  * Modificar Sitio | Tabla -> [sitios]
  */
-async function updateSitio(idSitio, url) {
+async function updateSitio(sitio, url) {
     try {
-        const updateSitioQuery = `
-            UPDATE sitios 
-            SET url =${url} 
-            WHERE id_sitio=${idSitio}`
+        const updateSitioQuery = 
+                 `UPDATE sitios
+                    SET  id_categoria = 1
+                        ,nombre_sitio = 'test upd'
+                        ,barrio = 'test barrio' 
+                        ,latitud = 10
+                        ,longitud = 11
+                        ,url = 'www.testupd.com.ar'
+                        ,responsable = 'responsable'
+                        ,hora_apertura = '10:00'
+                        ,hora_cierre = '11:00'
+                        ,voucher = '1'
+                   WHERE id_sitio=${sitio.idSitio}`
+
         await knex.raw(updateSitioQuery)
         return 1
     } catch (err) {
