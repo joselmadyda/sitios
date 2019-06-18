@@ -5,10 +5,7 @@ const serverPort = '8090'
 const api = 'api'
 const seccion = 'email'
 
-
 const urlEmail = serverUrl + ":" + serverPort + "/" + api + "/" + seccion
-
-
 
 async function main() {
 

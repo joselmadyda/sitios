@@ -16,8 +16,6 @@ async function main() {
     await testGetCategoriaById(urlCategorias)
     await testDeleteCategoriaById(urlCategorias)
 
-    
-    //await testAddCategoria(urlCategorias)
 }
 
 main()
