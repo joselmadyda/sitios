@@ -5,6 +5,7 @@ const hbs = require('nodemailer-express-handlebars');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const sitiosDAO = require('./sitiosDAO_SQL')
 const router = express.Router()
+const Isemail = require('isemail');
 
 //Base URI
 const baseURI = '/api/sitios'
@@ -188,8 +189,14 @@ function obtenerSitiosporDistancia(lat1, lon1, lat2, lon2) {
 /**
  * Servicio GET: Envío de mail por dirección de correo recibida
  */
-router.get('/email/:email', async (req, res) => {
+router.get('/email/:email', async (req, res) => { 
     console.log(`GETTING EMAIL: ${baseURI}${req.params.email}`)
+     // agregado el try catch para el test. puede sacarse y descomentar el del test.
+    try {
+        if (!Isemail.validate(req.params.email))
+        throw { status: 400, descripcion: 'el mail no posee un formato valido' }
+
+         
     //Seteo de opciones para el objeto handlebar
     const handlebarOptions = {
         viewEngine: {
@@ -231,6 +238,12 @@ router.get('/email/:email', async (req, res) => {
             res.json(true);
         }
     });
+    } catch (err) {
+        res.status(err.status).json(err)
+    }
+  
+
+ 
 })
 
 module.exports = router

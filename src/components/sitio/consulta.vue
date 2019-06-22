@@ -211,7 +211,8 @@ export default {
           this.hideModal();
         })
         .catch(e => {
-          console.log(response.data);
+          alert (e.message) //ver para q muestre el mensaje de error y no solo el codigo
+         // console.log(response.data.status);
         });
     },
     buscarSitio() {

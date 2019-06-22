@@ -1,30 +1,52 @@
 const request = require('request-promise-native');
+var Isemail = require('isemail');
+
+
 
 console.log('---- TEST GET EMAIL')
 
-async function runEnviarEmail(serverUrl, correo) {
+async function runEnviarEmail(serverUrl, correo, expectedErrorCode) {
 
     const options = {
-        uri: `${serverUrl}/${correo}`,
+        uri: `${serverUrl}/${correo.mail}`,
         json: true
     }
 
-    try {
-        const envioCorreo = await request(options)
 
-        if (!envioCorreo) {
-            console.log("UNITTESTING: Envio Incorrecto")
+    try {
+        //    console.log(correo)
+        //  console.log(!Isemail.validate(correo.mail))
+
+        await request(options)
+
+        console.log(`UNITEST MAIL: Envio Correcto a ${correo.mail} (esperado)`)
+
+    } catch (error) {
+        // console.log (error.message)
+        if (error.statusCode == expectedErrorCode) {
+            console.log("ENVIO DE MAIL: ok (con error esperado)")
         } else {
-            console.log("UNITTESTING: Envio Correcto")
+            console.log(`ENVIO DE MAIL: error inesperado, detalle: ${error.descripcion}`)
         }
-    } catch (err) {
-        console.log("error: no se puede enviar el mail")
     }
+
+
 }
+
 
 async function testEnviarEmail(serverUrl) {
-    runEnviarEmail(serverUrl, "prueba.com") //Debe arrojar error de envío
-    runEnviarEmail(serverUrl, "alejandro.samsonowicz@witbor.com") //Debe arrojar envio correcto
+
+
+    runEnviarEmail(serverUrl, { mail: "prueba.com" }, 400) //Debe arrojar error de formato
+
+    runEnviarEmail(serverUrl, { mail: "gonzavidau@gmail.com" }) //Debe arrojar envio correcto
+
+    runEnviarEmail(serverUrl, { mail: "lalala@@ss.com" }, 400) //Debe arrojar error de formato
+
+
 }
+
+
+
 
 module.exports = testEnviarEmail
