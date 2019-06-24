@@ -21,18 +21,20 @@ async function testGetSitiosByCategoria(serverUrl, idCategory) {
                 if (sitioValidado) {
                     console.log("No Ok: " + sitioValidado.name + ' - ' + sitioValidado.details[0].message);
                     setPruebas.push({
-                        testname: "GetSitiosxCategoria - CP" + [i],
+                        testname: "GetSitiosxCategoria_CP" + [i],
                         resultado: "Fallo",
                         error: sitioValidado.details[0].message,
+                        observacion: 'Categoria: ' + sitios[i].id_categoria ,
                         data: sitios[i]
                     })
                     contadorMalos++;
 
                 } else {
                     setPruebas.push( {
-                            testname: "GetSitiosxCategoria - CP" + [i],
+                            testname: "GetSitiosxCategoria_CP" + [i],
                             resultado: "Ok",
                             error: "Sin Error",
+                            observacion: 'Categoria: ' + sitios[i].id_categoria ,
                             data: sitios[i]
                      })
                 }
@@ -40,9 +42,10 @@ async function testGetSitiosByCategoria(serverUrl, idCategory) {
             
         } else {
             setPruebas.push( {
-                testname: "GetSitiosxCategoria - CP - Vacio",
+                testname: "GetSitiosxCategoria_CP_Vacio",
                 resultado: "Ok",
                 error: "Sin Error",
+                observacion: 'Categoria: ' + idCategory ,
                 data: ('No existen Sitios para Categoria'+idCategory)
          })
         }

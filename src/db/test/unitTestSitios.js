@@ -1,8 +1,15 @@
 const testGetSitios = require('./testGetSitios')
 const testGetSitiosByCategoria = require('./testGetSitiosByCategoria')
+const testGetSitiosByDistancia = require('./testGetSitiosByDistancia')
 const fs = require('fs')
+let html = require('./templatePruebas')
 
-//const testGetSitiosByDistancia = require('./testGetSitiosByDistancia')
+var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+var dateTime = date+' '+time;
+
+
 //const testAddSitios = require('./testAddSitios')
 
 const serverUrl = 'http://127.0.0.1'
@@ -14,45 +21,53 @@ const seccion = 'sitios'
 const urlSitios = serverUrl + ":" + serverPort + "/" + api + "/" + seccion
 
 async function main() {
-
-    let html = '<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style>'
-    html += '<title><h1>Pruebas Unitarias</h1></title></head><body>'
     
     let resultado = ''
 
-    resultado = await testGetSitios(urlSitios);  
-    html += generaTabla(resultado,'Test Get Sitios')
-
+    // Escritura del encabezado del informe html
+    html += '<div class="row"> <h1>Pruebas Unitarias</h1> </div>'
+    html += `<div class="row"> <h4>Fecha Hora Ejecucion: ${dateTime} </h4></div><hr>`
+        
+    // Ejecucion de cada Test y genera de tabla con los test
     resultado = await testGetSitiosByCategoria(urlSitios,1) ;
     html += generaTabla(resultado,'Test Get Sitios x Categoria 1')
 
     resultado = await testGetSitiosByCategoria(urlSitios,10) ;
     html += generaTabla(resultado,'Test Get Sitios x Categoria 10')
 
-    //resultadoPruebas.push(await testGetSitiosByCategoria(urlSitios,10));  
+    resultado = await testGetSitiosByDistancia( urlSitios, 5, 1, -34.609953, -58.4292301 ) ;
+    html += generaTabla(resultado,'Test Get Sitios x Distancia')
+
+    resultado = await testGetSitios(urlSitios);  
+    html += generaTabla(resultado,'Test Get Sitios')
 
 
 
-
-    // Archivo HTML:
-    html += '</body></html>'
+    // Escritura Cierre del Archivo HTML y Generacion de Archivo.:
+    html += '</div></body></html>'
     fs.writeFileSync('pruebas/resultadoPruebas.html', html)
 
+
+    // Funcion que Escribe los Resultados en Tablas y deja mensajes en consola. devuelve un "div x row con cada tabla"
     function generaTabla(prueba,titulo) {
         
         let contadorMalos=0
         let contadorBuenos=0
-        let text = '<h2>'+titulo+'</h2>'
-
-        text += '<table><th>Nombre Caso de Prueba</th><th>Resultado Test:</th><th>Error</th><th>Datos</th>'
+        let text = `<br><br><div class="row"><br><br><h3>Set Pruebas: ${titulo}</h3>`
+        text += '<table class="table table-bordered table-condensed table-sm table-hover">'
+        text += '<thead><th>Nombre Caso de Prueba</th><th>Resultado Test:</th><th>Error</th><th>Observacion</th><th>Datos</th></thead>'
         
+        // Armado Ciclico de la Tabla
         for (let i = 0; i < prueba.length; i++) {
             text += 
             '<tr>' +
             `<td>${prueba[i].testname}</td>` +
             `<td>${prueba[i].resultado}</td>`+
             `<td>${prueba[i].error}</td>`+
-            `<td>${JSON.stringify(prueba[i].data)}</td>`+        
+            `<td>${prueba[i].observacion}</td>`+
+            `<td><a class="btn btn-primary" data-toggle="collapse" href="#${prueba[i].testname}" role="button" aria-expanded="false" aria-controls="${prueba[i].testname}">Mostrar JSON</a>
+             <div class="collapse" id="${prueba[i].testname}"><div class="card card-body">${JSON.stringify(prueba[i].data)}</div></div>
+            </td>`
             '</tr>'
 
             if (prueba[i].resultado==="Ok"){
@@ -64,17 +79,15 @@ async function main() {
 
         const porcentajeOk = (contadorBuenos / (contadorBuenos+contadorMalos)) * 100
         const resultadoFinal = `Porcentaje de Casos Ok:  ${porcentajeOk} % - Casos Ok: ${contadorBuenos} - Casos No Ok: ${contadorMalos}`
+
         console.log('\n------------ ' + titulo + ' ------------')
         console.log(resultadoFinal)
 
-        text += '</table><br><h3>' + resultadoFinal + '</h3><hr><br>'
+        text += '<tr><td colspan="5"><h4><br>'+ resultadoFinal +'</h4></td></tr>'
+        text += '</table></div>'
 
         return text;
     }
-    
-
-
-    //await testGetSitiosByDistancia(urlSitios) //Debe devolver sitios que estén dentro de la distancia solicitada de acuerdo a las coordenadas ingresadas    
 }
 
 main()

@@ -20,25 +20,32 @@ async function testGetSitios(serverUrl) {
                 if (sitioValidado) {
                     console.log("No Ok: " + sitioValidado.name + ' - ' + sitioValidado.details[0].message);
                     setPruebas.push({
-                        testname: "GetSitios - CP" + [i],
+                        testname: "GetSitios_CP" + [i],
                         resultado: "Fallo",
                         error: sitioValidado.details[0].message,
+                        observacion: '',
                         data: sitios[i]
                     })
                     contadorMalos++;
 
                 } else {
                     setPruebas.push( {
-                            testname: "GetSitios - CP" + [i],
+                            testname: "GetSitios_CP" + [i],
                             resultado: "Ok",
                             error: "Sin Error",
+                            observacion: '',
                             data: sitios[i]
                      })
                 }
             }
-            
         } else {
-            console.log("No existen sitios")
+            setPruebas.push( {
+                testname: "GetSitios_CP_Vacio",
+                resultado: "Ok",
+                error: "Sin Error",
+                observacion: '',
+                data: ('No existen Sitios')
+            })
         }
 
         return setPruebas
