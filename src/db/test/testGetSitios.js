@@ -1,55 +1,70 @@
 const request = require('request-promise-native');
-const Joi = require('@hapi/joi') // para validar la estructura interna de un objeto
-
-console.log('---- TEST GET SITIOS')
+const Joi = require('@hapi/joi') 
 
 async function testGetSitios(serverUrl) {
+    
+    let setPruebas= []
 
     const options = {
         uri: `${serverUrl}`,
         json: true
     }
-
     try {
         const sitios = await request(options)
 
-           // console.log('Total Sitios:' +sitios.length)
-        //console.log(sitios)
-        let contadorMalos=0
-        let contadorBuenos=0
-       // let testOK = true
-        for (let i = 0; i < sitios.length; i++) {
-         if (esSitioValido(sitios[i])){
-             console.log( `el sitio ${sitios[i].nombre_sitio} no contiene un formato valido` )
+        if (sitios.length > 0) {
+            for (let i = 0; i < sitios.length; i++) {
 
-         }else{
-            contadorBuenos+=1
-         }
-        
+                let sitioValidado =  esSitioValido(sitios[i])
+                
+                if (sitioValidado) {
+                    console.log("No Ok: " + sitioValidado.name + ' - ' + sitioValidado.details[0].message);
+                    setPruebas.push({
+                        testname: "GetSitios - CP" + [i],
+                        resultado: "Fallo",
+                        error: sitioValidado.details[0].message,
+                        data: sitios[i]
+                    })
+                    contadorMalos++;
+
+                } else {
+                    setPruebas.push( {
+                            testname: "GetSitios - CP" + [i],
+                            resultado: "Ok",
+                            error: "Sin Error",
+                            data: sitios[i]
+                     })
+                }
+            }
+            
+        } else {
+            console.log("No existen sitios")
         }
-        console.log(`Correctos: ${contadorBuenos}/${sitios.length}`)
-       
+
+        return setPruebas
+
     } catch (err) {
-        console.log(`get sitios: error en la respuesta del servidor, detalle:  ${err} ` )
+        console.log(err)
+        return err 
     }
 }
 
-
 function esSitioValido(sitio) {
-   // console.log('entre al joi')
-    const schema = {  //esquema de sitio va a tener : . Mapear a :
-        nombre_sitio: Joi.string().alphanum().min(1).required(),
-        latitud: Joi.number().integer().min(1).required(),
-        longitud: Joi.number().integer().min(0).required(),
-        voucher: Joi.boolean().required(),
-        reponsable:Joi.string().alphanum().min(1).required(),
-        url: Joi.string().alphanum().min(1).required(),
-        distancia: Joi.number().integer().min(1).max(99999999).required()
+    const schema = {  
+        id_sitio: 		    Joi.number().integer()    ,
+        id_categoria:	    Joi.number().integer()    ,
+        nombre_sitio: 	    Joi.string()  ,
+        barrio: 		    Joi.string()  ,
+        latitud:		    Joi.number()  ,
+        longitud:		    Joi.number()  ,
+        url: 			    Joi.string()  ,
+        responsable:	    Joi.string()  ,
+        hora_apertura:	    Joi.string()  ,
+        hora_cierre:	    Joi.string()  ,
+        voucher:		    Joi.boolean()
     }
-    // console.log('entre al joi2')
-    const { error } = Joi.validate(sitio, schema); // las llaves significan "desestructuracion" en lugar de objeto 
-                                                            // a una variable . Se le asignan a la variable los campos del objeto
-       // console.log('entre al joi3')                                                        
+    
+    const { error } = Joi.validate(sitio, schema);                                      
     return error
 
 }

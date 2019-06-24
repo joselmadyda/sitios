@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Pruebas Unitarias</h2>
+<button></button>
+
+<p id="testGetSitios"></p>
+
+
+<script>
+
+const testGetSitios = require('./testGetSitios')
+const testGetSitiosByCategoria = require('./testGetSitiosByCategoria')
+//const testGetSitiosByDistancia = require('./testGetSitiosByDistancia')
+//const testAddSitios = require('./testAddSitios')
+
+const serverUrl = 'http://127.0.0.1'
+const serverPort = '8090'
+const api = 'api'
+const seccion = 'sitios'
+
+
+const urlSitios = serverUrl + ":" + serverPort + "/" + api + "/" + seccion
+
+async function main() {
+
+    const resultGetSitios               = await testGetSitios(urlSitios)              
+    const resultGetSitiosByCategoria    = await testGetSitiosByCategoria(urlSitios) 
+
+    // escritura del html 
+
+    let test = ''
+    for (let i = 0; i < resultGetSitios.length; i++) {
+        // data,resultado,error:     
+        test += `Resultado Test:  ${resultGetSitios.resultado} % - Error: ${resultGetSitios.error } \n`
+    }
+    document.getElementById("testGetSitios").innerHTML = test
+
+    //await testGetSitiosByDistancia(urlSitios) //Debe devolver sitios que estén dentro de la distancia solicitada de acuerdo a las coordenadas ingresadas    
+}
+
+main()
+
+</script>
+
+</body>
+</html>

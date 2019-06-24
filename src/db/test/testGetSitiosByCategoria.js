@@ -1,36 +1,78 @@
 const request = require('request-promise-native');
+const Joi = require('@hapi/joi') 
 
-console.log('---- TEST GET SITIOS BY CATEGORIA')
 
-async function runGetSitiosByCategoria(serverUrl, idCategory, cantSitios) {
+async function testGetSitiosByCategoria(serverUrl, idCategory) {
+    
+    let setPruebas= []
 
     const options = {
         uri: `${serverUrl}/${idCategory}`,
         json: true
     }
-
     try {
         const sitios = await request(options)
 
-        console.log('Categoria: '+idCategory+' Sitios devueltos:' +sitios.length+' Sitios esperados:' + cantSitios)
+        if (sitios.length > 0) {
+            for (let i = 0; i < sitios.length; i++) {
 
-        if (sitios.length == cantSitios){
-            console.log("unitTest: ok")       
-        }else{  
-            console.log("unitTest: not ok")        
+                let sitioValidado =  esSitioValido(sitios[i],idCategory)
+                
+                if (sitioValidado) {
+                    console.log("No Ok: " + sitioValidado.name + ' - ' + sitioValidado.details[0].message);
+                    setPruebas.push({
+                        testname: "GetSitiosxCategoria - CP" + [i],
+                        resultado: "Fallo",
+                        error: sitioValidado.details[0].message,
+                        data: sitios[i]
+                    })
+                    contadorMalos++;
+
+                } else {
+                    setPruebas.push( {
+                            testname: "GetSitiosxCategoria - CP" + [i],
+                            resultado: "Ok",
+                            error: "Sin Error",
+                            data: sitios[i]
+                     })
+                }
+            }
+            
+        } else {
+            setPruebas.push( {
+                testname: "GetSitiosxCategoria - CP - Vacio",
+                resultado: "Ok",
+                error: "Sin Error",
+                data: ('No existen Sitios para Categoria'+idCategory)
+         })
         }
 
+        return setPruebas
+
     } catch (err) {
-        console.log("get sitios: error en la respuesta del servidor")
+        console.log(err)
+        return err 
     }
 }
 
-async function testGetSitiosByCategoria(serverUrl) {
-    
-    runGetSitiosByCategoria(serverUrl, 1, 7) //Cantidad esperada 7
-    runGetSitiosByCategoria(serverUrl, 2, 3) //Cantidad esperada 1
-    runGetSitiosByCategoria(serverUrl, 3, 4) //Cantidad esperada 4
-    runGetSitiosByCategoria(serverUrl, 10, 0) //Cantidad esperada 0
+function esSitioValido(sitio,idCategory) {
+
+    const schema = {  
+        id_sitio: 		    Joi.number().integer()    ,
+        id_categoria:	    Joi.number().integer().min(idCategory).max(idCategory)    ,
+        nombre_sitio: 	    Joi.string()  ,
+        barrio: 		    Joi.string()  ,
+        latitud:		    Joi.number()  ,
+        longitud:		    Joi.number()  ,
+        url: 			    Joi.string()  ,
+        responsable:	    Joi.string()  ,
+        hora_apertura:	    Joi.string()  ,
+        hora_cierre:	    Joi.string()  ,
+        voucher:		    Joi.boolean()
+    }
+    const { error } = Joi.validate(sitio, schema);                                      
+    return error
 }
+
 
 module.exports = testGetSitiosByCategoria
